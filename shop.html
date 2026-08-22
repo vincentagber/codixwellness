@@ -102,9 +102,13 @@
       color: #3A2F99 !important;
     }
 
+    /* Max Width Container matching Figma 1322px Spacing (Unified Margin) */
     .container-codix {
-      width: min(100% - 32px, 1323px);
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
       margin-inline: auto;
+      box-sizing: border-box;
     }
 
     .top-bar-bg {
@@ -154,20 +158,22 @@
       transform: translateY(0);
     }
 
-    .modal-overlay {
+    .modal-overlay:not(.open) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .modal-overlay.open {
       position: fixed;
       inset: 0;
       background-color: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px);
       z-index: 60;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .modal-overlay.open {
-      opacity: 1;
-      visibility: visible;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
     .cart-drawer-panel {
@@ -177,6 +183,22 @@
 
     .modal-overlay.open .cart-drawer-panel {
       transform: translateX(0);
+    }
+
+    .mobile-drawer-panel {
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-menu-overlay.open .mobile-drawer-panel {
+      transform: translateX(0);
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-menu-overlay,
+      #mobile-menu-overlay {
+        display: none !important;
+      }
     }
 
     /* Price slider track styling */
@@ -196,20 +218,63 @@
 <body class="font-sans antialiased text-slate-800 bg-white selection:bg-codix-green selection:text-white">
 
   <!-- ======================================================== -->
-  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                     -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR (Height ~40px)       -->
   <!-- ======================================================== -->
-  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none">
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none"
+    aria-label="Announcement">
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <!-- Left: Free Shipping message -->
       <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
         <span>Free shipping all orders on over $60.</span>
       </div>
+
+      <!-- Right: Language, Currency, Account -->
       <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
-        <span class="hover:text-white/80 transition cursor-pointer">EN <i
-            class="fa-solid fa-chevron-down text-[9px]"></i></span>
-        <span class="hover:text-white/80 transition cursor-pointer">$ USD <i
-            class="fa-solid fa-chevron-down text-[9px]"></i></span>
-        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition">
-          <i class="fa-regular fa-user text-[11px]"></i>
+        <!-- Language Selector -->
+        <div class="relative">
+          <button id="lang-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
+            aria-label="Select Language" aria-expanded="false">
+            <span id="lang-label">EN</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="lang-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="EN">English (EN)</button>
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="ES">Español (ES)</button>
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="FR">Français (FR)</button>
+          </div>
+        </div>
+
+        <!-- Currency Selector -->
+        <div class="relative">
+          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
+            aria-label="Select Currency" aria-expanded="false">
+            <span id="curr-label">$ USD</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="curr-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="$ USD">$ USD</button>
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="€ EUR">€ EUR</button>
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="£ GBP">£ GBP</button>
+          </div>
+        </div>
+
+        <!-- My Account Trigger -->
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition cursor-pointer">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
           <span>My account</span>
         </a>
       </div>
@@ -281,20 +346,20 @@
           </div>
         </a>
 
-        <div onclick="openCartDrawer()" class="flex items-center gap-2 cursor-pointer group select-none"
+        <button type="button" onclick="openCartDrawer()" class="flex items-center gap-2 cursor-pointer group select-none bg-transparent border-0 p-0 text-left"
           aria-label="Shopping Cart">
-          <div
+          <span
             class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
             <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
             <span id="cart-badge-count"
               class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
-          </div>
-          <div class="hidden md:flex flex-col leading-tight">
+          </span>
+          <span class="hidden md:flex flex-col leading-tight">
             <span id="cart-header-total"
               class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">$77.96</span>
             <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
-          </div>
-        </div>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -374,7 +439,6 @@
         <!-- Left Sidebar Filters (Width: 313px; Height: 745px; Gap: 25px) -->
         <aside class="shrink-0 flex flex-col justify-between"
           style="width: 100%; max-width: 313px; min-height: 745px; gap: 25px; opacity: 1;">
-          
           <!-- Search in Shop -->
           <div class="relative w-full">
             <input id="shop-sidebar-search" type="text" placeholder="Search" oninput="filterShopProducts(this.value)"
@@ -474,7 +538,6 @@
             <h3 class="text-xl font-black text-black tracking-tight" style="color: #000000 !important; font-family: 'Lato', sans-serif;">
               Filter by Price
             </h3>
-            
             <div class="relative w-full py-2 flex items-center">
               <div class="w-full h-1.5 bg-[#EEF4F8] rounded-full relative">
                 <div id="price-slider-fill" class="absolute left-0 h-1.5 bg-[#3A2F99] rounded-full" style="width: 70%;"></div>
@@ -542,104 +605,184 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 5. CLIENTS REVIEWS SECTION (Exact Homepage Match)        -->
+    <!-- 5. CLIENTS REVIEWS SECTION (3 on Laptop, 1 on Mobile)     -->
     <!-- ======================================================== -->
-    <section id="support" class="reviews-gradient-bg py-16 text-white" aria-label="Customer Testimonials">
+    <section id="support" class="reviews-gradient-bg py-16 text-white overflow-hidden" aria-label="Customer Testimonials">
       <div class="container-codix relative z-10">
         <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-10" style="color: #FFFFFF !important;">
           Clients Reviews</h2>
 
-        <!-- Wrapper with arrows on left/right edges -->
-        <div class="relative max-w-2xl mx-auto flex items-center justify-center px-6 sm:px-12">
-          <!-- Left Arrow -->
+        <!-- Wrapper with arrows on left/right edges for ALL screen sizes -->
+        <div class="relative w-full max-w-[1320px] mx-auto flex items-center justify-center px-8 sm:px-12 lg:px-14">
+          <!-- Left Arrow (Visible on Mobile & Desktop) -->
           <button id="testimonial-prev-btn" onclick="prevTestimonial()"
-            class="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            class="absolute left-0 sm:left-1 lg:left-2 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center transition text-black z-20 shadow-lg active:scale-95 cursor-pointer border border-slate-100"
             aria-label="Previous Testimonial">
-            <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+            <i class="fa-solid fa-chevron-left text-sm sm:text-base text-black"></i>
           </button>
 
-          <!-- Testimonial Cards: Exactly ONE active card at a time -->
-          <div id="testimonial-cards-wrapper" class="w-full flex items-center justify-center min-h-[328px]">
-            <!-- Review 1: Eric Simpson (Initial Active) -->
-            <article
-              class="testimonial-card active bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
-              style="min-height: 328px; border-radius: 14px;">
-              <div>
-                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
-                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  “But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
-                  born.”
-                </p>
+          <!-- Testimonials Viewport -->
+          <div class="w-full overflow-hidden py-4">
+            <div id="testimonial-track" class="flex transition-transform duration-500 ease-in-out">
+              <!-- Review 1: Eric Simpson -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
+                      born.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-eric.jpg" alt="Eric Simpson"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Eric Simpson</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
               </div>
-              <div class="mt-4 sm:mt-6 flex flex-col items-center">
-                <img src="images/avatar-eric.jpg" alt="Eric Simpson"
-                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
-                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Eric Simpson</span>
-                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
-              </div>
-            </article>
 
-            <!-- Review 2: Simons Cooper -->
-            <article
-              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
-              style="min-height: 328px; border-radius: 14px; display: none;">
-              <div>
-                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
-                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  “There was a small mistake in the order. In return, I got the correct order and I could keep the wrong
-                  one for myself.”
-                </p>
+              <!-- Review 2: Simons Cooper -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “There was a small mistake in the order. In return, I got the correct order and I could keep the wrong
+                      one for myself.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-simons.jpg" alt="Simons Cooper"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Simons Cooper</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
               </div>
-              <div class="mt-4 sm:mt-6 flex flex-col items-center">
-                <img src="images/avatar-simons.jpg" alt="Simons Cooper"
-                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
-                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Simons Cooper</span>
-                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
-              </div>
-            </article>
 
-            <!-- Review 3: Kaleb Yurs -->
-            <article
-              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
-              style="min-height: 328px; border-radius: 14px; display: none;">
-              <div>
-                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
-                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
-                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  “These settings don't provide big changes but only some small css changes in spaces or borders for
-                  example.”
-                </p>
+              <!-- Review 3: Kaleb Yurs -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “These settings don't provide big changes but only some small css changes in spaces or borders for
+                      example.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-kaleb.jpg" alt="Kaleb Yurs"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Kaleb Yurs</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
               </div>
-              <div class="mt-4 sm:mt-6 flex flex-col items-center">
-                <img src="images/avatar-kaleb.jpg" alt="Kaleb Yurs"
-                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
-                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Kaleb Yurs</span>
-                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+
+              <!-- Review 4: Elena Vance -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “The Kids Multi Gummies and vitamin C supplements have become a daily staple in our home. Exceptional quality!”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-eric.jpg" alt="Elena Vance"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Elena Vance</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
               </div>
-            </article>
+
+              <!-- Review 5: Marcus Thorne -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “Fastest dispatch I've ever experienced with wellness orders. Beautifully sealed, authentic vitamins.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-simons.jpg" alt="Marcus Thorne"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Marcus Thorne</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Review 6: David Miller -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full"
+                  style="min-height: 328px; border-radius: 14px;">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      “Noticeable difference in my joint mobility and daily endurance. The customer support team is fantastic!”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-kaleb.jpg" alt="David Miller"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">David Miller</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
+              </div>
+            </div>
           </div>
 
-          <!-- Right Arrow -->
+          <!-- Right Arrow (Visible on Mobile & Desktop) -->
           <button id="testimonial-next-btn" onclick="nextTestimonial()"
-            class="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            class="absolute right-0 sm:right-1 lg:right-2 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center transition text-black z-20 shadow-lg active:scale-95 cursor-pointer border border-slate-100"
             aria-label="Next Testimonial">
-            <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+            <i class="fa-solid fa-chevron-right text-sm sm:text-base text-black"></i>
           </button>
         </div>
 
         <!-- Pagination Indicators -->
-        <div class="flex items-center justify-center gap-2 mt-6">
-          <button onclick="showTestimonial(0)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white w-6 cursor-pointer" aria-label="Review 1"></button>
-          <button onclick="showTestimonial(1)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer" aria-label="Review 2"></button>
-          <button onclick="showTestimonial(2)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer" aria-label="Review 3"></button>
+        <div id="testimonial-dots" class="flex items-center justify-center gap-2 mt-6">
+          <button onclick="showTestimonial(0)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white w-6 cursor-pointer"
+            aria-label="Review Page 1"></button>
+          <button onclick="showTestimonial(1)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer"
+            aria-label="Review Page 2"></button>
         </div>
       </div>
     </section>
@@ -737,7 +880,7 @@
     <!-- ======================================================== -->
     <!-- 8. BRAND LOGOS STRIP (Side-by-Side Mobile & Desktop)    -->
     <!-- ======================================================== -->
-    <div class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
+    <section class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
       style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
       aria-label="Partner Brands">
       <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
@@ -757,17 +900,19 @@
           <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
         </div>
       </div>
-    </div>
+    </section>
   </main>
 
   <!-- ======================================================== -->
-  <!-- 9. FOOTER (Exact Figma Green #57B952)                   -->
+  <!-- 15. FOOTER (Exact Match to Index Green Background)        -->
   <!-- ======================================================== -->
   <footer class="footer-green-bg text-white" aria-label="Footer">
     <div class="container-codix pt-12 pb-6">
+      <!-- Footer Logo (Width: 192px, Height: 55px, Radius: 2px, Background: #CBE9C9) -->
       <div>
         <a href="index.html" class="inline-flex items-center justify-center transition hover:opacity-90"
-          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;">
+          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;"
+          aria-label="Codix Wellness Homepage">
           <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain"
             onerror="this.style.display='none';document.getElementById('fallback-footer-logo').style.display='flex'">
           <div id="fallback-footer-logo" class="hidden items-center text-base font-black tracking-tight"
@@ -777,72 +922,95 @@
         </a>
       </div>
 
+      <!-- Horizontal Line Under Logo (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
       <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
 
+      <!-- Footer Main Columns (Left 3 Columns 881px, Right Social Media 417.57px) -->
       <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14 mt-6">
+        <!-- 3 Links Columns: Company, Help, Shop (Width: 881px, Height: 321.32px, Gap: 77px) -->
         <div class="grid grid-cols-1 sm:grid-cols-3 w-full" style="max-width: 881px; min-height: 321.32px; gap: 77px;">
+          <!-- Col 1: Company -->
           <div>
             <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Company</h4>
             <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
-              <li><a href="#" class="hover:text-white hover:underline transition">Charity Support</a></li>
-              <li><a href="#" class="hover:text-white hover:underline transition">Careers</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
             </ul>
           </div>
+
+          <!-- Col 2: Help -->
           <div>
             <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Help</h4>
             <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
-              <li><a href="#" class="hover:text-white hover:underline transition">Contact Us</a></li>
-              <li><a href="#" class="hover:text-white hover:underline transition">FAQs</a></li>
-              <li><a href="#" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
-              <li><a href="#" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
             </ul>
           </div>
+
+          <!-- Col 3: Shop -->
           <div>
             <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Shop</h4>
             <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
               <li><a href="shop.html" class="hover:text-white hover:underline transition">Immunity</a></li>
               <li><a href="shop.html" class="hover:text-white hover:underline transition">General Wellness</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a>
               </li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle
-                  Health</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Weight Management &amp;
-                  Metabolism</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a>
+              </li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Sexual Health</a></li>
             </ul>
           </div>
         </div>
 
+        <!-- Col 4: Follow Our Social Media (Width: 417.57px, Height: 153.58px, Gap: 22.69px) -->
         <div class="flex flex-col justify-between w-full lg:w-[417.57px] shrink-0"
           style="max-width: 417.57px; min-height: 153.58px; gap: 22.69px;">
           <h4 class="text-lg sm:text-xl font-bold text-white tracking-normal">Follow Our Social Media</h4>
           <div class="flex flex-wrap gap-x-2.5 gap-y-3 items-center">
-            <a href="#"
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">Instagram</a>
-            <a href="#"
+              style="background-color: #3A2F99;" aria-label="Instagram">
+              Instagram
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">Youtube</a>
-            <a href="#"
+              style="background-color: #3A2F99;" aria-label="YouTube">
+              Youtube
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">Facebook</a>
-            <a href="#"
+              style="background-color: #3A2F99;" aria-label="Facebook">
+              Facebook
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">LinkedIn</a>
-            <a href="#"
+              style="background-color: #3A2F99;" aria-label="LinkedIn">
+              LinkedIn
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">Twitter</a>
-            <a href="#"
+              style="background-color: #3A2F99;" aria-label="Twitter">
+              Twitter
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
               class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;">Tik Tok</a>
+              style="background-color: #3A2F99;" aria-label="TikTok">
+              Tik Tok
+            </a>
           </div>
         </div>
       </div>
 
+      <!-- Horizontal Divider Before Copyright (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
       <div class="mt-12 mb-6" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;">
       </div>
 
+      <!-- Bottom Bar: Copyright, Terms & Payment Logos (Width: 1518px, Height: 46px) -->
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mx-auto"
         style="width: 100%; max-width: 1518px; min-height: 46px;">
         <div class="flex flex-wrap items-center gap-2 text-center sm:text-left text-[11px] text-white/75 font-normal">
@@ -850,26 +1018,34 @@
           <span class="text-white/40">|</span>
           <span>Design by Ostech</span>
           <span class="text-white/40">|</span>
-          <a href="#" class="hover:text-white transition">Terms of Use</a>
+          <a href="about.html" class="hover:text-white transition">Terms of Use</a>
           <span class="text-white/40">|</span>
-          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+          <a href="about.html" class="hover:text-white transition">Privacy Policy</a>
         </div>
+
+        <!-- Separated Payment Badges with Individual Spacing (Height: 46px container) -->
         <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 h-[46px]">
-          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
             title="American Express">
-            <img src="images/pay-amex.png" alt="American Express" class="max-h-full max-w-full object-contain">
+            <img src="images/pay-amex.png" alt="American Express" class="max-h-5 max-w-full object-contain"
+              loading="lazy">
           </div>
-          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
-            title="Visa">
-            <img src="images/pay-visa.png" alt="Visa" class="max-h-full max-w-full object-contain">
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="VISA">
+            <img src="images/pay-visa.png" alt="VISA" class="max-h-5 max-w-full object-contain" loading="lazy">
           </div>
-          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
             title="PayPal">
-            <img src="images/pay-paypal.png" alt="PayPal" class="max-h-full max-w-full object-contain">
+            <img src="images/pay-paypal.png" alt="PayPal" class="max-h-5 max-w-full object-contain" loading="lazy">
           </div>
-          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
-            title="MasterCard">
-            <img src="images/pay-mastercard.png" alt="MasterCard" class="max-h-full max-w-full object-contain">
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="Mastercard">
+            <img src="images/pay-mastercard.png" alt="Mastercard" class="max-h-5 max-w-full object-contain"
+              loading="lazy">
           </div>
         </div>
       </div>
@@ -877,7 +1053,7 @@
   </footer>
 
   <!-- MOBILE NAVIGATION DRAWER -->
-  <div id="mobile-menu-overlay" class="modal-overlay mobile-menu-overlay" aria-hidden="true"
+  <div id="mobile-menu-overlay" class="modal-overlay mobile-menu-overlay lg:hidden"
     onclick="closeMobileMenuOnBackdrop(event)">
     <div
       class="mobile-drawer-panel fixed top-0 left-0 w-[310px] sm:w-[340px] h-full bg-white shadow-drawer p-5 flex flex-col justify-between overflow-y-auto z-50">
@@ -929,7 +1105,7 @@
   </div>
 
   <!-- CART DRAWER MODAL -->
-  <div id="cart-drawer-overlay" class="modal-overlay" aria-hidden="true" onclick="closeCartDrawer(event)">
+  <div id="cart-drawer-overlay" class="modal-overlay" onclick="closeCartDrawer(event)">
     <div
       class="cart-drawer-panel fixed top-0 right-0 w-full max-w-[550px] h-full bg-white shadow-2xl flex flex-col justify-between z-50 overflow-y-auto"
       style="max-width: 550px; padding-top: 24px; padding-right: 24px; padding-left: 20px; gap: 32px;">
@@ -966,7 +1142,7 @@
   </div>
 
   <!-- WISHLIST MODAL -->
-  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4"
     onclick="closeModalOnBackdrop(event, 'wishlist-modal')">
     <div class="modal-dialog relative flex flex-col justify-between"
       style="width: 100%; max-width: 550px; min-height: 520px; padding: 40px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
@@ -1258,13 +1434,61 @@
     }
     function openModal(id) { const el = document.getElementById(id); if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; } }
     function closeModal(id) { const el = document.getElementById(id); if (el) { el.classList.remove('open'); document.body.style.overflow = ''; } }
-    function closeModalOnBackdrop(e, id) { if (e.target.id === id) closeModal(id); }
+    // --- Testimonials Carousel Engine (3 on Laptop/Desktop, 1 on Mobile) ---
+    let currentTestimonialIdx = 0;
+
+    function showTestimonial(index) {
+      const track = document.getElementById('testimonial-track');
+      const dots = document.querySelectorAll('.testimonial-dot');
+      if (!track) return;
+
+      const isMobile = window.innerWidth < 768;
+      const totalSlides = track.children.length;
+      const maxIndex = isMobile ? totalSlides - 1 : Math.max(0, totalSlides - 3);
+
+      if (index > maxIndex) {
+        currentTestimonialIdx = 0;
+      } else if (index < 0) {
+        currentTestimonialIdx = maxIndex;
+      } else {
+        currentTestimonialIdx = index;
+      }
+
+      const percentStep = isMobile ? 100 : (100 / 3);
+      track.style.transform = `translateX(-${currentTestimonialIdx * percentStep}%)`;
+
+      dots.forEach((dot, idx) => {
+        const isActive = isMobile
+          ? idx === (currentTestimonialIdx % (dots.length || 1))
+          : (currentTestimonialIdx < (maxIndex / 2) ? idx === 0 : idx === 1);
+        if (isActive) {
+          dot.classList.add('bg-white', 'w-6');
+          dot.classList.remove('bg-white/40', 'w-2.5');
+        } else {
+          dot.classList.remove('bg-white', 'w-6');
+          dot.classList.add('bg-white/40', 'w-2.5');
+        }
+      });
+    }
+
+    function nextTestimonial() {
+      showTestimonial(currentTestimonialIdx + 1);
+    }
+
+    function prevTestimonial() {
+      showTestimonial(currentTestimonialIdx - 1);
+    }
+
+    window.addEventListener('resize', () => {
+      showTestimonial(currentTestimonialIdx);
+    });
 
     // Init on load
     window.addEventListener('DOMContentLoaded', () => {
       renderShopGrid();
       updateCartUI();
       updateWishlistUI();
+      showTestimonial(0);
     });
   </script>
 </body>

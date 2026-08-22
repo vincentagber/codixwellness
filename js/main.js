@@ -398,29 +398,54 @@ document.addEventListener("DOMContentLoaded", () => {
   // 10. TESTIMONIAL CAROUSEL
   // =============================================
   let testimonialIndex = 0;
-  const testimonialCards = document.querySelectorAll(".testimonial-card");
+  const testimonialTrack = document.getElementById("testimonial-track");
+  const testimonialDots = document.querySelectorAll(".testimonial-dot");
 
-  function showTestimonial(index) {
-    testimonialCards.forEach((card, i) => {
-      card.style.opacity = i === index ? "1" : "0.35";
-      card.style.transform = i === index ? "scale(1)" : "scale(0.95)";
+  function updateMainTestimonials(index) {
+    if (!testimonialTrack) return;
+    const isMobile = window.innerWidth < 768;
+    const totalSlides = testimonialTrack.children.length;
+    const maxIndex = isMobile ? totalSlides - 1 : Math.max(0, totalSlides - 3);
+
+    if (index > maxIndex) {
+      testimonialIndex = 0;
+    } else if (index < 0) {
+      testimonialIndex = maxIndex;
+    } else {
+      testimonialIndex = index;
+    }
+
+    const percentStep = isMobile ? 100 : (100 / 3);
+    testimonialTrack.style.transform = `translateX(-${testimonialIndex * percentStep}%)`;
+
+    testimonialDots.forEach((dot, idx) => {
+      const isActive = isMobile
+        ? idx === (testimonialIndex % (testimonialDots.length || 1))
+        : (testimonialIndex < (maxIndex / 2) ? idx === 0 : idx === 1);
+      if (isActive) {
+        dot.classList.add("bg-white", "w-6");
+        dot.classList.remove("bg-white/40", "w-2.5");
+      } else {
+        dot.classList.remove("bg-white", "w-6");
+        dot.classList.add("bg-white/40", "w-2.5");
+      }
     });
   }
 
-  const testPrev = document.getElementById("testimonial-prev");
-  const testNext = document.getElementById("testimonial-next");
-  if (testPrev)
-    testPrev.addEventListener("click", () => {
-      testimonialIndex = (testimonialIndex - 1 + testimonialCards.length) % testimonialCards.length;
-      showTestimonial(testimonialIndex);
+  const testPrevBtn = document.getElementById("testimonial-prev-btn");
+  const testNextBtn = document.getElementById("testimonial-next-btn");
+  if (testPrevBtn) {
+    testPrevBtn.addEventListener("click", () => {
+      updateMainTestimonials(testimonialIndex - 1);
     });
-  if (testNext)
-    testNext.addEventListener("click", () => {
-      testimonialIndex = (testimonialIndex + 1) % testimonialCards.length;
-      showTestimonial(testimonialIndex);
+  }
+  if (testNextBtn) {
+    testNextBtn.addEventListener("click", () => {
+      updateMainTestimonials(testimonialIndex + 1);
     });
+  }
 
-  if (testimonialCards.length) showTestimonial(0);
+  if (testimonialTrack) updateMainTestimonials(0);
 
   // =============================================
   // 11. LANGUAGE & CURRENCY DROPDOWNS
