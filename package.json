@@ -1,0 +1,36 @@
+{
+  "name": "codix-wellness",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Codix Wellness — static HTML + CSS + Tailwind landing page.",
+  "scripts": {
+    "dev": "concurrently -k -n css,server -c green,cyan \"npm:watch:css\" \"npm:serve\"",
+    "watch:css": "postcss src/input.css -o css/tailwind.css --watch --verbose",
+    "serve": "browser-sync start --server . --files \"index.html,test.html,css/**/*.css,js/**/*.js\" --no-notify",
+    "build:css": "cross-env NODE_ENV=production postcss src/input.css -o css/tailwind.css",
+    "build": "npm run lint && npm run build:css",
+    "preview": "browser-sync start --server . --no-notify",
+    "lint": "npm run lint:js && npm run lint:html",
+    "lint:js": "eslint js/main.js js/products.js",
+    "lint:html": "html-validate \"*.html\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "autoprefixer": "^10.4.20",
+    "browser-sync": "^3.0.3",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "cssnano": "^7.0.6",
+    "eslint": "^9.17.0",
+    "eslint-plugin-html": "^8.1.2",
+    "globals": "^15.14.0",
+    "html-validate": "^9.3.0",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17"
+  }
+}

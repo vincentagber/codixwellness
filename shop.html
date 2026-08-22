@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All Wellness Products | Codix Wellness</title>
+  <meta name="description"
+    content="Browse Codix Wellness premium vitamins, minerals, herbal extracts, and dietary supplements formulated for maximum potency and whole-body vitality.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            codix: {
+              green: '#57B952',
+              'green-dark': '#48A344',
+              'green-light': '#D7F4D8',
+              'green-pale': '#EDF8EE',
+              'green-mint': '#CAFFD2',
+              navy: '#211C68',
+              'navy-dark': '#17134A',
+              'navy-light': '#514AA4',
+              purple: '#3A2F99',
+              'purple-dark': '#4235AE',
+              violet: '#703FEF',
+              orange: '#F2971F',
+              'orange-dark': '#DE8413',
+              cream: '#F6F5FA',
+              peach: '#FDE7C6',
+              blue: '#C2E9F8',
+              lilac: '#EEE2F3',
+              mint: '#BDEED5',
+            }
+          },
+          fontFamily: {
+            sans: ['Lato', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 2px 12px rgba(40,40,40,.06)',
+            'card-hover': '0 16px 32px rgba(33,28,104,.10)',
+            'bento': '0 4px 20px rgba(0,0,0,.04)',
+            'dropdown': '0 12px 36px rgba(0,0,0,.12)',
+            'drawer': '-8px 0 32px rgba(0,0,0,.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Google Fonts: Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=PT+Sans:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
+      color: #222222;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Lato', sans-serif !important;
+      color: #3A2F99;
+    }
+
+    h2,
+    .sub-heading,
+    .section-heading {
+      font-family: 'Lato', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 25px !important;
+      color: #3A2F99 !important;
+    }
+
+    .container-codix {
+      width: min(100% - 32px, 1323px);
+      margin-inline: auto;
+    }
+
+    .top-bar-bg {
+      background-color: #57B952;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+
+    .newsletter-bg {
+      background: url('images/newsletter-bg.jpg') no-repeat center center;
+      background-size: cover;
+    }
+
+    .reviews-gradient-bg {
+      background: #181440 url('images/testimonial-bg.jpg') center/cover no-repeat;
+      min-height: 532px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-green-bg {
+      background-color: #57B952;
+    }
+
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dropdown-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 60;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-drawer-panel {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .cart-drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* Price slider track styling */
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #57B952;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-slate-800 bg-white selection:bg-codix-green selection:text-white">
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                     -->
+  <!-- ======================================================== -->
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over $60.</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <span class="hover:text-white/80 transition cursor-pointer">EN <i
+            class="fa-solid fa-chevron-down text-[9px]"></i></span>
+        <span class="hover:text-white/80 transition cursor-pointer">$ USD <i
+            class="fa-solid fa-chevron-down text-[9px]"></i></span>
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition">
+          <i class="fa-regular fa-user text-[11px]"></i>
+          <span>My account</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN HEADER (Height ~80px, Total ~120px)             -->
+  <!-- ======================================================== -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm">
+    <div class="container-codix flex items-center justify-between h-[72px] sm:h-[80px] gap-2 sm:gap-4">
+      <!-- Left: Hamburger Button (Mobile) + Logo -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <button id="mobile-hamburger-btn" onclick="openMobileMenu()"
+          class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D7F4D8] text-codix-navy hover:bg-[#EDF8EE] flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95"
+          aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars text-base text-codix-navy"></i>
+        </button>
+
+        <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain"
+            onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex'">
+          <div id="fallback-logo" class="hidden items-center text-lg sm:text-xl font-black tracking-tight" style="display:none">
+            <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Search Bar (Width: 710px, Height: 50px, Radius: 999px) -->
+      <div id="search-container" class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form
+          onsubmit="event.preventDefault(); filterShopProducts(document.getElementById('shop-header-search').value);"
+          class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition"
+          style="height: 50px; border-radius: 999px;" role="search">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm" aria-hidden="true"></i>
+          <input id="shop-header-search" type="text" placeholder="Search everything at codix wellness..."
+            class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2">
+          <button type="submit"
+            class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Action Icons -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <button onclick="openModal('wishlist-modal')"
+          class="w-10 h-10 rounded-full border border-[#FECDD3] text-[#F43F5E] hover:bg-rose-50 flex items-center justify-center transition relative group"
+          aria-label="View Wishlist">
+          <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
+          <span id="wishlist-badge"
+            class="absolute -top-1 -right-1 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
+        </button>
+
+        <a href="shop.html"
+          class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 hidden sm:flex items-center justify-center transition group"
+          aria-label="Compare Products">
+          <i class="fa-solid fa-arrow-right-arrow-left text-xs group-hover:scale-110 transition-transform"></i>
+        </a>
+
+        <a href="login.html" class="flex items-center gap-2 cursor-pointer group" aria-label="Sign In to Account">
+          <div
+            class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 flex items-center justify-center transition group-hover:scale-105">
+            <i class="fa-regular fa-user text-sm"></i>
+          </div>
+          <div class="hidden xl:flex flex-col leading-tight select-none">
+            <span class="text-[13px] font-bold text-slate-800 group-hover:text-codix-green transition">Sign In</span>
+            <span class="text-[10px] text-slate-400">Account</span>
+          </div>
+        </a>
+
+        <div onclick="openCartDrawer()" class="flex items-center gap-2 cursor-pointer group select-none"
+          aria-label="Shopping Cart">
+          <div
+            class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
+            <span id="cart-badge-count"
+              class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
+          </div>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total"
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">$77.96</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu Bar -->
+    <nav class="block bg-white relative overflow-x-auto"
+      style="width: 100%; min-height: 64px; padding: 10px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); -webkit-overflow-scrolling: touch;">
+      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 48px;">
+        <div class="flex items-center gap-5 sm:gap-8 shrink-0">
+          <a href="shop.html" class="flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold"
+            style="background-color: #D7F4D8; color: #211C68;">
+            <i class="fa-solid fa-list-ul text-[11px]"></i>
+            <span>Product Categories</span>
+          </a>
+          <ul class="flex items-center gap-7 text-[13px] font-medium" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="text-codix-green font-bold transition py-2">Shop</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+          </ul>
+        </div>
+        <div class="flex items-center justify-between text-[15px]"
+          style="width: 120.96px; height: 36.50px; gap: 1px; color: #211C68;">
+          <a href="shop.html"
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1"><i
+              class="fa-solid fa-arrows-rotate"></i></a>
+          <button onclick="openModal('wishlist-modal')"
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"><i
+              class="fa-regular fa-heart"></i></button>
+          <button onclick="openCartDrawer()"
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"><i
+              class="fa-solid fa-cart-shopping"></i></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ======================================================== -->
+    <!-- 3. SHOP HERO BANNER (Exact Figma 1321.61px x 447.64px)    -->
+    <!-- ======================================================== -->
+    <section class="bg-white px-4 pt-6 sm:px-6" aria-label="Shop Showcase">
+      <div
+        class="relative mx-auto overflow-hidden shadow-card flex flex-col items-center justify-center text-center px-6"
+        style="width: 100%; max-width: 1321.61px; height: 447.64px; border-radius: 10.66px; background: #C2E9F8 url('images/shop-hero-pharmacist.jpg') no-repeat center 30%; background-size: cover;">
+
+        <!-- Darker semi-transparent overlay matching Figma cinematic depth -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#17134A]/80 via-[#211C68]/65 to-[#17134A]/80 z-0"></div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 flex flex-col items-center">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight"
+            style="color: #FFFFFF !important;">
+            Shop
+          </h1>
+          <p class="mt-3 text-white font-normal"
+            style="width: 100%; max-width: 464px; min-height: 47px; font-family: 'Lato', sans-serif; font-weight: 400; font-size: 15.19px; line-height: 19px; letter-spacing: 0%; text-align: center; color: #FFFFFF;">
+            Our one-stop shop for prescription and OTC medicines-fast ,<br class="hidden sm:inline"> safe, and reliable
+            delivery to your door.
+          </p>
+          <div
+            class="mt-5 inline-flex items-center rounded-full bg-[#57B952] px-5 py-2 text-xs font-bold text-white shadow-md">
+            <a href="index.html" class="hover:underline text-white">Home</a>
+            <i class="fa-solid fa-chevron-right mx-2 text-[9px]"></i>
+            <span>Shop</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 4. SHOP MAIN CATALOG (Sidebar Filters + 3x3 Product Grid) -->
+    <!-- ======================================================== -->
+    <section class="py-16 px-4 sm:px-6">
+      <div class="container-codix flex flex-col lg:flex-row gap-10 items-start">
+
+        <!-- Left Sidebar Filters (Width: 313px; Height: 745px; Gap: 25px) -->
+        <aside class="shrink-0 flex flex-col justify-between"
+          style="width: 100%; max-width: 313px; min-height: 745px; gap: 25px; opacity: 1;">
+          
+          <!-- Search in Shop -->
+          <div class="relative w-full">
+            <input id="shop-sidebar-search" type="text" placeholder="Search" oninput="filterShopProducts(this.value)"
+              class="w-full bg-white border border-[#CBD5E1] rounded-full px-5 py-2.5 text-sm text-slate-700 placeholder:text-slate-500 focus:outline-none focus:border-[#3A2F99] transition pr-10 shadow-sm"
+              style="height: 48px; border-radius: 999px;">
+            <i class="fa-solid fa-magnifying-glass text-slate-800 absolute right-4 top-1/2 -translate-y-1/2 text-sm pointer-events-none"></i>
+          </div>
+
+          <!-- All Catergories: -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-xl font-black text-black tracking-tight" style="color: #000000 !important; font-family: 'Lato', sans-serif;">
+              All Catergories:
+            </h3>
+            <div class="flex flex-col gap-3.5 text-sm text-[#222222] font-medium" id="category-radio-group">
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="Immunity" onchange="selectCategoryRadio(this, 'Immunity')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                </span>
+                <span>Immunity</span>
+              </label>
+
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="General Wellness" checked onchange="selectCategoryRadio(this, 'General Wellness')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-[#3A2F99]"></span>
+                </span>
+                <span>General Wellness</span>
+              </label>
+
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="Beauty and Skin Health" onchange="selectCategoryRadio(this, 'Beauty and Skin Health')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                </span>
+                <span>Beauty and Skin Health</span>
+              </label>
+
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="Joint, Bone & Muscle Health" onchange="selectCategoryRadio(this, 'Joint, Bone & Muscle Health')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                </span>
+                <span>Joint, Bone &amp; Muscle Health</span>
+              </label>
+
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="Weight Managements & Metabolism" onchange="selectCategoryRadio(this, 'Weight Managements & Metabolism')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                </span>
+                <span>Weight Managements &amp; Metabolism</span>
+              </label>
+
+              <label class="flex items-center gap-3.5 cursor-pointer hover:text-[#3A2F99] transition group">
+                <span class="custom-radio w-[19px] h-[19px] rounded-full border border-slate-200 flex items-center justify-center transition group-hover:border-[#3A2F99] shrink-0">
+                  <input type="radio" name="shop-category" value="Sexual Health" onchange="selectCategoryRadio(this, 'Sexual Health')" class="sr-only">
+                  <span class="dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                </span>
+                <span>Sexual Health</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Size: -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-xl font-black text-black tracking-tight" style="color: #000000 !important; font-family: 'Lato', sans-serif;">
+              Size:
+            </h3>
+            <div class="grid grid-cols-3 gap-2.5">
+              <button type="button" onclick="toggleSize(this, '100ml')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">100 ml</button>
+              <button type="button" onclick="toggleSize(this, '50ml')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">50 ml</button>
+              <button type="button" onclick="toggleSize(this, '200ml')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">200 ml</button>
+              <button type="button" onclick="toggleSize(this, '150mg')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">150 mg</button>
+              <button type="button" onclick="toggleSize(this, '30ml')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">30 ml</button>
+              <button type="button" onclick="toggleSize(this, '300mg')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">300 mg</button>
+              <button type="button" onclick="toggleSize(this, '500mg')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">500 mg</button>
+              <button type="button" onclick="toggleSize(this, '90mg')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">90 mg</button>
+              <button type="button" onclick="toggleSize(this, '400ml')"
+                class="size-pill py-2.5 px-3 rounded-full text-xs font-semibold text-slate-800 bg-[#EEF4F8] hover:bg-[#DDE9F2] transition text-center cursor-pointer">400 ml</button>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <hr class="border-t border-[#DDE2E5] w-full my-0">
+
+          <!-- Filter by Price -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-xl font-black text-black tracking-tight" style="color: #000000 !important; font-family: 'Lato', sans-serif;">
+              Filter by Price
+            </h3>
+            
+            <div class="relative w-full py-2 flex items-center">
+              <div class="w-full h-1.5 bg-[#EEF4F8] rounded-full relative">
+                <div id="price-slider-fill" class="absolute left-0 h-1.5 bg-[#3A2F99] rounded-full" style="width: 70%;"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#3A2F99] rounded-full shadow-sm"></div>
+                <div id="price-slider-thumb" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#3A2F99] rounded-full shadow-sm" style="left: 70%;"></div>
+              </div>
+              <input id="price-range" type="range" min="5" max="50" value="50" oninput="updatePriceFilter(this.value)"
+                class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+            </div>
+
+            <div class="text-sm font-semibold text-black">
+              <span>Range: </span><span id="price-range-display" class="text-[#3A2F99] font-semibold">$5.00 - $50.00</span>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- Right Products Grid Area -->
+        <div class="flex-1 w-full">
+          <!-- Top Sorting & Control Bar -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-100 mb-8">
+            <div class="flex items-center gap-3">
+              <button class="p-2 rounded-lg bg-slate-100 text-[#181440] hover:bg-slate-200" title="Grid View">
+                <i class="fa-solid fa-table-cells text-sm"></i>
+              </button>
+              <span id="results-count-text" class="text-xs text-slate-500 font-medium">Showing 1–9 of 15 results</span>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="flex items-center gap-2">
+              <select id="sort-select" onchange="sortShopProducts(this.value)"
+                class="bg-white border border-slate-200 rounded-full px-4 py-2 text-xs text-slate-700 focus:outline-none focus:border-codix-green cursor-pointer">
+                <option value="default">Default sorting</option>
+                <option value="popularity">Sort by popularity</option>
+                <option value="price-low">Sort by price: low to high</option>
+                <option value="price-high">Sort by price: high to low</option>
+                <option value="rating">Sort by average rating</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 3x3 Products Grid (9 products) -->
+          <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Populated by JavaScript -->
+          </div>
+
+          <!-- Pagination Controls -->
+          <div class="flex items-center justify-center gap-2 mt-12">
+            <button onclick="changePage(1)"
+              class="page-num-btn w-9 h-9 rounded-full bg-[#181440] text-white text-xs font-bold flex items-center justify-center transition shadow-sm">1</button>
+            <button onclick="changePage(2)"
+              class="page-num-btn w-9 h-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold flex items-center justify-center transition">2</button>
+            <button onclick="changePage(3)"
+              class="page-num-btn w-9 h-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold flex items-center justify-center transition">3</button>
+            <button onclick="changePage(4)"
+              class="page-num-btn w-9 h-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold flex items-center justify-center transition">4</button>
+            <button onclick="changePage(2)"
+              class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold flex items-center justify-center transition"
+              aria-label="Next Page">
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 5. CLIENTS REVIEWS SECTION (Exact Homepage Match)        -->
+    <!-- ======================================================== -->
+    <section id="support" class="reviews-gradient-bg py-16 text-white" aria-label="Customer Testimonials">
+      <div class="container-codix relative z-10">
+        <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-10" style="color: #FFFFFF !important;">
+          Clients Reviews</h2>
+
+        <!-- Wrapper with arrows on left/right edges -->
+        <div class="relative max-w-2xl mx-auto flex items-center justify-center px-6 sm:px-12">
+          <!-- Left Arrow -->
+          <button id="testimonial-prev-btn" onclick="prevTestimonial()"
+            class="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            aria-label="Previous Testimonial">
+            <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+          </button>
+
+          <!-- Testimonial Cards: Exactly ONE active card at a time -->
+          <div id="testimonial-cards-wrapper" class="w-full flex items-center justify-center min-h-[328px]">
+            <!-- Review 1: Eric Simpson (Initial Active) -->
+            <article
+              class="testimonial-card active bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
+                  born.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-eric.jpg" alt="Eric Simpson"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Eric Simpson</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+
+            <!-- Review 2: Simons Cooper -->
+            <article
+              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px; display: none;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “There was a small mistake in the order. In return, I got the correct order and I could keep the wrong
+                  one for myself.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-simons.jpg" alt="Simons Cooper"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Simons Cooper</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+
+            <!-- Review 3: Kaleb Yurs -->
+            <article
+              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px; display: none;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “These settings don't provide big changes but only some small css changes in spaces or borders for
+                  example.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-kaleb.jpg" alt="Kaleb Yurs"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Kaleb Yurs</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right Arrow -->
+          <button id="testimonial-next-btn" onclick="nextTestimonial()"
+            class="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            aria-label="Next Testimonial">
+            <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+          </button>
+        </div>
+
+        <!-- Pagination Indicators -->
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <button onclick="showTestimonial(0)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white w-6 cursor-pointer" aria-label="Review 1"></button>
+          <button onclick="showTestimonial(1)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer" aria-label="Review 2"></button>
+          <button onclick="showTestimonial(2)" class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer" aria-label="Review 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 6. OUR LATEST BLOG POST SECTION                         -->
+    <!-- ======================================================== -->
+    <section class="px-4 py-16 sm:px-6" aria-label="Blog and News">
+      <div class="container-codix max-w-[1323px] mx-auto">
+        <div class="text-center mb-10">
+          <span class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-slate-900 block mb-1">NEWS &amp;
+            ARTICLE</span>
+          <div class="flex items-center justify-center gap-4">
+            <div class="flex-1 border-t border-slate-300"></div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight shrink-0 px-2">Our Latest Blog Post
+            </h2>
+            <div class="flex-1 border-t border-slate-300"></div>
+          </div>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <!-- Blog 1: Immune System -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-capsules-exact.png" alt="Natural herbal capsules and immune supplements"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                5 Natural Ways to Strengthen Your Immune System
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Discover simple lifestyle habits and key supplements that can naturally boost your immunity ...
+              </p>
+            </div>
+          </article>
+
+          <!-- Blog 2: Skincare Advice -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-skincare-exact.png" alt="Skincare advice for sensitive skin"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                Skincare Advice for Sensitive Skin: Simple Tips for a Calmer
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Learn how to care for sensitive skin with gentle routines and dermatologist-recommended products.
+              </p>
+            </div>
+          </article>
+
+          <!-- Blog 3: Supplements Guide -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-supplements-exact.png" alt="Guidance on choosing dietary supplements"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                Do You Really Need Supplements? a Pratical Guide to Boosting
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Find out when supplements are helpful and how to choose the right ones for your health needs
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 7. JOIN OUR NEWSLETTER SECTION (Height: 240px)          -->
+    <!-- ======================================================== -->
+    <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
+      style="width: 100%; min-height: 240px;">
+      <div class="container-codix text-center max-w-xl mx-auto py-8">
+        <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
+        <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
+          Join over half a million vitamin lovers and get our latest deals, articles, and resources!
+        </p>
+        <form onsubmit="event.preventDefault(); alert('Subscribed to newsletter!');"
+          class="mt-5 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
+          <input type="email" required placeholder="Enter email address"
+            class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-2.5 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
+          <button type="submit"
+            class="w-full sm:w-auto bg-codix-orange hover:bg-codix-orange-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 8. BRAND LOGOS STRIP (Side-by-Side Mobile & Desktop)    -->
+    <!-- ======================================================== -->
+    <div class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
+      style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
+      aria-label="Partner Brands">
+      <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 9. FOOTER (Exact Figma Green #57B952)                   -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white" aria-label="Footer">
+    <div class="container-codix pt-12 pb-6">
+      <div>
+        <a href="index.html" class="inline-flex items-center justify-center transition hover:opacity-90"
+          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain"
+            onerror="this.style.display='none';document.getElementById('fallback-footer-logo').style.display='flex'">
+          <div id="fallback-footer-logo" class="hidden items-center text-base font-black tracking-tight"
+            style="display:none">
+            <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full" style="max-width: 881px; min-height: 321.32px; gap: 77px;">
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Company</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Careers</a></li>
+              <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Help</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="#" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Shop</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a>
+              </li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle
+                  Health</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Weight Management &amp;
+                  Metabolism</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex flex-col justify-between w-full lg:w-[417.57px] shrink-0"
+          style="max-width: 417.57px; min-height: 153.58px; gap: 22.69px;">
+          <h4 class="text-lg sm:text-xl font-bold text-white tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-wrap gap-x-2.5 gap-y-3 items-center">
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">Instagram</a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">Youtube</a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">Facebook</a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">LinkedIn</a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">Twitter</a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;">Tik Tok</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 mb-6" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;">
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mx-auto"
+        style="width: 100%; max-width: 1518px; min-height: 46px;">
+        <div class="flex flex-wrap items-center gap-2 text-center sm:text-left text-[11px] text-white/75 font-normal">
+          <span>Copyright © 2026 Codix Wellness</span>
+          <span class="text-white/40">|</span>
+          <span>Design by Ostech</span>
+          <span class="text-white/40">|</span>
+          <a href="#" class="hover:text-white transition">Terms of Use</a>
+          <span class="text-white/40">|</span>
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+        </div>
+        <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 h-[46px]">
+          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+            title="American Express">
+            <img src="images/pay-amex.png" alt="American Express" class="max-h-full max-w-full object-contain">
+          </div>
+          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+            title="Visa">
+            <img src="images/pay-visa.png" alt="Visa" class="max-h-full max-w-full object-contain">
+          </div>
+          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+            title="PayPal">
+            <img src="images/pay-paypal.png" alt="PayPal" class="max-h-full max-w-full object-contain">
+          </div>
+          <div class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px]"
+            title="MasterCard">
+            <img src="images/pay-mastercard.png" alt="MasterCard" class="max-h-full max-w-full object-contain">
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div id="mobile-menu-overlay" class="modal-overlay mobile-menu-overlay" aria-hidden="true"
+    onclick="closeMobileMenuOnBackdrop(event)">
+    <div
+      class="mobile-drawer-panel fixed top-0 left-0 w-[310px] sm:w-[340px] h-full bg-white shadow-drawer p-5 flex flex-col justify-between overflow-y-auto z-50">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <a href="index.html" onclick="closeMobileMenu()" class="flex items-center gap-2">
+            <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto">
+          </a>
+          <button onclick="closeMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition" aria-label="Close Menu">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <form action="shop.html" method="GET" class="mt-4 flex items-center bg-[#EDF8EE] rounded-full px-3.5 py-2 border border-[#D2EDD5]">
+          <i class="fa-solid fa-magnifying-glass text-codix-green text-xs mr-2"></i>
+          <input name="q" type="text" placeholder="Search vitamins, medicines..." class="bg-transparent text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none w-full">
+          <button type="submit" class="text-[11px] font-bold text-codix-green pl-1">Go</button>
+        </form>
+
+        <nav class="mt-4 space-y-1">
+          <a href="index.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Home</a>
+          <a href="about.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">About Us</a>
+          <a href="shop.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
+          <a href="index.html#support" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
+          <a href="index.html#blog" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
+        </nav>
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 space-y-2">
+        <a href="login.html" onclick="closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-regular fa-user text-codix-green"></i> My Account / Sign In
+        </a>
+        <button onclick="openModal('wishlist-modal'); closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-red-50 rounded-lg transition cursor-pointer">
+          <i class="fa-regular fa-heart text-red-500"></i> Wishlist
+        </button>
+        <button onclick="openCartDrawer(); closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition cursor-pointer">
+          <i class="fa-solid fa-cart-shopping text-codix-green"></i> Shopping Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER MODAL -->
+  <div id="cart-drawer-overlay" class="modal-overlay" aria-hidden="true" onclick="closeCartDrawer(event)">
+    <div
+      class="cart-drawer-panel fixed top-0 right-0 w-full max-w-[550px] h-full bg-white shadow-2xl flex flex-col justify-between z-50 overflow-y-auto"
+      style="max-width: 550px; padding-top: 24px; padding-right: 24px; padding-left: 20px; gap: 32px;">
+      <div class="flex flex-col gap-6">
+        <div class="flex items-center justify-between pb-2">
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-[#211C68]">
+            Cart <span id="drawer-cart-count" class="text-[#818CF8] font-normal ml-2">2</span>
+          </h2>
+          <button onclick="closeCartDrawer()" class="p-1 text-slate-400 hover:text-slate-700 transition cursor-pointer"
+            aria-label="Close Cart">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
+        <div id="cart-items-container" class="flex flex-col gap-4">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 pb-8">
+        <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-5 space-y-4">
+          <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+            <span>Subtotal</span><span id="drawer-cart-subtotal" class="font-extrabold">$77.96</span>
+          </div>
+          <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+            <span>Total</span><span id="drawer-cart-total" class="font-extrabold">$77.96</span>
+          </div>
+          <button onclick="alert('Proceeding to secure checkout...')"
+            class="w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-full transition shadow-sm flex items-center justify-center text-xs uppercase tracking-wider active:scale-95 cursor-pointer">
+            CHECKOUT
+          </button>
+        </div>
+        <p class="text-xs text-slate-700 font-medium text-center">Shipping is FREE in the US</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WISHLIST MODAL -->
+  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+    onclick="closeModalOnBackdrop(event, 'wishlist-modal')">
+    <div class="modal-dialog relative flex flex-col justify-between"
+      style="width: 100%; max-width: 550px; min-height: 520px; padding: 40px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight" style="color: #211C68; font-family: 'Lato', sans-serif;">
+              My Wishlist <span id="modal-wishlist-count" class="text-sm font-semibold text-[#818CF8] ml-1.5">2
+                items</span>
+            </h2>
+            <p class="text-xs text-[#3A2F99] mt-0.5">Your saved favorites ready to add to cart.</p>
+          </div>
+          <button onclick="closeModal('wishlist-modal')"
+            class="text-slate-400 hover:text-slate-700 p-1.5 transition cursor-pointer">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="wishlist-items-list" class="mt-4 flex flex-col gap-3.5 max-h-[340px] overflow-y-auto pr-1"></div>
+      </div>
+      <div id="wishlist-footer-actions"
+        class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+        <button onclick="addAllWishlistToCart()"
+          class="flex-1 bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3 px-5 rounded-2xl transition shadow-sm active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-cart-shopping text-xs"></i>
+          <span>Add All to Cart</span>
+        </button>
+        <button onclick="clearWishlist()"
+          class="px-4 py-3 rounded-2xl text-xs font-semibold text-slate-500 hover:text-red-500 hover:bg-red-50 transition cursor-pointer">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Shop Database (15 items) ---
+    const ALL_SHOP_PRODUCTS = [
+      { id: 's1', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100ml' },
+      { id: 's2', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '75ml' },
+      { id: 's3', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '50ml' },
+      { id: 's4', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '150ml' },
+      { id: 's5', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '30ml' },
+      { id: 's6', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '500ml' },
+      { id: 's7', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100mg' },
+      { id: 's8', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '250mg' },
+      { id: 's9', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '400mg' },
+      { id: 's10', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: 24.00, priceStr: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png', size: '100ml' },
+      { id: 's11', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 29.99, priceStr: '$16.00 – $35.00', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' },
+      { id: 's12', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
+      { id: 's13', name: 'Your Gummy – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
+      { id: 's14', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
+      { id: 's15', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png', size: '50ml' }
+    ];
+
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let currentMaxPrice = 50;
+    let selectedSizes = [];
+    let currentPage = 1;
+    const PAGE_SIZE = 9;
+
+    let cartItems = [
+      { id: 'c1', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' },
+      { id: 'c2', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' }
+    ];
+
+    let wishlistItems = [
+      { id: 'wl-1', name: "YOUR GUMMIE Collagen Plus", cat: "Supplements, Beauty", price: 28.00, img: 'images/f-grid-6.png' },
+      { id: 'wl-2', name: "Codix Everose Daily Care", cat: "Supplements, Healthy Lip Profile", price: 32.00, img: 'images/f-grid-4.png' }
+    ];
+
+    function renderShopProductCard(p) {
+      const fullStars = Math.floor(p.rating);
+      let starsHTML = '';
+      for (let i = 0; i < fullStars; i++) starsHTML += `<i class="fa-solid fa-star text-[11px]" style="color: #F6A018;"></i>`;
+
+      return `
+        <article class="product-card bg-transparent flex flex-col justify-between group transition duration-300 w-full">
+          <a href="product.html?id=${p.id}" class="relative rounded-[10px] bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-0 group-hover:shadow-md transition-shadow duration-300 block" style="aspect-ratio: 242 / 220; height: 220px; border-radius: 10px;">
+            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover rounded-[10px] group-hover:scale-105 transition-transform duration-300" loading="lazy">
+          </a>
+          <div class="pt-3 flex flex-col justify-between flex-1">
+            <div>
+              <p class="text-[12px] font-semibold tracking-tight" style="color: #382898;">${p.cat}</p>
+              <a href="product.html?id=${p.id}" class="hover:text-codix-green transition">
+                <h3 class="mt-1 text-[14px] font-bold leading-tight truncate" style="color: #201850;" title="${p.name}">${p.name}</h3>
+              </a>
+              <div class="mt-1 flex items-center gap-1.5">
+                <div class="flex items-center gap-0.5">${starsHTML}</div>
+                <span class="text-[12px] font-medium" style="color: #382898;">(${p.reviews} reviews)</span>
+              </div>
+              <p class="mt-1.5 text-[14px] font-bold" style="color: #382898;">${p.priceStr}</p>
+            </div>
+            <a href="product.html?id=${p.id}" class="mt-3 w-full h-[44px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] font-semibold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #382898; border-radius: 24px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
+              <i class="fa-solid fa-cart-shopping text-[11px]" style="color: #382898;"></i>
+              <span>Select options</span>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderShopGrid() {
+      let filtered = ALL_SHOP_PRODUCTS.filter(p => {
+        const matchesCat = (currentCategory === 'all') || p.cat.toLowerCase().includes(currentCategory.toLowerCase()) || p.name.toLowerCase().includes(currentCategory.toLowerCase());
+        const matchesSearch = !currentSearch || p.name.toLowerCase().includes(currentSearch.toLowerCase()) || p.cat.toLowerCase().includes(currentSearch.toLowerCase());
+        const matchesPrice = p.price <= currentMaxPrice;
+        const matchesSize = (selectedSizes.length === 0) || selectedSizes.includes(p.size);
+        return matchesCat && matchesSearch && matchesPrice && matchesSize;
+      });
+
+      const totalResults = filtered.length;
+      const countEl = document.getElementById('results-count-text');
+      if (countEl) {
+        const start = Math.min((currentPage - 1) * PAGE_SIZE + 1, totalResults);
+        const end = Math.min(currentPage * PAGE_SIZE, totalResults);
+        countEl.textContent = totalResults > 0 ? `Showing ${start}–${end} of ${totalResults} results` : 'Showing 0 results';
+      }
+
+      const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+      const grid = document.getElementById('shop-grid');
+      if (grid) {
+        if (paginated.length === 0) {
+          grid.innerHTML = '<div class="col-span-full py-16 text-center text-slate-400 font-medium">No products match your selected filters.</div>';
+        } else {
+          grid.innerHTML = paginated.map(p => renderShopProductCard(p)).join('');
+        }
+      }
+    }
+
+    function selectCategoryRadio(input, cat) {
+      document.querySelectorAll('#category-radio-group .dot').forEach(dot => {
+        dot.classList.remove('bg-[#3A2F99]');
+        dot.classList.add('bg-transparent');
+      });
+      const dot = input.closest('label').querySelector('.dot');
+      if (dot) {
+        dot.classList.remove('bg-transparent');
+        dot.classList.add('bg-[#3A2F99]');
+      }
+      currentCategory = cat;
+      currentPage = 1;
+      renderShopGrid();
+    }
+
+    function filterCategory(cat) { currentCategory = cat; currentPage = 1; renderShopGrid(); }
+    function filterShopProducts(query) { currentSearch = query.trim(); currentPage = 1; renderShopGrid(); }
+
+    function updatePriceFilter(val) {
+      currentMaxPrice = parseFloat(val);
+      const minVal = 5;
+      const maxVal = 50;
+      const pct = Math.max(0, Math.min(100, ((currentMaxPrice - minVal) / (maxVal - minVal)) * 100));
+      const fillEl = document.getElementById('price-slider-fill');
+      const thumbEl = document.getElementById('price-slider-thumb');
+      const displayEl = document.getElementById('price-range-display');
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (thumbEl) thumbEl.style.left = pct + '%';
+      if (displayEl) displayEl.textContent = `$5.00 - $${currentMaxPrice.toFixed(2)}`;
+      currentPage = 1;
+      renderShopGrid();
+    }
+
+    function applyFilter() { currentPage = 1; renderShopGrid(); }
+
+    function toggleSize(btn, size) {
+      if (selectedSizes.includes(size)) {
+        selectedSizes = selectedSizes.filter(s => s !== size);
+        btn.classList.remove('bg-[#3A2F99]', 'text-white');
+        btn.classList.add('bg-[#EEF4F8]', 'text-slate-800');
+      } else {
+        selectedSizes.push(size);
+        btn.classList.add('bg-[#3A2F99]', 'text-white');
+        btn.classList.remove('bg-[#EEF4F8]', 'text-slate-800');
+      }
+      currentPage = 1;
+      renderShopGrid();
+    }
+    function sortShopProducts(criteria) {
+      if (criteria === 'price-low') ALL_SHOP_PRODUCTS.sort((a, b) => a.price - b.price);
+      else if (criteria === 'price-high') ALL_SHOP_PRODUCTS.sort((a, b) => b.price - a.price);
+      else if (criteria === 'popularity' || criteria === 'rating') ALL_SHOP_PRODUCTS.sort((a, b) => b.reviews - a.reviews);
+      renderShopGrid();
+    }
+    function changePage(pageNum) {
+      currentPage = pageNum;
+      document.querySelectorAll('.page-num-btn').forEach((btn, idx) => {
+        if (idx + 1 === pageNum) {
+          btn.classList.add('bg-[#181440]', 'text-white');
+          btn.classList.remove('bg-slate-100', 'text-slate-700');
+        } else {
+          btn.classList.remove('bg-[#181440]', 'text-white');
+          btn.classList.add('bg-slate-100', 'text-slate-700');
+        }
+      });
+      renderShopGrid();
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    // --- Cart & Modal Logic ---
+    function updateCartUI() {
+      const totalCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const badge = document.getElementById('cart-badge-count');
+      const headerTotal = document.getElementById('cart-header-total');
+      const countEl = document.getElementById('drawer-cart-count');
+      const subtotalEl = document.getElementById('drawer-cart-subtotal');
+      const totalEl = document.getElementById('drawer-cart-total');
+      if (badge) badge.textContent = totalCount;
+      if (headerTotal) headerTotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (countEl) countEl.textContent = totalCount;
+      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${subtotal.toFixed(2)}`;
+      const c = document.getElementById('cart-items-container');
+      if (c) {
+        c.innerHTML = cartItems.map(item => `
+          <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-4 flex items-center gap-4 relative shadow-sm">
+            <div class="w-20 h-20 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
+              <img src="${item.img}" alt="${item.name}" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="flex-1 min-w-0 flex flex-col justify-between h-20 py-0.5">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="text-xs sm:text-sm font-bold text-[#181440] leading-snug truncate">${item.name}</h4>
+                <button onclick="removeCartItem('${item.id}')" class="text-slate-500 hover:text-red-500 p-0.5 cursor-pointer"><i class="fa-solid fa-trash-can text-sm"></i></button>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-xs sm:text-sm font-bold text-[#181440]">$ ${(item.price * item.qty).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+    function addToCart(id, name, price, img) {
+      const item = cartItems.find(i => i.id === id);
+      if (item) item.qty++;
+      else cartItems.push({ id, name, price, qty: 1, img });
+      updateCartUI();
+      openCartDrawer();
+    }
+    function removeCartItem(id) {
+      cartItems = cartItems.filter(i => i.id !== id);
+      updateCartUI();
+    }
+    function openCartDrawer() {
+      const el = document.getElementById('cart-drawer-overlay');
+      if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeCartDrawer(e) {
+      if (e && e.target.id !== 'cart-drawer-overlay' && !e.target.closest('button[aria-label="Close Cart"]')) return;
+      const el = document.getElementById('cart-drawer-overlay');
+      if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+
+    // --- Wishlist Logic ---
+    function updateWishlistUI() {
+      const wlBadge = document.getElementById('wishlist-badge');
+      const modalCount = document.getElementById('modal-wishlist-count');
+      const list = document.getElementById('wishlist-items-list');
+      if (wlBadge) wlBadge.textContent = wishlistItems.length;
+      if (modalCount) modalCount.textContent = `${wishlistItems.length} items`;
+      if (list) {
+        list.innerHTML = wishlistItems.map((item, idx) => `
+          <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-3.5 flex items-center justify-between gap-3 shadow-sm">
+            <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
+              <img src="${item.img}" alt="${item.name}" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[11px] font-semibold text-[#382898] truncate">${item.cat}</p>
+              <h4 class="text-xs font-bold text-[#181440] truncate leading-tight mt-0.5">${item.name}</h4>
+              <span class="text-xs font-black text-[#181440]">$${item.price.toFixed(2)}</span>
+            </div>
+            <button onclick="addToCart('${item.id}', '${item.name}', ${item.price}, '${item.img}'); removeWishlistItem(${idx});" class="bg-[#57B952] text-white text-[11px] font-bold px-3.5 py-2 rounded-full cursor-pointer">Add</button>
+          </div>
+        `).join('');
+      }
+    }
+    function removeWishlistItem(idx) { wishlistItems.splice(idx, 1); updateWishlistUI(); }
+    function addAllWishlistToCart() { wishlistItems.forEach(i => addToCart(i.id, i.name, i.price, i.img)); wishlistItems = []; updateWishlistUI(); closeModal('wishlist-modal'); openCartDrawer(); }
+    function clearWishlist() { wishlistItems = []; updateWishlistUI(); }
+    function openMobileMenu() {
+      const el = document.getElementById('mobile-menu-overlay');
+      if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeMobileMenu() {
+      const el = document.getElementById('mobile-menu-overlay');
+      if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+    function closeMobileMenuOnBackdrop(e) {
+      if (e.target.id === 'mobile-menu-overlay') closeMobileMenu();
+    }
+    function openModal(id) { const el = document.getElementById(id); if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; } }
+    function closeModal(id) { const el = document.getElementById(id); if (el) { el.classList.remove('open'); document.body.style.overflow = ''; } }
+    function closeModalOnBackdrop(e, id) { if (e.target.id === id) closeModal(id); }
+
+    // Init on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderShopGrid();
+      updateCartUI();
+      updateWishlistUI();
+    });
+  </script>
+</body>
+
+</html>

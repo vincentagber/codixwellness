@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codix Wellness — Premium Health Supplements, Vitamins &amp; Wellness</title>
+  <meta name="description"
+    content="Shop premium wellness supplements, vitamins, and herbal products at Codix Wellness. Free shipping on orders over $60. 100% money-back guarantee.">
+  <meta name="keywords"
+    content="supplements, vitamins, wellness, health, herbal, gummies, immunity, joint health, collagen, codix">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            codix: {
+              green: '#57B952',
+              'green-dark': '#48A344',
+              'green-light': '#D7F4D8',
+              'green-pale': '#EDF8EE',
+              'green-mint': '#CAFFD2',
+              navy: '#211C68',
+              'navy-dark': '#17134A',
+              'navy-light': '#514AA4',
+              purple: '#3A2F99',
+              'purple-dark': '#4235AE',
+              violet: '#703FEF',
+              orange: '#F2971F',
+              'orange-dark': '#DE8413',
+              cream: '#F6F5FA',
+              peach: '#FDE7C6',
+              blue: '#C2E9F8',
+              lilac: '#EEE2F3',
+              mint: '#BDEED5',
+            }
+          },
+          fontFamily: {
+            sans: ['Lato', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 2px 12px rgba(40,40,40,.06)',
+            'card-hover': '0 16px 32px rgba(33,28,104,.10)',
+            'bento': '0 4px 20px rgba(0,0,0,.04)',
+            'dropdown': '0 12px 36px rgba(0,0,0,.12)',
+            'drawer': '-8px 0 32px rgba(0,0,0,.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Google Fonts: Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=PT+Sans:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
+      color: #222222;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* All Headings: Lato font and #3A2F99 color */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Lato', sans-serif !important;
+      color: #3A2F99;
+    }
+
+    /* Subheadings: Lato Bold 25px (#3A2F99) */
+    h2,
+    .sub-heading,
+    .section-heading {
+      font-family: 'Lato', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 25px !important;
+      color: #3A2F99 !important;
+    }
+
+    /* Max Width Container matching Figma 1322px Spacing (Unified Margin) */
+    .container-codix {
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+
+    /* Top Bar Botanical Pattern */
+    .top-bar-bg {
+      background-color: #57B952;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+
+    /* Mega Menu Transitions */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.25s;
+    }
+
+    .mega-menu-wrapper:hover .mega-menu,
+    .mega-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Hero Carousel Isolation */
+    #hero-carousel-container {
+      overflow: hidden !important;
+      position: relative;
+    }
+
+    .hero-slide {
+      display: none !important;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      z-index: 0 !important;
+    }
+
+    .hero-slide.active {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      z-index: 10 !important;
+    }
+
+    /* Modal Overlay Absolute Isolation */
+    .modal-overlay:not(.open) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .modal-overlay.open {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    /* Product Card Interactive */
+    .product-card {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 28px rgba(33, 28, 104, 0.09);
+    }
+
+    .product-card .product-img {
+      transition: transform 0.35s ease;
+    }
+
+    .product-card:hover .product-img {
+      transform: scale(1.07);
+    }
+
+    /* Bento Promo Cards */
+    .bento-card {
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .bento-card img {
+      transition: transform 0.4s ease;
+    }
+
+    .bento-card:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Special Offers Card */
+    .special-offer-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Testimonial Cards Single-Active Carousel */
+    .testimonial-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .testimonial-card:not(.active) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    .testimonial-card.active {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      animation: fadeInScale 0.35s ease forwards;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Dropdown Menus */
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Modals & Cart Drawer */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-dialog {
+      transform: scale(0.94);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .modal-dialog {
+      transform: scale(1);
+    }
+
+    .cart-drawer-panel {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .cart-drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* Mobile Menu Drawer */
+    .mobile-drawer-panel {
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-menu-overlay.open .mobile-drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* Review Background (Figma spec: 1920x532, #181440 with custom wave texture) */
+    .reviews-gradient-bg {
+      background: #181440 url('images/testimonial-bg.jpg') center/cover no-repeat;
+      min-height: 532px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Newsletter Background (Exact Figma Image 1920x240) */
+    .newsletter-bg {
+      background: url('images/newsletter-bg.jpg') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+
+    /* Brand Strip */
+    .brand-strip-bg {
+      background-color: #3A2F99;
+    }
+
+    /* Footer Background */
+    .footer-green-bg {
+      background-color: #57B952;
+    }
+
+    /* Social Pill */
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #ffffff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .social-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Category Tab Styles */
+    .cat-tab-btn {
+      transition: all 0.22s ease;
+      cursor: pointer;
+    }
+
+    .cat-tab-btn.active {
+      background-color: #3A2F99;
+      color: #ffffff;
+    }
+
+    .cat-tab-btn:not(.active) {
+      background-color: #EDF8EE;
+      color: #211C68;
+    }
+
+    .cat-tab-btn:not(.active):hover {
+      background-color: #DFF4E1;
+    }
+
+    /* Best Selling Tab Styles */
+    .bs-tab-btn {
+      transition: all 0.22s ease;
+      cursor: pointer;
+    }
+
+    .bs-tab-btn.active {
+      background-color: #3A2F99;
+      color: #ffffff;
+    }
+
+    .bs-tab-btn:not(.active) {
+      background-color: #EDF8EE;
+      color: #211C68;
+    }
+
+    .bs-tab-btn:not(.active):hover {
+      background-color: #DFF4E1;
+    }
+
+    /* Badge Pulse */
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    .badge-pulse {
+      animation: pulseGlow 2.2s ease-in-out infinite;
+    }
+
+    /* Toast Notification */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-msg {
+      pointer-events: auto;
+      animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideInToast {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-slate-800 bg-white selection:bg-codix-green selection:text-white">
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR (Height ~40px)       -->
+  <!-- ======================================================== -->
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none"
+    aria-label="Announcement">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <!-- Left: Free Shipping message -->
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over $60.</span>
+      </div>
+
+      <!-- Right: Language, Currency, Account -->
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <!-- Language Selector -->
+        <div class="relative">
+          <button id="lang-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
+            aria-label="Select Language" aria-expanded="false">
+            <span id="lang-label">EN</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="lang-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="EN">English (EN)</button>
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="ES">Español (ES)</button>
+            <button
+              class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="FR">Français (FR)</button>
+          </div>
+        </div>
+
+        <!-- Currency Selector -->
+        <div class="relative">
+          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
+            aria-label="Select Currency" aria-expanded="false">
+            <span id="curr-label">$ USD</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="curr-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="$ USD">$ USD</button>
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="€ EUR">€ EUR</button>
+            <button
+              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
+              data-val="£ GBP">£ GBP</button>
+          </div>
+        </div>
+
+        <!-- My Account Trigger -->
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition cursor-pointer">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
+          <span>My account</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN HEADER (Height ~80px, Total ~120px)             -->
+  <!-- ======================================================== -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm">
+    <div class="container-codix flex items-center justify-between h-[72px] sm:h-[80px] gap-2 sm:gap-4">
+      <!-- Left: Hamburger Button (Mobile) + Logo -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <button id="mobile-hamburger-btn" onclick="openMobileMenu()"
+          class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D7F4D8] text-codix-navy hover:bg-[#EDF8EE] flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95"
+          aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars text-base text-codix-navy"></i>
+        </button>
+
+        <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain"
+            onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex'">
+          <div id="fallback-logo" class="hidden items-center text-lg sm:text-xl font-black tracking-tight"
+            style="display:none">
+            <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center: Search Bar with Autocomplete (Width: 710px, Height: 50px, Radius: 999px) -->
+      <div id="search-container" class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form id="search-form"
+          class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition"
+          style="height: 50px; border-radius: 999px;" role="search">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm" aria-hidden="true"></i>
+          <input id="search-input" type="text" placeholder="Search everything at codix wellness..."
+            class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2"
+            aria-label="Search store">
+          <button id="search-clear-btn" type="button" class="p-1 text-slate-400 hover:text-slate-600 mr-1 hidden"
+            aria-label="Clear search input">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+          <button type="submit"
+            class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
+          </button>
+        </form>
+
+        <!-- Search Results Dropdown -->
+        <div id="search-results-box"
+          class="dropdown-menu absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-dropdown border border-slate-100 p-2 max-h-80 overflow-y-auto z-50">
+          <div class="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Suggested Products
+          </div>
+          <div id="search-results-list" class="space-y-1"></div>
+        </div>
+      </div>
+
+      <!-- Right: Action Icons (Wishlist, Compare, Account, Cart) -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <!-- Wishlist Icon (Pink/Red Outline Circle) -->
+        <button onclick="openModal('wishlist-modal')"
+          class="w-10 h-10 rounded-full border border-[#FECDD3] text-[#F43F5E] hover:bg-rose-50 flex items-center justify-center transition relative group"
+          aria-label="View Wishlist">
+          <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
+          <span id="wishlist-badge"
+            class="absolute -top-1 -right-1 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
+        </button>
+
+        <!-- Compare Icon (Green Outline Circle with opposing arrows) -->
+        <button
+          class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 hidden sm:flex items-center justify-center transition group"
+          aria-label="Compare Products">
+          <i class="fa-solid fa-arrow-right-arrow-left text-xs group-hover:scale-110 transition-transform"></i>
+        </button>
+
+        <!-- Account / Sign In (Green Outline Circle with User) -->
+        <a href="login.html" class="flex items-center gap-2 cursor-pointer group" aria-label="Sign In to Account">
+          <div
+            class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 flex items-center justify-center transition group-hover:scale-105">
+            <i class="fa-regular fa-user text-sm"></i>
+          </div>
+          <div class="hidden xl:flex flex-col leading-tight select-none">
+            <span class="text-[13px] font-bold text-slate-800 group-hover:text-codix-green transition">Sign In</span>
+            <span class="text-[10px] text-slate-400">Account</span>
+          </div>
+        </a>
+
+        <!-- Cart Drawer Trigger (Solid Light Green Circle with Cart) -->
+        <div onclick="openCartDrawer()" class="flex items-center gap-2 cursor-pointer group select-none"
+          aria-label="Shopping Cart">
+          <div
+            class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
+            <span id="cart-badge-count"
+              class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white badge-pulse">0</span>
+          </div>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total"
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">$0.00</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 3. NAVIGATION BAR & MEGA MENU -->
+    <!-- ======================================================== -->
+    <nav class="block bg-white relative overflow-x-auto"
+      style="width: 100%; min-height: 64px; padding: 10px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); -webkit-overflow-scrolling: touch;"
+      aria-label="Main Navigation">
+      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 48px;">
+        <!-- Left Group: Product Categories + Nav Links -->
+        <div class="flex items-center gap-5 sm:gap-8 shrink-0">
+          <!-- Product Categories Button with Mega Menu -->
+          <div class="mega-menu-wrapper relative">
+            <button id="mega-menu-btn"
+              class="flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold hover:brightness-95 transition cursor-pointer"
+              style="background-color: #D7F4D8; color: #211C68;" aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-bars text-[11px]" style="color: #211C68;" aria-hidden="true"></i>
+              <span>Product Categories</span>
+            </button>
+
+            <!-- Rich Mega Menu Dropdown -->
+            <div id="mega-menu-dropdown"
+              class="mega-menu absolute top-full left-0 mt-3 w-[840px] bg-white rounded-2xl shadow-dropdown border border-slate-100 p-6 z-50 grid grid-cols-4 gap-6"
+              role="menu">
+              <!-- Col 1: Supplements -->
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5"
+                  style="color: #211C68;">
+                  <i class="fa-solid fa-capsules text-codix-green"></i> Supplements
+                </h3>
+                <ul class="space-y-2 text-xs text-slate-600">
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Vitamins &amp;
+                      Multivitamins</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Collagen &amp; Skin
+                      Health</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Omega-3 &amp; Fish
+                      Oils</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Immune Defence
+                      Gummies</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Kids Multi
+                      Gummies</a></li>
+                </ul>
+              </div>
+
+              <!-- Col 2: Medicines -->
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5"
+                  style="color: #211C68;">
+                  <i class="fa-solid fa-notes-medical text-codix-green"></i> Medicines
+                </h3>
+                <ul class="space-y-2 text-xs text-slate-600">
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Joint Health
+                      (Flexicod)</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Liver Support
+                      Complex</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Metabolism
+                      (Fatburner)</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Blood Sugar &amp;
+                      Pressure</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Daily Digestive
+                      Relief</a></li>
+                </ul>
+              </div>
+
+              <!-- Col 3: Herbs & Botanicals -->
+              <div>
+                <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5"
+                  style="color: #211C68;">
+                  <i class="fa-solid fa-leaf text-codix-green"></i> Herbs
+                </h3>
+                <ul class="space-y-2 text-xs text-slate-600">
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Evening Primrose
+                      Oil</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Tart Cherry &amp;
+                      Apple Cider</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Organic Maca
+                      Root</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Elderberry
+                      Immunity</a></li>
+                  <li><a href="#shop" class="hover:text-codix-green hover:font-semibold transition">Herbal Calm &amp;
+                      Relax</a></li>
+                </ul>
+              </div>
+
+              <!-- Col 4: Featured Promo Card inside Mega Menu -->
+              <div class="bg-gradient-to-br from-[#E4F4FA] to-[#C2E9F8] rounded-xl p-4 flex flex-col justify-between">
+                <div>
+                  <span
+                    class="inline-block bg-codix-green text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Featured</span>
+                  <h4 class="text-sm font-bold mt-2" style="color: #211C68;">Codix Everose</h4>
+                  <p class="text-[11px] text-slate-600 mt-1">Hormonal Balance &amp; Skin</p>
+                </div>
+                <a href="#shop"
+                  class="mt-4 inline-flex items-center text-xs font-bold text-codix-green hover:text-codix-green-dark">
+                  Shop Now <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nav Links -->
+          <ul class="flex items-center gap-7 text-[13px] font-medium" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Right Quick Icons -->
+        <div class="flex items-center justify-between text-[15px]"
+          style="width: 120.96px; height: 36.50px; gap: 1px; color: #211C68;">
+          <button
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
+            aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></button>
+          <button onclick="openModal('wishlist-modal')"
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
+            aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
+          <button onclick="openCartDrawer()"
+            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
+            aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ======================================================== -->
+    <!-- 4. HERO SECTION WITH CAROUSEL -->
+    <!-- ======================================================== -->
+    <section class="bg-white pt-4 lg:pt-6" aria-label="Hero Showcase">
+      <div class="container-codix">
+        <div id="hero-carousel-container" class="relative mx-auto overflow-hidden shadow-card"
+          style="width: 100%; height: 447.64px; border-radius: 10.66px;" role="region" aria-roledescription="carousel"
+          aria-label="Featured Products Carousel">
+          <!-- Slide 1: Your Gummie For Men (Exact Figma Photographic Banner) -->
+          <div class="hero-slide active w-full h-full" role="group" aria-roledescription="slide" aria-label="1 of 2">
+            <img src="images/hero-bg.png" alt="Your Gummie For Men - Support Your Strength, Every Day"
+              class="w-full h-full object-cover object-center" loading="eager">
+            <!-- <a href="#shop"
+              class="absolute left-[19%] sm:left-[21%] md:left-[22%] bottom-[16%] sm:bottom-[18%] inline-flex items-center rounded-full bg-white px-7 py-3 text-xs sm:text-sm font-extrabold text-[#181440] shadow-md hover:-translate-y-0.5 hover:shadow-lg transition active:scale-95 z-10"
+              aria-label="Buy Your Gummie for Men now">
+              Buy it now <i class="fa-solid fa-chevron-right ml-2 text-xs" aria-hidden="true"></i>
+            </a> -->
+          </div>
+
+          <!-- Slide 2: Codix Everose -->
+          <div class="hero-slide bg-gradient-to-r from-[#FDE7C6] to-[#F8D8A8] w-full h-full" role="group"
+            aria-roledescription="slide" aria-label="2 of 2">
+            <div class="grid lg:grid-cols-2 w-full h-full">
+              <div class="relative z-10 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-10">
+                <span class="text-xs sm:text-sm font-semibold text-codix-navy tracking-wide">Balanced Daily
+                  Vitamins</span>
+                <h2 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.92] text-codix-navy">
+                  <span class="text-codix-orange">CODIX EVEROSE</span><br>DAILY CARE
+                </h2>
+                <a href="#shop"
+                  class="mt-6 inline-flex w-fit items-center rounded-full bg-white px-7 py-3 text-sm font-extrabold text-codix-navy shadow-sm hover:-translate-y-0.5 hover:shadow-md transition">
+                  Shop Everose <i class="fa-solid fa-arrow-right ml-2 text-xs" aria-hidden="true"></i>
+                </a>
+              </div>
+              <div class="hidden lg:flex items-center justify-center p-8">
+                <img src="images/codix-everose.png" alt="Codix Everose product bottle"
+                  class="h-[300px] object-contain drop-shadow-xl" loading="lazy">
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button id="hero-prev-btn"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 hover:bg-slate-50 transition z-20 cursor-pointer"
+            aria-label="Previous Slide">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+          <button id="hero-next-btn"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 hover:bg-slate-50 transition z-20 cursor-pointer"
+            aria-label="Next Slide">
+            <i class="fa-solid fa-chevron-right text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 5. PROMO BENTO GRID  -->
+    <!-- ======================================================== -->
+    <section id="about" class="px-4 pt-8 sm:px-6 lg:pt-10" aria-label="Promotional Highlights">
+      <div class="mx-auto flex flex-col lg:flex-row gap-5 justify-center items-stretch"
+        style="width: 100%; max-width: 1338.49px;">
+        <!-- Left Group (Row 1 + Row 2): Total width ~841.48px -->
+        <div class="flex-1 flex flex-col gap-5 w-full">
+          <!-- Row 1: Everose (569.46px) + Flexicod (272.02px) | Height: 273.20px -->
+          <div class="flex flex-col sm:flex-row gap-5 w-full">
+            <!-- Card 1: Codix Everose (Width: ~569.46px, Height: 273.20px, Radius: 10.59px) -->
+            <article
+              class="bento-card bg-codix-peach relative overflow-hidden group flex items-center justify-between p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[569.46] min-w-0"
+              style="min-height: 273.20px; border-radius: 10.59px;">
+              <div class="flex h-full items-center justify-between w-full gap-4">
+                <img src="images/codix-everose.png" alt="Codix Everose supplement bottle"
+                  class="h-[170px] w-auto object-contain shrink-0 group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy">
+                <div class="text-right flex-1">
+                  <h2 class="text-xl sm:text-2xl font-black text-codix-navy">Codix <span
+                      class="font-bold">Everose</span></h2>
+                  <p class="mt-1.5 text-xs sm:text-sm text-codix-navy/85 leading-relaxed font-medium">Supports Body
+                    Hormonal<br>Balance and Healthy Skin</p>
+                  <a href="#shop"
+                    class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
+                    Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 2: Flexicod -->
+            <article
+              class="bento-card bg-[#C2E9F8] relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[272.02] min-w-0"
+              style="min-height: 273.20px; border-radius: 10.59px;">
+              <div class="relative z-10">
+                <h2 class="text-xl font-black text-codix-navy">Flexicod</h2>
+                <p class="mt-1 text-xs text-codix-navy/85 font-medium">Support Joint Health</p>
+                <a href="#shop"
+                  class="mt-3.5 inline-flex items-center rounded-full bg-codix-green px-4 py-1.5 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
+                  Buy now <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i>
+                </a>
+              </div>
+              <img src="images/product-gummie.jpg" alt="Flexicod product packaging"
+                class="absolute bottom-2 right-2 h-[140px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                loading="lazy">
+            </article>
+          </div>
+
+          <!-- Row 2: Fish Oil (346.37px) + Vitamin C+D (495.10px) | Height: 303.91px -->
+          <div class="flex flex-col sm:flex-row gap-5 w-full">
+            <!-- Card 4: Your Gummie Fish Oil (Width: ~346.37px, Height: 303.91px, Radius: 10.59px) -->
+            <article
+              class="bento-card bg-codix-mint relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[346.37] min-w-0"
+              style="min-height: 303.91px; border-radius: 10.59px;">
+              <div class="relative z-10 max-w-[65%]">
+                <h2 class="text-xl font-black text-codix-navy leading-snug">Your Gummie<br><span
+                    class="font-extrabold">Fish Oil</span></h2>
+                <p class="mt-1.5 text-xs text-codix-navy/85 font-medium">Omega-3 DHA &amp; EPA</p>
+                <a href="#shop"
+                  class="mt-4 inline-flex items-center rounded-full bg-codix-green px-4 py-1.5 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
+                  Buy now <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i>
+                </a>
+              </div>
+              <img src="images/product-capsules.jpg" alt="Your Gummie Fish Oil bottle"
+                class="absolute bottom-3 right-3 h-[145px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                loading="lazy">
+            </article>
+
+            <!-- Card 5: Codix Vitamin C+D (Width: ~495.10px, Height: 302.85px, Radius: 10.59px) -->
+            <article
+              class="bento-card bg-[#EDF4F8] relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[495.10] min-w-0"
+              style="min-height: 302.85px; border-radius: 10.59px;">
+              <div class="relative z-10 max-w-[55%]">
+                <span
+                  class="inline-block bg-codix-orange text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2.5">Big
+                  Sale 65% OFF</span>
+                <h2 class="text-xl font-black text-codix-navy">Codix <span class="font-bold">Vitamin C+D</span></h2>
+                <p class="mt-1.5 text-xs text-codix-navy/85 font-medium">Immune Support with <em
+                    class="font-bold not-italic">Vitamin D</em></p>
+                <a href="#shop"
+                  class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
+                  Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
+                </a>
+              </div>
+              <img src="images/product-vitamin-cd.jpg" alt="Codix Vitamin C+D Effervescent tubes"
+                class="absolute bottom-3 right-4 h-[165px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                loading="lazy">
+            </article>
+          </div>
+        </div>
+
+        <!-- Right Side: Card 3 Codix Fatburner (Width: ~420.74px, Height: 600.41px, Radius: 10.59px) -->
+        <article
+          class="bento-card bg-codix-lilac relative overflow-hidden group flex flex-col justify-between p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 w-full lg:w-[420.74px] shrink-0"
+          style="min-height: 600.41px; border-radius: 10.59px;">
+          <div class="relative z-10">
+            <span
+              class="inline-block bg-codix-orange text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-3">Big
+              Sale 65% OFF</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-codix-navy">Codix <span class="font-bold">Fatburner</span>
+            </h2>
+            <p class="mt-1.5 text-xs sm:text-sm text-codix-navy/85 font-medium">Metabolism Support</p>
+            <a href="#shop"
+              class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
+              Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div class="flex justify-center mt-6">
+            <img src="images/fatburner.png" alt="Codix Fatburner Twin Pack"
+              class="h-[220px] sm:h-[260px] object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+              loading="lazy">
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 6. POPULAR CATEGORIES WITH PRODUCT GRID                 -->
+    <!-- ======================================================== -->
+    <section id="shop" class="px-4 pt-14 sm:px-6 lg:pt-16" aria-label="Popular Categories">
+      <div class="mx-auto flex flex-col justify-between"
+        style="width: 100%; max-width: 1323px; min-height: 572.36px; gap: 34px;">
+        <div class="space-y-6">
+          <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Popular Categories</h2>
+
+          <!-- Category Tabs Switcher -->
+          <div class="flex flex-wrap justify-center gap-2.5" role="tablist" aria-label="Filter Popular Categories">
+            <button class="cat-tab-btn active rounded-full px-6 py-2 text-xs font-bold" data-category="Supplements"
+              role="tab" aria-selected="true">Supplements</button>
+            <button class="cat-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Medicines" role="tab"
+              aria-selected="false">Medicines</button>
+            <button class="cat-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Herbs" role="tab"
+              aria-selected="false">Herbs</button>
+          </div>
+        </div>
+
+        <!-- 5-Column Product Grid (5 items) -->
+        <div id="popular-products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5"
+          role="tabpanel" style="min-height: 428px;">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 7. PLUS DELIVERY MEMBERSHIP BANNER (Exact Figma 1321x207px) -->
+    <!-- ======================================================== -->
+    <section class="px-4 py-8 sm:px-6" aria-label="Plus Delivery Membership">
+      <div
+        class="mx-auto relative shadow-sm flex flex-col md:flex-row items-center justify-between px-8 sm:px-12 lg:px-16 py-6 group cursor-pointer"
+        style="width: 100%; max-width: 1321px; min-height: 206.98px; border-radius: 10.64px; background: #C6EAF8 url('images/plus-banner-bg.jpg') no-repeat center center; background-size: cover;">
+
+        <!-- Left: 3 Products Lineup (Width: 287.82px, Height: 205px) -->
+        <div class="flex items-center justify-center shrink-0 mb-4 md:mb-0 relative z-10">
+          <img src="images/plus-products-exact.png" alt="Winwell, Codix Vitamin C+D, and Day 2 Day Collagen"
+            class="object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+            style="width: 287.82px; height: 205px; max-width: 100%;" loading="lazy">
+        </div>
+
+        <!-- Center & Right: Text and CTA -->
+        <div
+          class="flex-1 max-w-xl md:pl-8 text-center md:text-left flex flex-col items-center md:items-start justify-center relative z-10">
+          <span
+            class="inline-block bg-[#F2971F] text-white text-[11px] font-bold px-3.5 py-0.5 rounded-full uppercase tracking-wider mb-2 shadow-sm">
+            Newest Products
+          </span>
+          <h3 class="text-base sm:text-lg lg:text-xl font-medium text-[#211C68] leading-snug">
+            Save unto <strong class="font-black text-[#211C68]">10%</strong> extra enjoy <strong
+              class="font-black text-[#211C68]">FREE</strong> delivery with <strong
+              class="font-black text-[#211C68]">PLUS</strong> membership
+          </h3>
+          <a href="#shop"
+            class="mt-3.5 inline-flex items-center justify-center rounded-full bg-[#3A2F99] hover:bg-[#2F2680] text-white text-xs sm:text-sm font-bold px-7 py-2.5 transition shadow-md active:scale-95">
+            Show now <i class="fa-solid fa-chevron-right text-xs ml-2" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 8. FEATURED PRODUCTS GRID (Exact Figma 1326px Frame)     -->
+    <!-- ======================================================== -->
+    <section class="px-4 py-12 sm:px-6" aria-label="Featured Products">
+      <div class="mx-auto" style="width: 100%; max-width: 1326px;">
+        <!-- Header with Centered Heading and Top-Right Pagination Controls -->
+        <div class="relative flex items-center justify-center mb-8">
+          <h2 class="text-center text-2xl sm:text-3xl font-bold tracking-tight" style="color: #3A2F99;">Featured
+            Products</h2>
+
+          <!-- Pagination / Arrow controls matching Figma (Positioned Top Right) -->
+          <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <button onclick="scrollFeaturedGrid(-1)"
+              class="w-7 h-7 rounded-full bg-[#F3F5F6] border border-slate-200 text-slate-700 hover:bg-slate-200 flex items-center justify-center transition cursor-pointer shadow-sm active:scale-95"
+              aria-label="Scroll Left"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
+            <button onclick="scrollFeaturedGrid(1)"
+              class="w-7 h-7 rounded-full bg-[#F3F5F6] border border-slate-200 text-slate-700 hover:bg-slate-200 flex items-center justify-center transition cursor-pointer shadow-sm active:scale-95"
+              aria-label="Scroll Right"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+          </div>
+        </div>
+
+        <!-- 15 Product Cards Grid (5 Columns x 3 Rows) -->
+        <div id="featured-products-grid" class="grid gap-x-5 gap-y-10 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 9. SPECIAL OFFERS SECTION (Exact Figma 1343x363.91px)    -->
+    <!-- ======================================================== -->
+    <section class="px-4 py-12 sm:px-6" aria-label="Special Offers">
+      <div class="mx-auto flex flex-col justify-between" style="width: 100%; max-width: 1343px; min-height: 363.91px;">
+        <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-8" style="color: #3A2F99;">Special
+          offers</h2>
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 items-center">
+          <!-- Offer 1: Active Senior Couple Flexicod -->
+          <a href="#shop"
+            class="special-offer-card rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group block aspect-[512/236] bg-slate-100"
+            style="border-radius: 16px;">
+            <img src="images/offer-seniors-exact.png"
+              alt="Move Freely. Live Comfortably. Advanced joint support with Flexicod - Show now"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          </a>
+
+          <!-- Offer 2: Fitness Woman Codix Fatburner -->
+          <a href="#shop"
+            class="special-offer-card rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group block aspect-[512/236] bg-slate-100"
+            style="border-radius: 16px;">
+            <img src="images/offer-fitness-exact.png"
+              alt="Burn Smarter. Feel Lighter. Support your metabolism with Codix Fatburner - Show now"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 10. CLIENTS REVIEWS CAROUSEL                            -->
+    <!-- ======================================================== -->
+    <section id="support" class="reviews-gradient-bg py-16 text-white" aria-label="Customer Testimonials">
+      <div class="container-codix relative z-10">
+        <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-10 text-white"
+          style="color: #FFFFFF !important;">Clients Reviews</h2>
+
+        <!-- Wrapper with arrows on left/right edges -->
+        <div class="relative max-w-2xl mx-auto flex items-center justify-center px-6 sm:px-12">
+          <!-- Left Arrow -->
+          <button id="testimonial-prev-btn" onclick="prevTestimonial()"
+            class="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            aria-label="Previous Testimonial">
+            <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+          </button>
+
+          <!-- Testimonial Cards: Exactly ONE active card at a time -->
+          <div id="testimonial-cards-wrapper" class="w-full flex items-center justify-center min-h-[328px]">
+            <!-- Review 1: Eric Simpson (Initial Active) -->
+            <article
+              class="testimonial-card active bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
+                  born.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-eric.jpg" alt="Eric Simpson"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Eric Simpson</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+
+            <!-- Review 2: Simons Cooper -->
+            <article
+              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px; display: none;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “There was a small mistake in the order. In return, I got the correct order and I could keep the wrong
+                  one for myself.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-simons.jpg" alt="Simons Cooper"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Simons Cooper</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+
+            <!-- Review 3: Kaleb Yurs -->
+            <article
+              class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full max-w-[420px]"
+              style="min-height: 328px; border-radius: 14px; display: none;">
+              <div>
+                <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  “These settings don't provide big changes but only some small css changes in spaces or borders for
+                  example.”
+                </p>
+              </div>
+              <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                <img src="images/avatar-kaleb.jpg" alt="Kaleb Yurs"
+                  class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                <span class="font-bold text-sm sm:text-[15px] text-slate-800">Kaleb Yurs</span>
+                <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right Arrow -->
+          <button id="testimonial-next-btn" onclick="nextTestimonial()"
+            class="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center transition text-white z-20 backdrop-blur-sm shadow-md active:scale-95 cursor-pointer"
+            aria-label="Next Testimonial">
+            <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+          </button>
+        </div>
+
+        <!-- Pagination Indicators -->
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <button onclick="showTestimonial(0)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white w-6 cursor-pointer"
+            aria-label="Review 1"></button>
+          <button onclick="showTestimonial(1)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer"
+            aria-label="Review 2"></button>
+          <button onclick="showTestimonial(2)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer"
+            aria-label="Review 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 11. FRAME 7: TRUST SIGNALS STRIP (Side-by-Side Mobile)    -->
+    <!-- ======================================================== -->
+    <section class="px-4 py-8 sm:px-6" aria-label="Trust & Guarantees">
+      <div class="mx-auto grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6"
+        style="width: 100%; max-width: 1310px; min-height: 85px;">
+        <!-- 100% Money back -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+          style="min-height: 85px; border-radius: 12px;">
+          <img src="images/icon-wallet.png" alt="100% Money back icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
+            loading="lazy">
+          <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">100%
+            Money back</span>
+        </div>
+
+        <!-- Non-contact shipping -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+          style="min-height: 85px; border-radius: 12px;">
+          <img src="images/icon-box.png" alt="Non-contact shipping icon"
+            class="h-5 sm:h-6 w-auto object-contain shrink-0" loading="lazy">
+          <span
+            class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Non-contact
+            shipping</span>
+        </div>
+
+        <!-- Free delivery over $200 -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+          style="min-height: 85px; border-radius: 12px;">
+          <img src="images/icon-truck.png" alt="Free delivery icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
+            loading="lazy">
+          <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Free
+            delivery over $200</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 12. BEST SELLING PRODUCTS IN... SECTION (Figma Match)    -->
+    <!-- ======================================================== -->
+    <section class="px-4 pb-16 sm:px-6" aria-label="Best Selling Products">
+      <div class="mx-auto flex flex-col justify-between"
+        style="width: 100%; max-width: 1323px; min-height: 591.24px; gap: 53px;">
+        <div class="space-y-6">
+          <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Best Selling Products
+            in</h2>
+
+          <!-- Tabs -->
+          <div class="flex flex-wrap justify-center gap-2.5" role="tablist" aria-label="Filter Best Selling Categories">
+            <button class="bs-tab-btn active rounded-full px-6 py-2 text-xs font-bold" data-category="Supplements"
+              role="tab" aria-selected="true">Supplements</button>
+            <button class="bs-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Medicines" role="tab"
+              aria-selected="false">Medicines</button>
+            <button class="bs-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Herbs" role="tab"
+              aria-selected="false">Herbs</button>
+          </div>
+        </div>
+
+        <!-- 5-Column Grid -->
+        <div id="bestselling-products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5"
+          role="tabpanel" style="min-height: 428px;">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 13. OUR LATEST BLOG POST SECTION (Exact Figma Match)     -->
+    <!-- ======================================================== -->
+    <section id="blog" class="px-4 py-16 sm:px-6" aria-label="Blog and News">
+      <div class="container-codix max-w-[1323px] mx-auto">
+        <!-- Header with Subtitle and Horizontal Accent Lines -->
+        <div class="text-center mb-10">
+          <span class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-slate-900 block mb-1">NEWS &amp;
+            ARTICLE</span>
+          <div class="flex items-center justify-center gap-4">
+            <div class="flex-1 border-t border-slate-300"></div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight shrink-0 px-2">Our Latest Blog Post
+            </h2>
+            <div class="flex-1 border-t border-slate-300"></div>
+          </div>
+        </div>
+
+        <!-- 3 Blog Posts Grid -->
+        <div class="grid gap-8 md:grid-cols-3">
+          <!-- Blog 1: Immune System -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-capsules-exact.png" alt="Natural herbal capsules and immune supplements"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                5 Natural Ways to Strengthen Your Immune System
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Discover simple lifestyle habits and key supplements that can naturally boost your immunity ...
+              </p>
+            </div>
+          </article>
+
+          <!-- Blog 2: Skincare Advice -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-skincare-exact.png" alt="Skincare advice for sensitive skin"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                Skincare Advice for Sensitive Skin: Simple Tips for a Calmer
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Learn how to care for sensitive skin with gentle routines and dermatologist-recommended products.
+              </p>
+            </div>
+          </article>
+
+          <!-- Blog 3: Do You Really Need Supplements -->
+          <article class="bg-transparent flex flex-col group cursor-pointer">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
+              <img src="images/blog-supplements-exact.png" alt="Guidance on choosing dietary supplements"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
+            </div>
+            <div class="pt-4">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                Do You Really Need Supplements? a Pratical Guide to Boosting
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
+                Find out when supplements are helpful and how to choose the right ones for your health needs
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 14. JOIN OUR NEWSLETTER SECTION (Height: 240px)          -->
+    <!-- ======================================================== -->
+    <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
+      style="width: 100%; min-height: 240px;" aria-label="Newsletter Subscription">
+      <div class="container-codix text-center max-w-xl mx-auto py-8">
+        <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
+        <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
+          Join over half a million vitamin lovers and get our latest deals, articles, and resources!
+        </p>
+
+        <form id="newsletter-form" class="mt-5 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
+          <input type="email" required placeholder="Enter email address"
+            class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-2.5 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm"
+            aria-label="Email address for newsletter">
+          <button type="submit"
+            class="w-full sm:w-auto bg-codix-orange hover:bg-codix-orange-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </section>
+    <!-- ======================================================== -->
+    <!-- Brand Logos Strip (Side-by-Side Mobile & Desktop)       -->
+    <!-- ======================================================== -->
+    <div class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
+      style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
+      aria-label="Partner Brands">
+      <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-allisa-clean.png" alt="Allisa"
+            class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-unter-clean.png" alt="Unter"
+            class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-jurosa-clean.png" alt="JUROSA"
+            class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-bticn-clean.png" alt="bticn"
+            class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+          <img src="images/brand-optimize-clean.png" alt="Optimize"
+            class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 15. FOOTER (Exact Match to Figma Green Background)        -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white" aria-label="Footer">
+    <div class="container-codix pt-12 pb-6">
+      <!-- Footer Logo (Width: 192px, Height: 55px, Radius: 2px, Background: #CBE9C9) -->
+      <div>
+        <a href="#" class="inline-flex items-center justify-center transition hover:opacity-90"
+          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;"
+          aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain"
+            onerror="this.style.display='none';document.getElementById('fallback-footer-logo').style.display='flex'">
+          <div id="fallback-footer-logo" class="hidden items-center text-base font-black tracking-tight"
+            style="display:none">
+            <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Horizontal Line Under Logo (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
+      <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <!-- Footer Main Columns (Left 3 Columns 881px, Right Social Media 417.57px) -->
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14 mt-6">
+        <!-- 3 Links Columns: Company, Help, Shop (Width: 881px, Height: 321.32px, Gap: 77px) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full" style="max-width: 881px; min-height: 321.32px; gap: 77px;">
+          <!-- Col 1: Company -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Company</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="#" class="hover:text-white hover:underline transition">About Us</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Careers</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 2: Help -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Help</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="#" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Shop -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Shop</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="#" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a>
+              </li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a>
+              </li>
+              <li><a href="#" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Col 4: Follow Our Social Media (Width: 417.57px, Height: 153.58px, Gap: 22.69px) -->
+        <div class="flex flex-col justify-between w-full lg:w-[417.57px] shrink-0"
+          style="max-width: 417.57px; min-height: 153.58px; gap: 22.69px;">
+          <h4 class="text-lg sm:text-xl font-bold text-white tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-wrap gap-x-2.5 gap-y-3 items-center">
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Instagram">
+              Instagram
+            </a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="YouTube">
+              Youtube
+            </a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Facebook">
+              Facebook
+            </a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="LinkedIn">
+              LinkedIn
+            </a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Twitter">
+              Twitter
+            </a>
+            <a href="#"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="TikTok">
+              Tik Tok
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horizontal Divider Before Copyright (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
+      <div class="mt-12 mb-6" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;">
+      </div>
+
+      <!-- Bottom Bar: Copyright, Terms & Payment Logos (Width: 1518px, Height: 46px) -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mx-auto"
+        style="width: 100%; max-width: 1518px; min-height: 46px;">
+        <div class="flex flex-wrap items-center gap-2 text-center sm:text-left text-[11px] text-white/75 font-normal">
+          <span>Copyright © 2026 Codix Wellness</span>
+          <span class="text-white/40">|</span>
+          <span>Design by Ostech</span>
+          <span class="text-white/40">|</span>
+          <a href="#" class="hover:text-white transition">Terms of Use</a>
+          <span class="text-white/40">|</span>
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+        </div>
+
+        <!-- Separated Payment Badges with Individual Spacing (Height: 46px container) -->
+        <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 h-[46px]">
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="American Express">
+            <img src="images/pay-amex.png" alt="American Express" class="max-h-5 max-w-full object-contain"
+              loading="lazy">
+          </div>
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="VISA">
+            <img src="images/pay-visa.png" alt="VISA" class="max-h-5 max-w-full object-contain" loading="lazy">
+          </div>
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="PayPal">
+            <img src="images/pay-paypal.png" alt="PayPal" class="max-h-5 max-w-full object-contain" loading="lazy">
+          </div>
+          <div
+            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
+            title="Mastercard">
+            <img src="images/pay-mastercard.png" alt="Mastercard" class="max-h-5 max-w-full object-contain"
+              loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- 16. CART SLIDE-OVER DRAWER (Exact Figma 550px Window)     -->
+  <!-- ======================================================== -->
+  <div id="cart-drawer-overlay" class="modal-overlay" aria-hidden="true" onclick="closeCartDrawer(event)">
+    <div
+      class="cart-drawer-panel fixed top-0 right-0 w-full max-w-[550px] h-full bg-white shadow-2xl flex flex-col justify-between z-50 overflow-y-auto"
+      style="max-width: 550px; padding-top: 24px; padding-right: 24px; padding-left: 20px; gap: 32px;">
+
+      <!-- Top Section (Header + Items) -->
+      <div class="flex flex-col gap-6">
+        <!-- Header: Cart 2 & Close Icon -->
+        <div class="flex items-center justify-between pb-2">
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-[#211C68]">
+            Cart <span id="drawer-cart-count" class="text-[#818CF8] font-normal ml-2">2</span>
+          </h2>
+          <button onclick="closeCartDrawer()" class="p-1 text-slate-400 hover:text-slate-700 transition cursor-pointer"
+            aria-label="Close Cart">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
+
+        <!-- Items List Container -->
+        <div id="cart-items-container" class="flex flex-col gap-4">
+          <!-- Dynamically rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Bottom Section: Summary Card + Shipping Notice -->
+      <div class="flex flex-col gap-3 pb-8">
+        <!-- Subtotal / Total Card -->
+        <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-5 space-y-4">
+          <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+            <span>Subtotal</span>
+            <span id="drawer-cart-subtotal" class="font-extrabold">$77.96</span>
+          </div>
+          <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+            <span>Total</span>
+            <span id="drawer-cart-total" class="font-extrabold">$77.96</span>
+          </div>
+          <button onclick="triggerCheckout()"
+            class="w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-full transition shadow-sm flex items-center justify-center text-xs uppercase tracking-wider active:scale-95 cursor-pointer">
+            CHECKOUT
+          </button>
+        </div>
+
+        <!-- Shipping Notice -->
+        <p class="text-xs text-slate-700 font-medium text-center">
+          Shipping is FREE in the US
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- ======================================================== -->
+  <!-- 17. WISHLIST MODAL (Professional Design System Match)     -->
+  <!-- ======================================================== -->
+  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+    onclick="closeModalOnBackdrop(event, 'wishlist-modal')">
+    <div class="modal-dialog relative flex flex-col justify-between"
+      style="width: 100%; max-width: 550px; min-height: 520px; padding: 40px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
+
+      <!-- Top Bar: Header & Close Button -->
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight" style="color: #211C68; font-family: 'Lato', sans-serif;">
+              My Wishlist <span id="modal-wishlist-count" class="text-sm font-semibold text-[#818CF8] ml-1.5">2
+                items</span>
+            </h2>
+            <p class="text-xs text-[#3A2F99] mt-0.5">Your saved favorites ready to add to cart.</p>
+          </div>
+          <button onclick="closeModal('wishlist-modal')"
+            class="text-slate-400 hover:text-slate-700 p-1.5 transition cursor-pointer" aria-label="Close Wishlist">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Wishlist Items List Container -->
+        <div id="wishlist-items-list" class="mt-4 flex flex-col gap-3.5 max-h-[340px] overflow-y-auto pr-1">
+          <!-- Dynamically rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Bottom Actions -->
+      <div id="wishlist-footer-actions"
+        class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+        <button onclick="addAllWishlistToCart()"
+          class="flex-1 bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3 px-5 rounded-2xl transition shadow-sm hover:shadow active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-cart-shopping text-xs"></i>
+          <span>Add All to Cart</span>
+        </button>
+        <button onclick="clearWishlist()"
+          class="px-4 py-3 rounded-2xl text-xs font-semibold text-slate-500 hover:text-red-500 hover:bg-red-50 transition cursor-pointer">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 18. ACCOUNT SIGN-IN MODAL (Exact Figma 524x550px)         -->
+  <!-- ======================================================== -->
+  <div id="account-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+    onclick="closeModalOnBackdrop(event, 'account-modal')">
+    <div class="modal-dialog relative flex flex-col justify-between"
+      style="width: 100%; max-width: 524px; min-height: 550px; padding: 48px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
+
+      <!-- Close Button (Top Right) -->
+      <button onclick="closeModal('account-modal')"
+        class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 p-2 transition cursor-pointer"
+        aria-label="Close Modal">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Header: Title & Subtitle -->
+      <div class="text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight"
+          style="color: #211C68; font-family: 'Lato', sans-serif;">Welcome to Codix Wellness</h2>
+        <p class="mt-2 text-xs sm:text-sm font-normal" style="color: #3A2F99;">Access your account and pick up right
+          where you left.</p>
+      </div>
+
+      <!-- Form Inputs -->
+      <form id="signin-form"
+        onsubmit="event.preventDefault(); showToast('Signed in successfully!'); closeModal('account-modal');"
+        class="flex flex-col gap-4 my-auto">
+        <!-- Email address -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">Email address</label>
+          <div class="relative flex items-center">
+            <i class="fa-regular fa-envelope absolute left-4 text-[#57B952] text-sm"></i>
+            <input type="email" required value="johncarter@outlook.com" placeholder="Email address"
+              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#57B952] focus:outline-none focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">Password</label>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-lock absolute left-4 text-slate-400 text-sm"></i>
+            <input type="password" required value="password123" placeholder="Password"
+              class="w-full pl-11 pr-11 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+            <button type="button" class="absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer"
+              aria-label="Toggle password visibility">
+              <i class="fa-regular fa-eye text-sm"></i>
+            </button>
+          </div>
+          <!-- Forgot Password Link -->
+          <div class="mt-2 text-left">
+            <a href="#" onclick="closeModal('account-modal'); openModal('reset-password-modal');"
+              class="text-xs font-semibold text-[#57B952] hover:underline">Forgot password?</a>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="mt-2 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
+          style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
+          Sign in
+        </button>
+      </form>
+
+      <!-- Footer: Switch to Create Account -->
+      <div class="text-center pt-2">
+        <p class="text-xs text-slate-600 font-normal">
+          Don’t have an account yet? <button type="button"
+            onclick="closeModal('account-modal'); openModal('create-account-modal');"
+            class="text-[#57B952] font-semibold hover:underline cursor-pointer">create account</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 18C. RESET PASSWORD MODAL (Exact Figma 524x504px)         -->
+  <!-- ======================================================== -->
+  <div id="reset-password-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+    onclick="closeModalOnBackdrop(event, 'reset-password-modal')">
+    <div class="modal-dialog relative flex flex-col justify-between"
+      style="width: 100%; max-width: 524px; min-height: 504px; padding: 48px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
+
+      <!-- Close Button (Top Right) -->
+      <button onclick="closeModal('reset-password-modal')"
+        class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 p-2 transition cursor-pointer"
+        aria-label="Close Modal">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Header: Title & Subtitle -->
+      <div class="text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight"
+          style="color: #211C68; font-family: 'Lato', sans-serif;">Reset your password</h2>
+        <p class="mt-2 text-xs sm:text-sm font-normal" style="color: #3A2F99;">We will send you an email to reset your
+          password</p>
+      </div>
+
+      <!-- Form -->
+      <form id="reset-password-form"
+        onsubmit="event.preventDefault(); showToast('Password reset link sent to your email!'); closeModal('reset-password-modal');"
+        class="flex flex-col gap-4 my-auto">
+        <!-- Email -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-2">Email</label>
+          <input type="email" required placeholder="e.g. username@gmail.com"
+            class="w-full px-4 py-3.5 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+        </div>
+
+        <!-- Send Email Button -->
+        <button type="submit"
+          class="mt-2 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
+          style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
+          Send Email
+        </button>
+
+        <!-- Back to Login Button -->
+        <button type="button" onclick="closeModal('reset-password-modal'); openModal('account-modal');"
+          class="w-full bg-white hover:bg-slate-50 text-[#818CF8] font-semibold py-3.5 rounded-2xl border border-[#BFDBFE] transition active:scale-95 text-sm cursor-pointer">
+          Back to Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 18B. ACCOUNT SIGN-UP / CREATE ACCOUNT MODAL (524x678px)  -->
+  <!-- ======================================================== -->
+  <div id="create-account-modal" class="modal-overlay flex items-center justify-center p-4" aria-hidden="true"
+    onclick="closeModalOnBackdrop(event, 'create-account-modal')">
+    <div class="modal-dialog relative flex flex-col justify-between"
+      style="width: 100%; max-width: 524px; min-height: 678px; padding: 48px; border-radius: 28px; border: 1px solid #F1F2F9; background: #FFFFFF; box-shadow: 0px 23px 50px 0px rgba(25, 33, 61, 0.07);">
+
+      <!-- Close Button (Top Right) -->
+      <button onclick="closeModal('create-account-modal')"
+        class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 p-2 transition cursor-pointer"
+        aria-label="Close Modal">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Header: Title & Subtitle -->
+      <div class="text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight"
+          style="color: #211C68; font-family: 'Lato', sans-serif;">Create account</h2>
+        <p class="mt-2 text-xs sm:text-sm font-normal" style="color: #3A2F99;">Access your account and pick up right
+          where you left.</p>
+      </div>
+
+      <!-- Form Inputs -->
+      <form id="create-account-form"
+        onsubmit="event.preventDefault(); showToast('Account created successfully!'); closeModal('create-account-modal');"
+        class="flex flex-col gap-4 my-auto">
+        <!-- First Name -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">First Name</label>
+          <div class="relative flex items-center">
+            <i class="fa-regular fa-user absolute left-4 text-slate-400 text-sm"></i>
+            <input type="text" required placeholder="First Name"
+              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#57B952] focus:outline-none focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">Last Name</label>
+          <div class="relative flex items-center">
+            <i class="fa-regular fa-user absolute left-4 text-slate-400 text-sm"></i>
+            <input type="text" required placeholder="Last Name"
+              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">Email</label>
+          <div class="relative flex items-center">
+            <i class="fa-regular fa-envelope absolute left-4 text-slate-400 text-sm"></i>
+            <input type="email" required placeholder="Email"
+              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5">Password</label>
+          <div class="relative flex items-center">
+            <i class="fa-regular fa-eye absolute left-4 text-slate-400 text-sm"></i>
+            <input type="password" required placeholder="Password"
+              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="mt-3 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
+          style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
+          Create
+        </button>
+      </form>
+
+      <!-- Footer: Switch to Sign In -->
+      <div class="text-center pt-2">
+        <p class="text-xs text-slate-600 font-normal">
+          Already have an account? <button type="button"
+            onclick="closeModal('create-account-modal'); openModal('account-modal');"
+            class="text-[#57B952] font-semibold hover:underline cursor-pointer">Sign in</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 19. MOBILE NAVIGATION DRAWER                            -->
+  <!-- ======================================================== -->
+  <div id="mobile-menu-overlay" class="modal-overlay mobile-menu-overlay" aria-hidden="true"
+    onclick="closeMobileMenuOnBackdrop(event)">
+    <div
+      class="mobile-drawer-panel fixed top-0 left-0 w-[310px] sm:w-[340px] h-full bg-white shadow-drawer p-5 flex flex-col justify-between overflow-y-auto z-50">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <a href="index.html" onclick="closeMobileMenu()" class="flex items-center gap-2">
+            <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto">
+          </a>
+          <button onclick="closeMobileMenu()"
+            class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition"
+            aria-label="Close Menu">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Search Input -->
+        <form action="shop.html" method="GET"
+          class="mt-4 flex items-center bg-[#EDF8EE] rounded-full px-3.5 py-2 border border-[#D2EDD5]">
+          <i class="fa-solid fa-magnifying-glass text-codix-green text-xs mr-2"></i>
+          <input name="q" type="text" placeholder="Search vitamins, medicines..."
+            class="bg-transparent text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none w-full">
+          <button type="submit" class="text-[11px] font-bold text-codix-green pl-1">Go</button>
+        </form>
+
+        <!-- Product Categories Dropdown Accordion -->
+        <div class="mt-4 pt-2 border-t border-slate-100">
+          <button onclick="document.getElementById('mobile-cat-sub').classList.toggle('hidden')"
+            class="w-full flex items-center justify-between py-2.5 px-3 text-xs font-bold rounded-xl bg-[#D7F4D8] text-codix-navy transition cursor-pointer">
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-list-ul text-xs text-codix-green"></i>
+              Product Categories
+            </span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-codix-navy"></i>
+          </button>
+
+          <div id="mobile-cat-sub" class="hidden mt-2 space-y-1 pl-3 text-xs border-l-2 border-emerald-200">
+            <a href="shop.html" onclick="closeMobileMenu()"
+              class="block py-1.5 px-2 text-slate-700 hover:text-codix-green font-semibold">💊 Supplements &amp;
+              Vitamins</a>
+            <a href="shop.html" onclick="closeMobileMenu()"
+              class="block py-1.5 px-2 text-slate-700 hover:text-codix-green font-semibold">🩺 Medicines &amp;
+              Relief</a>
+            <a href="shop.html" onclick="closeMobileMenu()"
+              class="block py-1.5 px-2 text-slate-700 hover:text-codix-green font-semibold">🌿 Herbs &amp;
+              Botanicals</a>
+            <a href="shop.html" onclick="closeMobileMenu()"
+              class="block py-1.5 px-2 text-slate-700 hover:text-codix-green font-semibold">✨ Collagen &amp; Beauty</a>
+          </div>
+        </div>
+
+        <!-- Mobile Nav Links -->
+        <nav class="mt-3 space-y-1">
+          <a href="index.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Home</a>
+          <a href="about.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">About
+            Us</a>
+          <a href="shop.html" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
+          <a href="index.html#support" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
+          <a href="index.html#blog" onclick="closeMobileMenu()"
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
+        </nav>
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 space-y-2">
+        <a href="login.html" onclick="closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-regular fa-user text-codix-green"></i> My Account / Sign In
+        </a>
+        <button onclick="openModal('wishlist-modal'); closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-red-50 rounded-lg transition cursor-pointer">
+          <i class="fa-regular fa-heart text-red-500"></i> Wishlist (<span id="mobile-wl-count">2</span>)
+        </button>
+        <button onclick="openCartDrawer(); closeMobileMenu()"
+          class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition cursor-pointer">
+          <i class="fa-solid fa-cart-shopping text-codix-green"></i> Shopping Cart (<span
+            id="mobile-cart-count">1</span>)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ======================================================== -->
+  <!-- 20. MAIN JAVASCRIPT LOGIC                               -->
+  <!-- ======================================================== -->
+  <script>
+    /**
+     * Codix Wellness — Full Interactive Store Engine
+     */
+
+    // --- Product Database matching Figma Mockup ---
+    const PRODUCT_DATABASE = {
+      // Popular Categories List (Exact Figma Products)
+      popular: [
+        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements,Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-1.png' },
+        { id: 'p2', name: 'YOUR GUMMIE Collagen Plus –', cat: 'Supplements,Beauty & Wellness', badge: 'Sale New', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-2.png' },
+        { id: 'p3', name: 'Selcea Liver Support Capsules', cat: 'Supplements,Liver Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 124, rating: 4.5, img: 'images/f-pop-3.png' },
+        { id: 'p4', name: 'Everose – Evening Primrose Oil', cat: 'Supplements,Healthy Lip Profile', badge: 'Sale', price: '$16.00 – $35.00', reviews: 58, rating: 5, img: 'images/f-pop-4.png' },
+        { id: 'p5', name: 'Your Gummy – Kids Multi Gummies', cat: 'Supplements,Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 86, rating: 4.5, img: 'images/f-pop-5.png' },
+      ],
+
+      // Medicine Category Products
+      medicines: [
+        { id: 'm1', name: 'Flexicod – Joint Health Support', cat: 'Medicines, Joint Support', badge: 'New', price: '$18.00 – $26.00', reviews: 102, rating: 5, img: 'images/product-gummie.jpg' },
+        { id: 'm2', name: 'Codix Fatburner – Metabolism', cat: 'Medicines, Weight Management', badge: 'Sale', price: '$22.00 – $35.00', reviews: 97, rating: 5, img: 'images/fatburner.png' },
+        { id: 'm3', name: 'Codix Multi Plus Cold Relief', cat: 'Medicines, Immune Relief', badge: 'New', price: '$16.00 – $25.00', reviews: 64, rating: 5, img: 'images/product-red.jpg' },
+        { id: 'm4', name: 'Selcoa Hepato Balance', cat: 'Medicines, Liver Care', badge: 'Sale', price: '$19.00 – $28.00', reviews: 88, rating: 5, img: 'images/product-capsules.jpg' },
+        { id: 'm5', name: 'Flexicod Ultra Joint Gel', cat: 'Medicines, Mobility', badge: 'New', price: '$15.00 – $24.00', reviews: 45, rating: 5, img: 'images/f-pop-1.png' },
+      ],
+
+      // Herbs Category Products
+      herbs: [
+        { id: 'h1', name: 'Codix Maca Root Pure Botanical', cat: 'Herbs, Energy & Vitality', badge: 'New', price: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/product-capsules.jpg' },
+        { id: 'h2', name: 'Your Gummy – Apple Cider Vinegar', cat: 'Herbs, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/product-red.jpg' },
+        { id: 'h3', name: 'Essence – Evening Primrose Oil', cat: 'Herbs, Lip Balance', badge: 'New', price: '$16.00 – $22.00', reviews: 58, rating: 5, img: 'images/product-purple.jpg' },
+        { id: 'h4', name: 'Organic Tart Cherry Extract', cat: 'Herbs, Joint & Recovery', badge: 'Sale', price: '$18.00 – $28.00', reviews: 76, rating: 5, img: 'images/product-gummie.jpg' },
+        { id: 'h5', name: 'Elderberry Immune Booster Extract', cat: 'Herbs, Immune Support', badge: 'New', price: '$16.00 – $26.00', reviews: 52, rating: 5, img: 'images/f-pop-5.png' },
+      ],
+
+      // 15 Featured Products Grid matching Figma 5x3 exactly
+      featured: [
+        // Row 1
+        { id: 'f1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'f2', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
+        { id: 'f3', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png' },
+        { id: 'f4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
+        { id: 'f5', name: 'Codix Fatburner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
+
+        // Row 2
+        { id: 'f6', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '$16.00 – $35.00', reviews: 76, rating: 5, img: 'images/f-grid-6.png' },
+        { id: 'f7', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 134, rating: 5, img: 'images/f-grid-7.png' },
+        { id: 'f8', name: 'Codix Maca Root', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'f9', name: 'Your Gummy – 5-HTP Complex', cat: 'Supplements, Immune Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 112, rating: 5, img: 'images/f-grid-9.png' },
+        { id: 'f10', name: 'Your Gummy – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: '$16.00 – $35.00', reviews: 95, rating: 5, img: 'images/f-grid-10.png' },
+
+        // Row 3
+        { id: 'f11', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '$16.00 – $35.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png' },
+        { id: 'f12', name: 'Your Gummy – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '$16.00 – $35.00', reviews: 168, rating: 5, img: 'images/f-grid-12.png' },
+        { id: 'f13', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 59, rating: 5, img: 'images/f-grid-13.png' },
+        { id: 'f14', name: 'Your Gummy – Iron', cat: 'Supplements, Blood Health', badge: 'Sale', price: '$16.00 – $35.00', reviews: 74, rating: 5, img: 'images/f-grid-14.png' },
+        { id: 'f15', name: 'Your Gummy – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-15.png' },
+      ],
+
+      // Best Selling list
+      bestselling: [
+        { id: 'b1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements,Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'b2', name: 'YOUR GUMMIE Collagen Plus –', cat: 'Supplements,Beauty & Wellness', badge: 'Sale New', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-2.png' },
+        { id: 'b3', name: 'Selcea Liver Support Capsules', cat: 'Supplements,Liver Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 124, rating: 4.5, img: 'images/f-pop-3.png' },
+        { id: 'b4', name: 'Everose – Evening Primrose Oil', cat: 'Supplements,Healthy Lip Profile', badge: 'Sale', price: '$16.00 – $35.00', reviews: 58, rating: 5, img: 'images/f-pop-4.png' },
+        { id: 'b5', name: 'Your Gummy – Kids Multi Gummies', cat: 'Supplements,Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 86, rating: 4.5, img: 'images/f-pop-5.png' },
+      ]
+    };
+
+    // --- Search Index ---
+    const SEARCH_SUGGESTIONS = [
+      'Codiferral Vitamin D3',
+      'YOUR GUMMIE Collagen Plus',
+      'Selcoa Liver Support',
+      'Codix Everose',
+      'Flexicod Joint Health',
+      'Codix Fatburner',
+      'Your Gummy Fish Oil',
+      'Codix Vitamin C+D',
+      'Day 2 Day Collagen Mag',
+      'Defence Vitamin C & Zinc',
+      'Codix Maca Root',
+      'Your Gummy 5-HTP',
+      'Your Gummy Men\'s Multi',
+      'Your Gummy Women\'s Multi',
+      'Your Gummy Hair Skin Nails',
+      'Elderberry Immune Tablets'
+    ];
+
+    // --- State ---
+    let cartItems = [
+      { id: 'cart-1', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' },
+      { id: 'cart-2', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' }
+    ];
+
+    let wishlistItems = [
+      { id: 'wl-1', name: "YOUR GUMMIE Collagen Plus", cat: "Supplements, Beauty", price: 28.00, img: 'images/f-grid-6.png' },
+      { id: 'wl-2', name: "Codix Everose Daily Care", cat: "Supplements, Healthy Lip Profile", price: 32.00, img: 'images/f-grid-4.png' }
+    ];
+
+    // --- Generator for Product Card Markup matching Figma ---
+    function generateProductCard(product) {
+      // Review Stars (Gold/Orange #F6A018)
+      const fullStars = Math.floor(product.rating);
+      const halfStar = product.rating % 1 >= 0.5 ? 1 : 0;
+      const emptyStars = 5 - fullStars - halfStar;
+      let starsHTML = '';
+      for (let i = 0; i < fullStars; i++) starsHTML += `<i class="fa-solid fa-star text-[12px]" style="color: #F6A018;"></i>`;
+      if (halfStar) starsHTML += `<i class="fa-solid fa-star-half-stroke text-[12px]" style="color: #F6A018;"></i>`;
+      for (let i = 0; i < emptyStars; i++) starsHTML += `<i class="fa-regular fa-star text-[12px]" style="color: #F6A018;"></i>`;
+
+      // Review text matching Figma
+      const reviewText = product.reviews <= 1 ? `${product.reviews}` : `(${product.reviews} reviews)`;
+
+      return `
+        <article class="product-card bg-transparent flex flex-col justify-between group transition duration-300 w-full" data-id="${product.id}">
+          <!-- Product Image Box (Lavender #F2F2FA, radius 10px) -->
+          <div class="relative rounded-[10px] bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-0 group-hover:shadow-md transition-shadow duration-300" style="aspect-ratio: 242 / 220; height: 220px; border-radius: 10px;">
+            <img src="${product.img}" alt="${product.name}" class="w-full h-full object-cover rounded-[10px] group-hover:scale-105 transition-transform duration-300" loading="lazy">
+          </div>
+
+          <!-- Product Details -->
+          <div class="pt-3 flex flex-col justify-between flex-1">
+            <div>
+              <p class="text-[13px] font-semibold tracking-tight" style="color: #382898;">${product.cat}</p>
+              <h3 class="mt-1 text-[15px] font-bold leading-tight truncate" style="color: #201850;" title="${product.name}">${product.name}</h3>
+              <div class="mt-1 flex items-center gap-1.5">
+                <div class="flex items-center gap-0.5">${starsHTML}</div>
+                <span class="text-[13px] font-medium" style="color: #382898;">${reviewText}</span>
+              </div>
+              <p class="mt-1.5 text-[15px] font-bold" style="color: #382898;">${product.price}</p>
+            </div>
+
+            <!-- Full-width Pale Mint Pill CTA Button (#EEF8F0) -->
+            <button onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', 18.00, '${product.img}')" class="mt-3 w-full h-[46px] py-2.5 px-4 rounded-full flex items-center justify-center gap-2 text-[13px] font-semibold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #382898; border-radius: 24px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
+              <i class="fa-solid fa-cart-shopping text-[12px]" style="color: #382898;" aria-hidden="true"></i>
+              <span>Select options</span>
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    // --- Render Products into Grid ---
+    function renderProductGrid(elementId, products) {
+      const grid = document.getElementById(elementId);
+      if (!grid) return;
+      grid.innerHTML = products.map(p => generateProductCard(p)).join('');
+    }
+
+    // --- Toast Notifications ---
+    function showToast(message, icon = 'fa-circle-check', isGreen = true) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast-msg flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg text-xs font-bold ${isGreen ? 'bg-codix-navy text-white border border-codix-green' : 'bg-slate-900 text-white'}`;
+      toast.innerHTML = `<i class="fa-solid ${icon} ${isGreen ? 'text-codix-green' : 'text-amber-400'}"></i><span>${message}</span>`;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // --- Cart Management ---
+    function updateCartUI() {
+      const totalCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      // Header badges
+      const cartBadge = document.getElementById('cart-badge-count');
+      const cartHeaderTotal = document.getElementById('cart-header-total');
+      const drawerCount = document.getElementById('drawer-cart-count');
+      const drawerSubtotal = document.getElementById('drawer-cart-subtotal');
+      const drawerTotal = document.getElementById('drawer-cart-total');
+      const mobileCartCount = document.getElementById('mobile-cart-count');
+
+      if (cartBadge) {
+        cartBadge.textContent = totalCount;
+        cartBadge.style.display = totalCount > 0 ? 'flex' : 'none';
+      }
+      if (cartHeaderTotal) cartHeaderTotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (drawerCount) drawerCount.textContent = totalCount;
+      if (drawerSubtotal) drawerSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (drawerTotal) drawerTotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (mobileCartCount) mobileCartCount.textContent = totalCount;
+
+      // Drawer items container
+      const container = document.getElementById('cart-items-container');
+      if (!container) return;
+
+      if (cartItems.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-slate-400">
+            <i class="fa-solid fa-cart-shopping text-4xl text-slate-300 mb-3 block"></i>
+            <p class="text-xs font-semibold">Your shopping cart is empty.</p>
+            <button onclick="closeCartDrawer()" class="mt-4 inline-block text-xs font-bold text-codix-green hover:underline cursor-pointer">
+              Continue Shopping
+            </button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = cartItems.map(item => `
+          <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-4 flex items-center gap-4 relative shadow-sm">
+            <!-- Product Thumbnail Box -->
+            <div class="w-20 h-20 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
+              <img src="${item.img || 'images/f-grid-2.png'}" alt="${item.name.replace(/<[^>]*>?/gm, '')}" class="max-h-full max-w-full object-contain">
+            </div>
+
+            <!-- Product Details & Controls -->
+            <div class="flex-1 min-w-0 flex flex-col justify-between h-20 py-0.5">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="text-xs sm:text-sm font-bold text-[#181440] leading-snug truncate">${item.name}</h4>
+                <button onclick="removeCartItem('${item.id}')" class="text-slate-500 hover:text-red-500 p-0.5 transition cursor-pointer shrink-0" aria-label="Remove Item">
+                  <i class="fa-solid fa-trash-can text-sm"></i>
+                </button>
+              </div>
+
+              <div class="flex items-center justify-between mt-2">
+                <!-- Stepper -->
+                <div class="inline-flex items-center rounded border border-slate-200 bg-white">
+                  <button onclick="changeCartQty('${item.id}', -1)" class="px-2 py-0.5 text-slate-500 hover:text-slate-900 text-xs font-bold cursor-pointer" aria-label="Decrease quantity">−</button>
+                  <span class="px-2 text-xs font-semibold text-[#818CF8] border-x border-slate-100">${item.qty}</span>
+                  <button onclick="changeCartQty('${item.id}', 1)" class="px-2 py-0.5 text-slate-500 hover:text-slate-900 text-xs font-bold cursor-pointer" aria-label="Increase quantity">+</button>
+                </div>
+
+                <!-- Price -->
+                <span class="text-xs sm:text-sm font-bold text-[#181440]">$ ${(item.price * item.qty).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addToCart(id, name, price, img) {
+      const existing = cartItems.find(i => i.id === id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cartItems.push({ id, name, price, qty: 1, img });
+      }
+      updateCartUI();
+      showToast(`Added ${name} to your cart!`);
+      openCartDrawer();
+    }
+
+    function changeCartQty(id, delta) {
+      const item = cartItems.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cartItems = cartItems.filter(i => i.id !== id);
+      }
+      updateCartUI();
+    }
+
+    function removeCartItem(id) {
+      cartItems = cartItems.filter(i => i.id !== id);
+      updateCartUI();
+      showToast('Item removed from cart.', 'fa-trash-can', false);
+    }
+
+    function openCartDrawer() {
+      const overlay = document.getElementById('cart-drawer-overlay');
+      if (overlay) {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeCartDrawer(e) {
+      if (e && e.target.id !== 'cart-drawer-overlay' && !e.target.closest('button[aria-label="Close Cart"]')) return;
+      const overlay = document.getElementById('cart-drawer-overlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function triggerCheckout() {
+      if (cartItems.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+      alert('Thank you for choosing Codix Wellness! Proceeding to secure checkout...');
+      closeCartDrawer();
+    }
+
+    // --- Wishlist Management ---
+    function updateWishlistUI() {
+      const wlBadge = document.getElementById('wishlist-badge');
+      const modalCount = document.getElementById('modal-wishlist-count');
+      const mobileWlCount = document.getElementById('mobile-wl-count');
+      const list = document.getElementById('wishlist-items-list');
+      const footerActions = document.getElementById('wishlist-footer-actions');
+
+      if (wlBadge) {
+        wlBadge.textContent = wishlistItems.length;
+        wlBadge.style.display = wishlistItems.length > 0 ? 'flex' : 'none';
+      }
+      if (modalCount) modalCount.textContent = `${wishlistItems.length} ${wishlistItems.length === 1 ? 'item' : 'items'}`;
+      if (mobileWlCount) mobileWlCount.textContent = wishlistItems.length;
+
+      if (!list) return;
+
+      if (wishlistItems.length === 0) {
+        list.innerHTML = `
+          <div class="py-10 text-center">
+            <div class="w-14 h-14 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-rose-400 mb-3">
+              <i class="fa-regular fa-heart text-2xl"></i>
+            </div>
+            <h4 class="text-sm font-bold text-[#181440]">Your wishlist is empty</h4>
+            <p class="text-xs text-slate-400 mt-1">Explore our wellness catalog to save your favorite products.</p>
+            <button onclick="closeModal('wishlist-modal')" class="mt-4 inline-block text-xs font-bold text-codix-green hover:underline cursor-pointer">
+              Explore Products
+            </button>
+          </div>
+        `;
+        if (footerActions) footerActions.style.display = 'none';
+      } else {
+        if (footerActions) footerActions.style.display = 'flex';
+        list.innerHTML = wishlistItems.map((item, idx) => `
+          <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-3.5 flex items-center justify-between gap-3 shadow-sm hover:border-slate-300 transition">
+            <!-- Product Image -->
+            <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
+              <img src="${item.img || 'images/f-grid-1.png'}" alt="${item.name}" class="max-h-full max-w-full object-contain">
+            </div>
+
+            <!-- Details -->
+            <div class="flex-1 min-w-0">
+              <p class="text-[11px] font-semibold text-[#382898] truncate">${item.cat || 'Supplements'}</p>
+              <h4 class="text-xs font-bold text-[#181440] truncate leading-tight mt-0.5">${item.name}</h4>
+              <div class="mt-1 flex items-center gap-2">
+                <span class="text-xs font-black text-[#181440]">$${item.price.toFixed(2)}</span>
+                <span class="inline-flex items-center text-[10px] font-bold text-[#57B952] bg-emerald-50 px-2 py-0.5 rounded-full">In Stock</span>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="addWishlistItemToCart(${idx})"
+                class="bg-[#57B952] hover:bg-[#48A344] text-white text-[11px] font-bold px-3.5 py-2 rounded-full transition shadow-sm active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-cart-shopping text-[10px]"></i>
+                <span class="hidden sm:inline">Add</span>
+              </button>
+              <button onclick="removeWishlistItem(${idx})" class="text-slate-400 hover:text-red-500 p-2 transition cursor-pointer" aria-label="Remove Item">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addWishlistItemToCart(idx) {
+      const item = wishlistItems[idx];
+      if (!item) return;
+      addToCart(item.id, item.name, item.price, item.img);
+      wishlistItems.splice(idx, 1);
+      updateWishlistUI();
+    }
+
+    function addAllWishlistToCart() {
+      if (wishlistItems.length === 0) return;
+      wishlistItems.forEach(item => {
+        addToCart(item.id, item.name, item.price, item.img);
+      });
+      wishlistItems = [];
+      updateWishlistUI();
+      closeModal('wishlist-modal');
+      openCartDrawer();
+    }
+
+    function clearWishlist() {
+      wishlistItems = [];
+      updateWishlistUI();
+      showToast('Wishlist cleared.');
+    }
+
+    function removeWishlistItem(idx) {
+      wishlistItems.splice(idx, 1);
+      updateWishlistUI();
+      showToast('Item removed from wishlist.', 'fa-heart', false);
+    }
+
+    // --- Generic Modal Controls ---
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeModalOnBackdrop(e, modalId) {
+      if (e.target.id === modalId) {
+        closeModal(modalId);
+      }
+    }
+
+    // --- Mobile Menu Controls ---
+    function openMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeMobileMenuOnBackdrop(e) {
+      if (e.target.id === 'mobile-menu-overlay') {
+        closeMobileMenu();
+      }
+    }
+
+    // --- Hero Carousel Engine ---
+    let currentHeroIndex = 0;
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    let heroAutoTimer = null;
+
+    function showHeroSlide(index) {
+      try {
+        heroSlides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === index);
+        });
+      } catch (err) {
+        console.error('Hero slide transition error:', err);
+      }
+    }
+
+    function nextHeroSlide() {
+      currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
+      showHeroSlide(currentHeroIndex);
+    }
+
+    function prevHeroSlide() {
+      currentHeroIndex = (currentHeroIndex - 1 + heroSlides.length) % heroSlides.length;
+      showHeroSlide(currentHeroIndex);
+    }
+
+    function startHeroTimer() {
+      heroAutoTimer = setInterval(nextHeroSlide, 5000);
+    }
+
+    function stopHeroTimer() {
+      if (heroAutoTimer) clearInterval(heroAutoTimer);
+    }
+
+    // --- Testimonials Single-Active Carousel Engine ---
+    let currentTestimonialIdx = 0;
+
+    function showTestimonial(index) {
+      const cards = document.querySelectorAll('.testimonial-card');
+      const dots = document.querySelectorAll('.testimonial-dot');
+      if (!cards.length) return;
+
+      currentTestimonialIdx = (index + cards.length) % cards.length;
+
+      cards.forEach((card, idx) => {
+        if (idx === currentTestimonialIdx) {
+          card.classList.add('active');
+          card.style.display = 'flex';
+        } else {
+          card.classList.remove('active');
+          card.style.display = 'none';
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === currentTestimonialIdx) {
+          dot.classList.add('bg-white', 'w-6');
+          dot.classList.remove('bg-white/40', 'w-2.5');
+        } else {
+          dot.classList.remove('bg-white', 'w-6');
+          dot.classList.add('bg-white/40', 'w-2.5');
+        }
+      });
+    }
+
+    function nextTestimonial() {
+      const cards = document.querySelectorAll('.testimonial-card');
+      showTestimonial(currentTestimonialIdx + 1);
+    }
+
+    function prevTestimonial() {
+      const cards = document.querySelectorAll('.testimonial-card');
+      showTestimonial(currentTestimonialIdx - 1);
+    }
+
+    // --- Search Autocomplete Engine ---
+    function initSearch() {
+      const input = document.getElementById('search-input');
+      const box = document.getElementById('search-results-box');
+      const list = document.getElementById('search-results-list');
+      const clearBtn = document.getElementById('search-clear-btn');
+      const form = document.getElementById('search-form');
+
+      if (!input || !box || !list) return;
+
+      input.addEventListener('input', () => {
+        const query = input.value.trim().toLowerCase();
+        if (query.length > 0) {
+          if (clearBtn) clearBtn.classList.remove('hidden');
+          const matches = SEARCH_SUGGESTIONS.filter(item => item.toLowerCase().includes(query));
+
+          if (matches.length > 0) {
+            list.innerHTML = matches.map(match => `
+              <button type="button" onclick="selectSearchSuggestion('${match}')" class="w-full text-left px-3.5 py-2 text-xs rounded-lg hover:bg-emerald-50 text-slate-700 flex items-center justify-between group transition">
+                <span class="group-hover:text-codix-green font-medium">${match}</span>
+                <i class="fa-solid fa-arrow-right text-[10px] text-slate-300 group-hover:text-codix-green"></i>
+              </button>
+            `).join('');
+            box.classList.add('open');
+          } else {
+            list.innerHTML = '<div class="px-3.5 py-2 text-xs text-slate-400">No matching products found</div>';
+            box.classList.add('open');
+          }
+        } else {
+          if (clearBtn) clearBtn.classList.add('hidden');
+          box.classList.remove('open');
+        }
+      });
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          input.value = '';
+          box.classList.remove('open');
+          clearBtn.classList.add('hidden');
+          input.focus();
+        });
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        box.classList.remove('open');
+        if (input.value.trim()) {
+          showToast(`Searching for "${input.value.trim()}"...`);
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        const searchWrapper = document.getElementById('search-container');
+        if (searchWrapper && !searchWrapper.contains(e.target)) {
+          box.classList.remove('open');
+        }
+      });
+    }
+
+    function selectSearchSuggestion(text) {
+      const input = document.getElementById('search-input');
+      const box = document.getElementById('search-results-box');
+      if (input) input.value = text;
+      if (box) box.classList.remove('open');
+      showToast(`Selected "${text}"`);
+    }
+
+    // Scroll helper for featured products grid
+    function scrollFeaturedGrid(direction) {
+      const grid = document.getElementById('featured-products-grid');
+      if (grid) {
+        grid.scrollBy({ left: direction * 280, behavior: 'smooth' });
+      }
+    }
+
+    // --- Dropdowns Helper ---
+    function initDropdowns() {
+      const langBtn = document.getElementById('lang-btn');
+      const langDD = document.getElementById('lang-dropdown');
+      const currBtn = document.getElementById('curr-btn');
+      const currDD = document.getElementById('curr-dropdown');
+
+      function closeAllDD() {
+        document.querySelectorAll('.dropdown-menu').forEach(dd => {
+          if (dd.id !== 'search-results-box') dd.classList.remove('open');
+        });
+      }
+
+      if (langBtn && langDD) {
+        langBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = langDD.classList.contains('open');
+          closeAllDD();
+          if (!isOpen) langDD.classList.add('open');
+        });
+      }
+
+      if (currBtn && currDD) {
+        currBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = currDD.classList.contains('open');
+          closeAllDD();
+          if (!isOpen) currDD.classList.add('open');
+        });
+      }
+
+      document.querySelectorAll('.lang-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const val = opt.dataset.val;
+          document.getElementById('lang-label').textContent = val;
+          closeAllDD();
+          showToast(`Language set to ${val}`);
+        });
+      });
+
+      document.querySelectorAll('.curr-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const val = opt.dataset.val;
+          document.getElementById('curr-label').textContent = val;
+          closeAllDD();
+          showToast(`Currency set to ${val}`);
+        });
+      });
+
+      document.addEventListener('click', closeAllDD);
+    }
+
+    // --- DOM Loaded Initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Render initial product grids
+      renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
+      renderProductGrid('featured-products-grid', PRODUCT_DATABASE.featured);
+      renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.bestselling);
+
+      // 2. Initialize Category Tabs for "Popular Categories"
+      document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.cat-tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+
+          const cat = btn.dataset.category;
+          if (cat === 'Supplements') {
+            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
+          } else if (cat === 'Medicines') {
+            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.medicines);
+          } else if (cat === 'Herbs') {
+            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.herbs);
+          }
+        });
+      });
+
+      // 3. Initialize Category Tabs for "Best Selling Products"
+      document.querySelectorAll('.bs-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.bs-tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+
+          const cat = btn.dataset.category;
+          if (cat === 'Supplements') {
+            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.bestselling);
+          } else if (cat === 'Medicines') {
+            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.medicines);
+          } else if (cat === 'Herbs') {
+            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.herbs);
+          }
+        });
+      });
+
+      // 4. Hero Carousel Setup
+      const heroNext = document.getElementById('hero-next-btn');
+      const heroPrev = document.getElementById('hero-prev-btn');
+      const heroContainer = document.getElementById('hero-carousel-container');
+
+      if (heroNext) heroNext.addEventListener('click', nextHeroSlide);
+      if (heroPrev) heroPrev.addEventListener('click', prevHeroSlide);
+
+      if (heroContainer) {
+        heroContainer.addEventListener('mouseenter', stopHeroTimer);
+        heroContainer.addEventListener('mouseleave', startHeroTimer);
+
+        // Keyboard arrow navigation
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowLeft') prevHeroSlide();
+          if (e.key === 'ArrowRight') nextHeroSlide();
+        });
+      }
+      startHeroTimer();
+
+      // 5. Testimonials Navigation
+      const tPrev = document.getElementById('testimonial-prev-btn');
+      const tNext = document.getElementById('testimonial-next-btn');
+
+      if (tPrev) {
+        tPrev.addEventListener('click', (e) => {
+          e.preventDefault();
+          prevTestimonial();
+        });
+      }
+      if (tNext) {
+        tNext.addEventListener('click', (e) => {
+          e.preventDefault();
+          nextTestimonial();
+        });
+      }
+      showTestimonial(0);
+
+      // 6. Mobile Menu Buttons
+      const mobOpenBtn = document.getElementById('mobile-menu-open-btn');
+      if (mobOpenBtn) mobOpenBtn.addEventListener('click', openMobileMenu);
+
+      // 7. Search & Dropdowns
+      initSearch();
+      initDropdowns();
+
+      // 8. Sign In Form Handler
+      const signInForm = document.getElementById('signin-form');
+      if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          closeModal('account-modal');
+          showToast('Welcome back! Signed in successfully.');
+          signInForm.reset();
+        });
+      }
+
+      // 9. Newsletter Form Handler
+      const nlForm = document.getElementById('newsletter-form');
+      if (nlForm) {
+        nlForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          showToast('Thank you for subscribing to Codix Wellness!');
+          nlForm.reset();
+        });
+      }
+
+      // 10. Initial UI Update for Cart and Wishlist
+      updateCartUI();
+      updateWishlistUI();
+    });
+  </script>
+</body>
+
+</html>
