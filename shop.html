@@ -1178,21 +1178,21 @@
   <script>
     // --- Shop Database (15 items) ---
     const ALL_SHOP_PRODUCTS = [
-      { id: 's1', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100ml' },
-      { id: 's2', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '75ml' },
-      { id: 's3', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '50ml' },
-      { id: 's4', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '150ml' },
-      { id: 's5', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '30ml' },
-      { id: 's6', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '500ml' },
-      { id: 's7', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100mg' },
-      { id: 's8', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '250mg' },
-      { id: 's9', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '400mg' },
-      { id: 's10', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: 24.00, priceStr: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png', size: '100ml' },
-      { id: 's11', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 29.99, priceStr: '$16.00 – $35.00', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' },
-      { id: 's12', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
-      { id: 's13', name: 'Your Gummy – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
-      { id: 's14', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
-      { id: 's15', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png', size: '50ml' }
+      { id: 's1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png', size: '50ml' },
+      { id: 's2', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100ml' },
+      { id: 's3', name: 'Your Gummie Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png', size: '75ml' },
+      { id: 's4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: 24.00, priceStr: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png', size: '100ml' },
+      { id: 's5', name: 'Codix Fatburner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: 22.00, priceStr: '$16.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png', size: '50ml' },
+      { id: 's6', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 29.99, priceStr: '$16.00 – $35.00', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' },
+      { id: 's7', name: 'Your Gummie – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
+      { id: 's8', name: 'Codix Maca Root', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/f-grid-8.png', size: '100mg' },
+      { id: 's9', name: 'Your Gummie – 5-HTP Complex', cat: 'Supplements, Immune Support', badge: 'Sale', price: 20.00, priceStr: '$16.00 – $35.00', reviews: 112, rating: 5, img: 'images/f-grid-9.png', size: '250mg' },
+      { id: 's10', name: 'Your Gummie – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
+      { id: 's11', name: 'Your Gummie – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
+      { id: 's12', name: 'Your Gummie – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 23.00, priceStr: '$16.00 – $35.00', reviews: 168, rating: 5, img: 'images/f-grid-12.png', size: '100ml' },
+      { id: 's13', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 59, rating: 5, img: 'images/f-grid-13.png', size: '30ml' },
+      { id: 's14', name: 'Your Gummie – Iron', cat: 'Supplements, Blood Health', badge: 'Sale', price: 19.00, priceStr: '$16.00 – $35.00', reviews: 74, rating: 5, img: 'images/f-grid-14.png', size: '500ml' },
+      { id: 's15', name: 'Your Gummie – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-15.png', size: '400mg' }
     ];
 
     let currentCategory = 'all';
@@ -1219,23 +1219,24 @@
 
       return `
         <article class="product-card bg-transparent flex flex-col justify-between group transition duration-300 w-full">
-          <a href="product.html?id=${p.id}" class="relative rounded-[10px] bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-0 group-hover:shadow-md transition-shadow duration-300 block" style="aspect-ratio: 242 / 220; height: 220px; border-radius: 10px;">
-            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover rounded-[10px] group-hover:scale-105 transition-transform duration-300" loading="lazy">
+          <a href="product.html?id=${p.id}" class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-md transition-shadow duration-300 block" style="aspect-ratio: 242 / 220; min-height: 220px; border-radius: 8px;">
+            <span class="absolute top-2.5 left-2.5 z-10 bg-[#00D06C] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">Sale</span>
+            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </a>
-          <div class="pt-3 flex flex-col justify-between flex-1">
+          <div class="pt-2.5 flex flex-col justify-between flex-1">
             <div>
-              <p class="text-[12px] font-semibold tracking-tight" style="color: #382898;">${p.cat}</p>
+              <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${p.cat}</p>
               <a href="product.html?id=${p.id}" class="hover:text-codix-green transition">
-                <h3 class="mt-1 text-[14px] font-bold leading-tight truncate" style="color: #201850;" title="${p.name}">${p.name}</h3>
+                <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${p.name}">${p.name}</h3>
               </a>
               <div class="mt-1 flex items-center gap-1.5">
                 <div class="flex items-center gap-0.5">${starsHTML}</div>
-                <span class="text-[12px] font-medium" style="color: #382898;">(${p.reviews} reviews)</span>
+                <span class="text-[11px] font-medium text-[#7E8B9B]">(${p.reviews} reviews)</span>
               </div>
-              <p class="mt-1.5 text-[14px] font-bold" style="color: #382898;">${p.priceStr}</p>
+              <p class="mt-1 text-[14px] font-bold text-[#201850]">${p.priceStr}</p>
             </div>
-            <a href="product.html?id=${p.id}" class="mt-3 w-full h-[44px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] font-semibold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #382898; border-radius: 24px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
-              <i class="fa-solid fa-cart-shopping text-[11px]" style="color: #382898;"></i>
+            <a href="product.html?id=${p.id}" class="mt-2.5 w-full h-[40px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] sm:text-[13px] font-bold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #201850; border-radius: 9999px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
+              <i class="fa-solid fa-cart-shopping text-[11px] text-[#201850]"></i>
               <span>Select options</span>
             </a>
           </div>
