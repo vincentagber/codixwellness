@@ -1514,7 +1514,7 @@
       if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; }
     }
     function closeCartDrawer(e) {
-      if (e && e.target.id !== 'cart-drawer-overlay' && !e.target.closest('button[aria-label="Close Cart"]')) return;
+      if (e && e.target && e.target.id !== 'cart-drawer-overlay') return;
       const el = document.getElementById('cart-drawer-overlay');
       if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
     }
