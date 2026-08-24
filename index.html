@@ -107,13 +107,19 @@
       color: #3A2F99 !important;
     }
 
-    /* Max Width Container matching Figma 1322px Spacing (Unified Margin) */
+    /* Max Width Container matching Figma 1320px Spacing (Unified Margin) */
     .container-codix {
       width: 100%;
-      max-width: 1322px;
+      max-width: 1320px;
       padding-inline: 16px;
       margin-inline: auto;
       box-sizing: border-box;
+    }
+
+    @media (min-width: 640px) {
+      .container-codix {
+        padding-inline: 24px;
+      }
     }
 
     /* Top Bar Botanical Pattern */
@@ -818,131 +824,126 @@
           </button>
         </div>
       </div>
-    </section>
+    </    <!-- ======================================================== -->
+    <!-- 5. PROMO BENTO GRID                                     -->
+    <!-- ======================================================== -->
+    <section id="about" class="pt-8 lg:pt-10" aria-label="Promotional Highlights">
+      <div class="container-codix">
+        <div class="flex flex-col lg:flex-row gap-6 justify-center items-stretch w-full">
+          <!-- Left & Middle 2-Row Area (Width ~867px / 66.08%) -->
+          <div class="flex-1 flex flex-col gap-6 w-full min-w-0">
+            <!-- Row 1: Everose (570px) + Flexicod (273px) | Height: 274px -->
+            <div class="flex flex-col sm:flex-row gap-6 w-full lg:h-[274px]">
+              <!-- Card 1: Codix Everose (Top-Left: Wide ~570px, Height: 274px) -->
+              <article
+                class="bento-card relative overflow-hidden group flex items-center justify-between p-6 sm:p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[570] min-w-0 rounded-[12px]"
+                style="min-height: 274px; background: #FDE7C6 url('images/bento-everose-bg.jpg') no-repeat center center; background-size: cover;">
+                <div class="relative z-10 flex h-full items-center justify-between w-full gap-4 sm:gap-6">
+                  <!-- Product Bottles Left (Attached exact Everose image) -->
+                  <div class="shrink-0 flex items-center justify-center">
+                    <img src="images/bento-everose.png" alt="Codix Everose supplement bottles"
+                      class="h-[185px] sm:h-[210px] w-auto object-contain shrink-0 group-hover:scale-105 transition-transform duration-300 drop-shadow-md pointer-events-none"
+                      loading="lazy">
+                  </div>
+                  <!-- Text & Action Right (Left-aligned) -->
+                  <div class="flex-1 text-left">
+                    <h2 class="text-xl sm:text-2xl lg:text-[26px] font-normal text-codix-navy tracking-tight leading-snug">Codix <strong class="font-bold text-codix-navy">Everose</strong></h2>
+                    <p class="mt-2 text-xs sm:text-sm text-codix-navy/85 font-medium leading-relaxed">Supports Body Hormonal<br>Balance and Healthy Skin</p>
+                    <a href="#shop"
+                      class="mt-4 sm:mt-5 inline-flex items-center gap-1.5 rounded-full bg-codix-green px-5 py-2 text-xs sm:text-[13px] font-bold text-white shadow-sm hover:bg-codix-green-dark transition active:scale-95">
+                      Buy now <i class="fa-solid fa-chevron-right text-[10px]" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </article>
 
-    <!-- ======================================================== -->
-    <!-- 5. PROMO BENTO GRID  -->
-    <!-- ======================================================== -->
-    <section id="about" class="px-4 pt-8 sm:px-6 lg:pt-10" aria-label="Promotional Highlights">
-      <div class="mx-auto flex flex-col lg:flex-row gap-5 justify-center items-stretch"
-        style="width: 100%; max-width: 1338.49px;">
-        <!-- Left Group (Row 1 + Row 2): Total width ~841.48px -->
-        <div class="flex-1 flex flex-col gap-5 w-full">
-          <!-- Row 1: Everose (569.46px) + Flexicod (272.02px) | Height: 273.20px -->
-          <div class="flex flex-col sm:flex-row gap-5 w-full">
-            <!-- Card 1: Codix Everose (Width: ~569.46px, Height: 273.20px, Radius: 10.59px) -->
-            <article
-              class="bento-card relative overflow-hidden group flex items-center justify-between p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[569.46] min-w-0"
-              style="min-height: 273.20px; border-radius: 10.59px; background: #FDE7C6 url('images/bento-everose-bg.jpg') no-repeat center center; background-size: cover;">
-              <div class="flex h-full items-center justify-between w-full gap-4">
-                <img src="images/bento-everose.png" alt="Codix Everose supplement bottle"
-                  class="h-[180px] w-auto object-contain shrink-0 group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+              <!-- Card 2: Flexicod (Top-Middle: Narrow ~273px, Height: 274px) -->
+              <article
+                class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 sm:p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[273] min-w-0 rounded-[12px]"
+                style="min-height: 274px; background: #C2E9F8 url('images/bento-flexicod-bg.jpg') no-repeat center center; background-size: cover;">
+                <div class="relative z-10 text-left">
+                  <h2 class="text-xl sm:text-2xl font-bold text-codix-navy tracking-tight">Flexicod</h2>
+                  <p class="mt-1 text-xs text-codix-navy/85 font-medium">Support Joint Health</p>
+                </div>
+                <img src="images/bento-flexicod.png" alt="Flexicod Joint Health product packaging"
+                  class="absolute bottom-0 right-0 max-h-[175px] sm:max-h-[195px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                   loading="lazy">
-                <div class="text-right flex-1">
-                  <h2 class="text-xl sm:text-2xl font-black text-codix-navy">Codix <span
-                      class="font-bold">Everose</span></h2>
-                  <p class="mt-1.5 text-xs sm:text-sm text-codix-navy/85 leading-relaxed font-medium">Supports Body
-                    Hormonal<br>Balance and Healthy Skin</p>
+              </article>
+            </div>
+
+            <!-- Row 2: Fish Oil (347px) + Vitamin C+D (496px) | Height: 303px -->
+            <div class="flex flex-col sm:flex-row gap-6 w-full lg:h-[303px]">
+              <!-- Card 4: Your Gummie Fish Oil (Bottom-Left: Narrow ~347px, Height: 303px) -->
+              <article
+                class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 sm:p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[347] min-w-0 rounded-[12px]"
+                style="min-height: 303px; background: #BDEED5 url('images/bento-fishoil-bg.jpg') no-repeat center center; background-size: cover;">
+                <div class="relative z-10 text-left max-w-[60%]">
+                  <h2 class="text-xl sm:text-2xl font-bold text-codix-navy leading-tight tracking-tight">
+                    Your<br>
+                    Gummie<br>
+                    <span class="font-extrabold">Fish Oil</span>
+                  </h2>
+                  <p class="mt-2 text-xs text-codix-navy/85 font-medium">Omega-3 DHA &amp; EPA</p>
                   <a href="#shop"
-                    class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
-                    Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
+                    class="mt-4 inline-flex items-center gap-1.5 rounded-full bg-codix-green px-4 sm:px-5 py-2 text-xs font-bold text-white shadow-sm hover:bg-codix-green-dark transition active:scale-95">
+                    Buy now <i class="fa-solid fa-chevron-right text-[10px]" aria-hidden="true"></i>
                   </a>
                 </div>
-              </div>
-            </article>
+                <img src="images/bento-fishoil.png" alt="Your Gummie Fish Oil bottle"
+                  class="absolute bottom-0 right-1 sm:right-2 h-[200px] sm:h-[225px] max-w-[55%] object-contain object-bottom drop-shadow-md group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                  loading="lazy">
+              </article>
 
-            <!-- Card 2: Flexicod -->
-            <article
-              class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[272.02] min-w-0"
-              style="min-height: 273.20px; border-radius: 10.59px; background: #C2E9F8 url('images/bento-flexicod-bg.jpg') no-repeat center center; background-size: cover;">
-              <div class="relative z-10">
-                <h2 class="text-xl font-black text-codix-navy">Flexicod</h2>
-                <p class="mt-1 text-xs text-codix-navy/85 font-medium">Support Joint Health</p>
-                <a href="#shop"
-                  class="mt-3.5 inline-flex items-center rounded-full bg-codix-green px-4 py-1.5 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
-                  Buy now <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i>
-                </a>
-              </div>
-              <img src="images/bento-flexicod.png" alt="Flexicod product packaging"
-                class="absolute bottom-2 right-2 h-[155px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
-                loading="lazy">
-            </article>
+              <!-- Card 5: Codix Vitamin C+D (Bottom-Middle: Medium ~496px, Height: 303px) -->
+              <article
+                class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 sm:p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[496] min-w-0 rounded-[12px]"
+                style="min-height: 303px; background: #EDF4F8 url('images/bento-vitamincd-bg.jpg') no-repeat center center; background-size: cover;">
+                <div class="relative z-10 text-left max-w-[55%]">
+                  <span
+                    class="inline-block bg-codix-orange text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2.5 shadow-xs">Big
+                    Sale 65% OFF</span>
+                  <h2 class="text-xl sm:text-2xl font-normal text-codix-navy tracking-tight leading-snug">Codix <strong class="font-bold text-codix-navy">Vitamin</strong><br><strong class="font-bold text-codix-navy">C+D</strong></h2>
+                  <p class="mt-2 text-xs sm:text-sm text-codix-navy/85 font-medium leading-tight">Immune Support with</p>
+                  <p class="text-sm sm:text-base font-bold text-codix-purple tracking-tight mt-0.5" style="color: #211C68;">Vitamin D</p>
+                </div>
+                <img src="images/bento-vitamincd.png" alt="Codix Vitamin C+D Effervescent tubes"
+                  class="absolute bottom-0 right-2 sm:right-4 h-[210px] sm:h-[235px] max-w-[48%] object-contain object-bottom drop-shadow-md group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                  loading="lazy">
+              </article>
+            </div>
           </div>
 
-          <!-- Row 2: Fish Oil (346.37px) + Vitamin C+D (495.10px) | Height: 303.91px -->
-          <div class="flex flex-col sm:flex-row gap-5 w-full">
-            <!-- Card 4: Your Gummie Fish Oil (Width: ~346.37px, Height: 303.91px, Radius: 10.59px) -->
-            <article
-              class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[346.37] min-w-0"
-              style="min-height: 303.91px; border-radius: 10.59px; background: #BDEED5 url('images/bento-fishoil-bg.jpg') no-repeat center center; background-size: cover;">
-              <div class="relative z-10 max-w-[65%]">
-                <h2 class="text-xl font-black text-codix-navy leading-snug">Your Gummie<br><span
-                    class="font-extrabold">Fish Oil</span></h2>
-                <p class="mt-1.5 text-xs text-codix-navy/85 font-medium">Omega-3 DHA &amp; EPA</p>
-                <a href="#shop"
-                  class="mt-4 inline-flex items-center rounded-full bg-codix-green px-4 py-1.5 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
-                  Buy now <i class="fa-solid fa-chevron-right ml-1 text-[10px]" aria-hidden="true"></i>
-                </a>
-              </div>
-              <img src="images/bento-fishoil.png" alt="Your Gummie Fish Oil bottle"
-                class="absolute bottom-2 right-2 h-[165px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+          <!-- RIGHT SIDE: Card 3 Codix Fatburner (Spans Both Rows, Width: ~421px, Height: 601px) -->
+          <article
+            class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 sm:p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 w-full lg:w-[421px] shrink-0 rounded-[12px]"
+            style="min-height: 601px; background: #EEE2F3 url('images/bento-fatburner-bg.jpg') no-repeat center center; background-size: cover;">
+            <div class="relative z-10 text-left">
+              <span
+                class="inline-block bg-codix-orange text-white text-[10px] font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider mb-3 shadow-xs">Big
+                Sale 65% OFF</span>
+              <h2 class="text-2xl sm:text-[28px] lg:text-[30px] font-normal text-codix-navy tracking-tight leading-tight">Codix <strong class="font-bold text-codix-navy">Fatburner</strong>
+              </h2>
+              <p class="mt-1.5 text-xs sm:text-sm text-codix-navy/85 font-medium">Metabolism Support</p>
+              <a href="#shop"
+                class="mt-4 inline-flex items-center gap-1.5 rounded-full bg-codix-green px-5 py-2 text-xs sm:text-[13px] font-bold text-white shadow-sm hover:bg-codix-green-dark transition active:scale-95">
+                Buy now <i class="fa-solid fa-chevron-right text-[10px]" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 flex justify-center items-end px-2 pb-0 pointer-events-none">
+              <img src="images/bento-fatburner.png" alt="Codix Fatburner Twin Pack"
+                class="w-full max-w-[370px] max-h-[300px] sm:max-h-[325px] object-contain object-bottom drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
                 loading="lazy">
-            </article>
-
-            <!-- Card 5: Codix Vitamin C+D (Width: ~495.10px, Height: 302.85px, Radius: 10.59px) -->
-            <article
-              class="bento-card relative overflow-hidden group flex flex-col justify-between p-6 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 flex-[495.10] min-w-0"
-              style="min-height: 302.85px; border-radius: 10.59px; background: #EDF4F8 url('images/bento-vitamincd-bg.jpg') no-repeat center center; background-size: cover;">
-              <div class="relative z-10 max-w-[55%]">
-                <span
-                  class="inline-block bg-codix-orange text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2.5">Big
-                  Sale 65% OFF</span>
-                <h2 class="text-xl font-black text-codix-navy">Codix <span class="font-bold">Vitamin C+D</span></h2>
-                <p class="mt-1.5 text-xs text-codix-navy/85 font-medium">Immune Support with <em
-                    class="font-bold not-italic">Vitamin D</em></p>
-                <a href="#shop"
-                  class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
-                  Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
-                </a>
-              </div>
-              <img src="images/bento-vitamincd.png" alt="Codix Vitamin C+D Effervescent tubes"
-                class="absolute bottom-2 right-2 h-[175px] object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
-                loading="lazy">
-            </article>
-          </div>
+            </div>
+          </article>
         </div>
-
-        <!-- Right Side: Card 3 Codix Fatburner (Width: ~420.74px, Height: 600.41px, Radius: 10.59px) -->
-        <article
-          class="bento-card relative overflow-hidden group flex flex-col justify-between p-7 shadow-card hover:shadow-bento hover:-translate-y-1 transition duration-300 w-full lg:w-[420.74px] shrink-0"
-          style="min-height: 600.41px; border-radius: 10.59px; background: #EEE2F3 url('images/bento-fatburner-bg.jpg') no-repeat center center; background-size: cover;">
-          <div class="relative z-10">
-            <span
-              class="inline-block bg-codix-orange text-white text-[9px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-3">Big
-              Sale 65% OFF</span>
-            <h2 class="text-2xl sm:text-3xl font-black text-codix-navy">Codix <span class="font-bold">Fatburner</span>
-            </h2>
-            <p class="mt-1.5 text-xs sm:text-sm text-codix-navy/85 font-medium">Metabolism Support</p>
-            <a href="#shop"
-              class="mt-4 inline-flex items-center rounded-full bg-codix-green px-5 py-2 text-xs font-bold text-white hover:bg-codix-green-dark transition shadow-sm active:scale-95">
-              Buy now <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]" aria-hidden="true"></i>
-            </a>
-          </div>
-          <div class="flex justify-center mt-6">
-            <img src="images/bento-fatburner.png" alt="Codix Fatburner Twin Pack"
-              class="h-[240px] sm:h-[280px] object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
-              loading="lazy">
-          </div>
-        </article>
       </div>
     </section>
 
     <!-- ======================================================== -->
     <!-- 6. POPULAR CATEGORIES WITH PRODUCT GRID                 -->
     <!-- ======================================================== -->
-    <section id="shop" class="px-4 pt-14 sm:px-6 lg:pt-16" aria-label="Popular Categories">
-      <div class="mx-auto flex flex-col justify-between"
-        style="width: 100%; max-width: 1323px; min-height: 572.36px; gap: 34px;">
+    <section id="shop" class="pt-14 lg:pt-16" aria-label="Popular Categories">
+      <div class="container-codix flex flex-col justify-between" style="min-height: 572.36px; gap: 34px;">
         <div class="space-y-6">
           <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Popular Categories</h2>
 
@@ -968,14 +969,13 @@
     <!-- ======================================================== -->
     <!-- 7. PLUS BANNER & FEATURED PRODUCTS HEADER (Exact Figma 1321x292.10px Frame) -->
     <!-- ======================================================== -->
-    <section class="px-4 pt-10 pb-0 sm:px-6 overflow-visible" aria-label="Plus Delivery & Featured Products Header">
-      <div class="mx-auto relative"
-        style="width: 100%; max-width: 1321px; min-height: 292.1px;">
+    <section class="pt-10 pb-0 overflow-visible" aria-label="Plus Delivery & Featured Products Header">
+      <div class="container-codix relative" style="min-height: 292.1px;">
 
         <!-- Upper: Promotional Banner Container (Exact Figma 1321x206.98px) -->
         <div
-          class="relative shadow-sm flex items-center justify-center group cursor-pointer overflow-visible"
-          style="width: 100%; max-width: 1321px; height: 206.98px; top: -4px; border-radius: 10.64px; opacity: 1; background: #C6EAF8 url('images/plus-banner-bg.jpg') no-repeat center center; background-size: cover;">
+          class="relative shadow-sm flex items-center justify-center group cursor-pointer overflow-visible w-full min-h-[206.98px] rounded-[10.64px]"
+          style="top: -4px; opacity: 1; background: #C6EAF8 url('images/plus-banner-bg.jpg') no-repeat center center; background-size: cover;">
 
           <!-- Product Visuals (Exact Figma left: 250.18px, top: 87.1px, width: 287.82px, height: 205px) -->
           <div
@@ -1008,7 +1008,7 @@
           </div>
         </div>
 
-        <!-- Lower Portion of the same 1321x292.1px Parent Section: Featured Products Title & Arrows -->
+        <!-- Lower Portion of the same Parent Section: Featured Products Title & Arrows -->
         <div
           class="relative w-full flex items-end justify-between pt-6 md:pt-0 md:absolute md:bottom-7 md:left-0 md:right-0 px-2 sm:px-4 z-10">
           <!-- Featured Products Heading -->
@@ -1037,8 +1037,8 @@
     <!-- ======================================================== -->
     <!-- 8. FEATURED PRODUCTS GRID (Exact Figma 1312x937px Frame)  -->
     <!-- ======================================================== -->
-    <section class="px-4 pt-0 pb-12 sm:px-6" aria-label="Featured Products Grid">
-      <div class="mx-auto" style="width: 100%; max-width: 1312px; min-height: 937px; opacity: 1;">
+    <section class="pt-0 pb-12" aria-label="Featured Products Grid">
+      <div class="container-codix" style="min-height: 937px;">
         <!-- 15 Product Cards Grid (5 Columns x 3 Rows, first 2 rows = 10 cards in 937px frame) -->
         <div id="featured-products-grid" class="grid gap-x-5 gap-y-7 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
           <!-- Populated by JavaScript -->
@@ -1049,8 +1049,8 @@
     <!-- ======================================================== -->
     <!-- 9. SPECIAL OFFERS SECTION (Exact Figma 1343x363.91px)    -->
     <!-- ======================================================== -->
-    <section class="px-4 py-12 sm:px-6" aria-label="Special Offers">
-      <div class="mx-auto flex flex-col justify-between" style="width: 100%; max-width: 1343px; min-height: 363.91px;">
+    <section class="py-12" aria-label="Special Offers">
+      <div class="container-codix flex flex-col justify-between" style="min-height: 363.91px;">
         <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-8" style="color: #3A2F99;">Special
           offers</h2>
         <div class="grid grid-cols-2 gap-3 sm:gap-6 items-center">
@@ -1260,39 +1260,42 @@
 
     <!-- ======================================================== -->
     <!-- 11. FRAME 7: TRUST SIGNALS STRIP (Side-by-Side Mobile)    -->
+    <!-- ===========================    <!-- ======================================================== -->
+    <!-- 11. FRAME 7: TRUST SIGNALS STRIP (Side-by-Side Mobile)    -->
     <!-- ======================================================== -->
-    <section class="px-4 py-8 sm:px-6" aria-label="Trust & Guarantees">
-      <div class="mx-auto grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6"
-        style="width: 100%; max-width: 1310px; min-height: 85px;">
-        <!-- 100% Money back -->
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
-          style="min-height: 85px; border-radius: 12px;">
-          <img src="images/icon-wallet.png" alt="100% Money back icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
-            loading="lazy">
-          <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">100%
-            Money back</span>
-        </div>
+    <section class="py-8" aria-label="Trust & Guarantees">
+      <div class="container-codix">
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 min-h-[85px]">
+          <!-- 100% Money back -->
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+            style="min-height: 85px; border-radius: 12px;">
+            <img src="images/icon-wallet.png" alt="100% Money back icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
+              loading="lazy">
+            <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">100%
+              Money back</span>
+          </div>
 
-        <!-- Non-contact shipping -->
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
-          style="min-height: 85px; border-radius: 12px;">
-          <img src="images/icon-box.png" alt="Non-contact shipping icon"
-            class="h-5 sm:h-6 w-auto object-contain shrink-0" loading="lazy">
-          <span
-            class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Non-contact
-            shipping</span>
-        </div>
+          <!-- Non-contact shipping -->
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+            style="min-height: 85px; border-radius: 12px;">
+            <img src="images/icon-box.png" alt="Non-contact shipping icon"
+              class="h-5 sm:h-6 w-auto object-contain shrink-0" loading="lazy">
+            <span
+              class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Non-contact
+              shipping</span>
+          </div>
 
-        <!-- Free delivery over $200 -->
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
-          style="min-height: 85px; border-radius: 12px;">
-          <img src="images/icon-truck.png" alt="Free delivery icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
-            loading="lazy">
-          <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Free
-            delivery over $200</span>
+          <!-- Free delivery over $200 -->
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-1.5 sm:gap-3 px-2 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-[#FAFAFA] hover:shadow-sm transition"
+            style="min-height: 85px; border-radius: 12px;">
+            <img src="images/icon-truck.png" alt="Free delivery icon" class="h-5 sm:h-6 w-auto object-contain shrink-0"
+              loading="lazy">
+            <span class="text-[11px] sm:text-xs md:text-sm font-bold text-[#181440] tracking-tight leading-tight">Free
+              delivery over $200</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1300,9 +1303,8 @@
     <!-- ======================================================== -->
     <!-- 12. BEST SELLING PRODUCTS IN... SECTION (Figma Match)    -->
     <!-- ======================================================== -->
-    <section class="px-4 pb-16 sm:px-6" aria-label="Best Selling Products">
-      <div class="mx-auto flex flex-col justify-between"
-        style="width: 100%; max-width: 1323px; min-height: 591.24px; gap: 53px;">
+    <section class="pb-16" aria-label="Best Selling Products">
+      <div class="container-codix flex flex-col justify-between" style="min-height: 591.24px; gap: 53px;">
         <div class="space-y-6">
           <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Best Selling Products
             in</h2>
@@ -1329,8 +1331,8 @@
     <!-- ======================================================== -->
     <!-- 13. OUR LATEST BLOG POST SECTION (Exact Figma Match)     -->
     <!-- ======================================================== -->
-    <section id="blog" class="px-4 py-16 sm:px-6" aria-label="Blog and News">
-      <div class="container-codix max-w-[1323px] mx-auto">
+    <section id="blog" class="py-16" aria-label="Blog and News">
+      <div class="container-codix">
         <!-- Header with Subtitle and Horizontal Accent Lines -->
         <div class="text-center mb-10">
           <span class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-slate-900 block mb-1">NEWS &amp;
@@ -1405,8 +1407,8 @@
     <!-- ======================================================== -->
     <!-- 14. JOIN OUR NEWSLETTER SECTION (Height: 240px)          -->
     <!-- ======================================================== -->
-    <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
-      style="width: 100%; min-height: 240px;" aria-label="Newsletter Subscription">
+    <section class="newsletter-bg relative flex items-center justify-center min-h-[240px]"
+      aria-label="Newsletter Subscription">
       <div class="container-codix text-center max-w-xl mx-auto py-8">
         <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
         <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
@@ -1424,37 +1426,38 @@
         </form>
       </div>
     </section>
+
     <!-- ======================================================== -->
-    <!-- Brand Logos Strip (Side-by-Side Mobile & Desktop)       -->
+    <!-- 15. Brand Logos Strip (Side-by-Side Mobile & Desktop)    -->
     <!-- ======================================================== -->
-    <section class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
-      style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
+    <section class="brand-strip-bg py-4 sm:py-6 flex items-center justify-center min-h-[120px]"
       aria-label="Partner Brands">
-      <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
-        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-          <img src="images/brand-allisa-clean.png" alt="Allisa"
-            class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
-            loading="lazy">
-        </div>
-        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-          <img src="images/brand-unter-clean.png" alt="Unter"
-            class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
-            loading="lazy">
-        </div>
-        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-          <img src="images/brand-jurosa-clean.png" alt="JUROSA"
-            class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
-            loading="lazy">
-        </div>
-        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-          <img src="images/brand-bticn-clean.png" alt="bticn"
-            class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
-            loading="lazy">
-        </div>
-        <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-          <img src="images/brand-optimize-clean.png" alt="Optimize"
-            class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
-            loading="lazy">
+      <div class="container-codix">
+        <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full">
+          <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+            <img src="images/brand-allisa-clean.png" alt="Allisa"
+              class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+              loading="lazy">
+          </div>
+          <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+            <img src="images/brand-unter-clean.png" alt="Unter"
+              class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+              loading="lazy">
+          </div>
+          <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+            <img src="images/brand-jurosa-clean.png" alt="JUROSA"
+              class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+              loading="lazy">
+          </div>
+          <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+            <img src="images/brand-bticn-clean.png" alt="bticn"
+              class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+              loading="lazy">
+          </div>
+          <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+            <img src="images/brand-optimize-clean.png" alt="Optimize"
+              class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+              loading="lazy">
         </div>
       </div>
     </section>
