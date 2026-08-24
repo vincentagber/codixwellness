@@ -646,6 +646,23 @@ body {
   position: relative;
 }
 
+.mega-menu-btn {
+  background-color: #D7F4D8;
+  color: #211C68;
+  transition: all 0.2s ease;
+}
+
+.mega-menu-btn.active,
+.mega-menu-wrapper.is-open .mega-menu-btn {
+  background-color: #382898 !important;
+  color: #ffffff !important;
+}
+
+.mega-menu-btn.active .mega-cat-icon,
+.mega-menu-wrapper.is-open .mega-cat-icon {
+  filter: brightness(0) invert(1);
+}
+
 .mega-menu {
   position: absolute;
   top: 100%;
@@ -660,19 +677,20 @@ body {
   padding: 28px 32px;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(8px);
   transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
   z-index: 100;
   display: block;
 }
 
-.mega-menu-wrapper:hover .mega-menu,
-.mega-menu-wrapper:focus-within .mega-menu,
-.mega-menu.open,
-.mega-menu.is-open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.mega-menu-wrapper.is-open .mega-menu,
+.mega-menu.is-open,
+.mega-menu.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
 }
 
 .mega-menu h4 {
