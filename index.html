@@ -942,9 +942,9 @@
     <!-- ======================================================== -->
     <!-- 6. POPULAR CATEGORIES WITH PRODUCT GRID                 -->
     <!-- ======================================================== -->
-    <section id="shop" class="pt-14 lg:pt-16" aria-label="Popular Categories">
-      <div class="container-codix flex flex-col justify-between" style="min-height: 572.36px; gap: 34px;">
-        <div class="space-y-6">
+    <section id="shop" class="pt-12 lg:pt-14" aria-label="Popular Categories">
+      <div class="container-codix">
+        <div class="space-y-6 mb-7 sm:mb-8">
           <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Popular Categories</h2>
 
           <!-- Category Tabs Switcher -->
@@ -960,7 +960,7 @@
 
         <!-- 5-Column Product Grid (5 items) -->
         <div id="popular-products-grid" class="grid gap-x-5 gap-y-7 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
-          role="tabpanel" style="min-height: 428px;">
+          role="tabpanel">
           <!-- Populated by JavaScript -->
         </div>
       </div>
@@ -2137,7 +2137,7 @@
       ` : '';
 
       return `
-        <article class="product-card bg-transparent flex flex-col justify-between group transition duration-300 w-full" data-id="${product.id}">
+        <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full" data-id="${product.id}">
           <!-- Product Image Box (Lavender/Light Gray #F2F2FA, radius 8px) -->
           <div class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-md transition-shadow duration-300" style="aspect-ratio: 242 / 220; min-height: 220px; border-radius: 8px;">
             ${badgeHTML}
@@ -2145,7 +2145,7 @@
           </div>
 
           <!-- Product Details -->
-          <div class="pt-2.5 flex flex-col justify-between flex-1">
+          <div class="pt-2 flex flex-col">
             <div>
               <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${product.cat}</p>
               <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
