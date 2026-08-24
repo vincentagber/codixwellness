@@ -560,52 +560,57 @@
       <div class="container-codix">
         <div id="hero-carousel-container" class="relative mx-auto overflow-hidden shadow-card"
           style="width: 100%; height: 447.64px; border-radius: 10.66px;">
-          <!-- Slide 1: Your Gummie For Men (Exact Figma Photographic Banner) -->
-          <div class="hero-slide active w-full h-full" role="group" aria-roledescription="slide" aria-label="1 of 2">
-            <img src="images/hero-bg.png" alt="Your Gummie For Men - Support Your Strength, Every Day"
-              class="w-full h-full object-cover object-center" loading="eager">
-            <!-- <a href="#shop"
-              class="absolute left-[19%] sm:left-[21%] md:left-[22%] bottom-[16%] sm:bottom-[18%] inline-flex items-center rounded-full bg-white px-7 py-3 text-xs sm:text-sm font-extrabold text-[#181440] shadow-md hover:-translate-y-0.5 hover:shadow-lg transition active:scale-95 z-10"
-              aria-label="Buy Your Gummie for Men now">
-              Buy it now <i class="fa-solid fa-chevron-right ml-2 text-xs" aria-hidden="true"></i>
-            </a> -->
-          </div>
+          <!-- Slide Track for smooth horizontal slide transition -->
+          <div id="hero-track" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+            <!-- Slide 1: Your Gummie For Men (Exact Figma Photographic Banner) -->
+            <div class="hero-slide w-full h-full min-w-full flex-shrink-0 relative" role="group" aria-roledescription="slide" aria-label="1 of 2">
+              <img src="images/hero-bg.png" alt="Your Gummie For Men - Support Your Strength, Every Day"
+                class="w-full h-full object-cover object-center" loading="eager">
+            </div>
 
-          <!-- Slide 2: Codix Everose -->
-          <div class="hero-slide bg-gradient-to-r from-[#FDE7C6] to-[#F8D8A8] w-full h-full" role="group"
-            aria-roledescription="slide" aria-label="2 of 2">
-            <div class="grid lg:grid-cols-2 w-full h-full">
-              <div class="relative z-10 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-10">
-                <span class="text-xs sm:text-sm font-semibold text-codix-navy tracking-wide">Balanced Daily
-                  Vitamins</span>
-                <h2 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.92] text-codix-navy">
-                  <span class="text-codix-orange">CODIX EVEROSE</span><br>DAILY CARE
-                </h2>
-                <a href="#shop"
-                  class="mt-6 inline-flex w-fit items-center rounded-full bg-white px-7 py-3 text-sm font-extrabold text-codix-navy shadow-sm hover:-translate-y-0.5 hover:shadow-md transition">
-                  Shop Everose <i class="fa-solid fa-arrow-right ml-2 text-xs" aria-hidden="true"></i>
-                </a>
-              </div>
-              <div class="hidden lg:flex items-center justify-center p-8">
-                <img src="images/codix-everose.png" alt="Codix Everose product bottle"
-                  class="h-[300px] object-contain drop-shadow-xl" loading="lazy">
+            <!-- Slide 2: Codix Everose -->
+            <div class="hero-slide w-full h-full min-w-full flex-shrink-0 bg-gradient-to-r from-[#FDE7C6] to-[#F8D8A8] relative" role="group"
+              aria-roledescription="slide" aria-label="2 of 2">
+              <div class="grid lg:grid-cols-2 w-full h-full">
+                <div class="relative z-10 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-10">
+                  <span class="text-xs sm:text-sm font-semibold text-codix-navy tracking-wide">Balanced Daily
+                    Vitamins</span>
+                  <h2 class="mt-2 text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.92] text-codix-navy">
+                    <span class="text-codix-orange">CODIX EVEROSE</span><br>DAILY CARE
+                  </h2>
+                  <a href="#shop"
+                    class="mt-6 inline-flex w-fit items-center rounded-full bg-white px-7 py-3 text-sm font-extrabold text-codix-navy shadow-sm hover:-translate-y-0.5 hover:shadow-md transition">
+                    Shop Everose <i class="fa-solid fa-arrow-right ml-2 text-xs" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <div class="hidden lg:flex items-center justify-center p-8">
+                  <img src="images/codix-everose.png" alt="Codix Everose product bottle"
+                    class="h-[300px] object-contain drop-shadow-xl" loading="lazy">
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Navigation Arrows -->
-          <button id="hero-prev-btn"
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 hover:bg-slate-50 transition z-20 cursor-pointer"
+          <button id="hero-prev-btn" onclick="prevHeroSlide()"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 transition z-20 cursor-pointer"
             aria-label="Previous Slide">
             <i class="fa-solid fa-chevron-left text-sm"></i>
           </button>
-          <button id="hero-next-btn"
-            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 hover:bg-slate-50 transition z-20 cursor-pointer"
+          <button id="hero-next-btn" onclick="nextHeroSlide()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md flex items-center justify-center hover:scale-105 transition z-20 cursor-pointer"
             aria-label="Next Slide">
             <i class="fa-solid fa-chevron-right text-sm"></i>
           </button>
+
+          <!-- Slide Dots Indicator -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+            <button onclick="goToHeroSlide(0)" class="hero-dot w-6 h-2 rounded-full bg-white transition-all duration-300 cursor-pointer" aria-label="Slide 1"></button>
+            <button onclick="goToHeroSlide(1)" class="hero-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 cursor-pointer" aria-label="Slide 2"></button>
+          </div>
         </div>
       </div>
+    </section>
     <!-- ======================================================== -->
     <!-- 5. PROMO BENTO GRID                                     -->
     <!-- ======================================================== -->
@@ -2216,44 +2221,53 @@
       }
     }
 
-    // --- Hero Carousel Engine ---
+    // --- Hero Carousel Engine (Smooth Horizontal Slide Scrolling) ---
     let currentHeroIndex = 0;
     let heroAutoTimer = null;
 
-    function getHeroSlides() {
-      return document.querySelectorAll('.hero-slide');
-    }
-
     function showHeroSlide(index) {
-      const slides = getHeroSlides();
-      if (!slides.length) return;
+      const track = document.getElementById('hero-track');
+      const dots = document.querySelectorAll('.hero-dot');
+      const slides = document.querySelectorAll('#hero-track .hero-slide');
+      if (!track || !slides.length) return;
+
       currentHeroIndex = (index + slides.length) % slides.length;
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === currentHeroIndex);
+      track.style.transform = `translateX(-${currentHeroIndex * 100}%)`;
+
+      dots.forEach((dot, i) => {
+        if (i === currentHeroIndex) {
+          dot.classList.add('w-6', 'bg-white');
+          dot.classList.remove('w-2', 'bg-white/50');
+        } else {
+          dot.classList.remove('w-6', 'bg-white');
+          dot.classList.add('w-2', 'bg-white/50');
+        }
       });
     }
 
     function nextHeroSlide() {
-      const slides = getHeroSlides();
-      if (!slides.length) return;
-      currentHeroIndex = (currentHeroIndex + 1) % slides.length;
-      showHeroSlide(currentHeroIndex);
+      showHeroSlide(currentHeroIndex + 1);
     }
 
     function prevHeroSlide() {
-      const slides = getHeroSlides();
-      if (!slides.length) return;
-      currentHeroIndex = (currentHeroIndex - 1 + slides.length) % slides.length;
-      showHeroSlide(currentHeroIndex);
+      showHeroSlide(currentHeroIndex - 1);
+    }
+
+    function goToHeroSlide(index) {
+      showHeroSlide(index);
+      startHeroTimer();
     }
 
     function startHeroTimer() {
       stopHeroTimer();
-      heroAutoTimer = setInterval(nextHeroSlide, 5000);
+      heroAutoTimer = setInterval(nextHeroSlide, 4500);
     }
 
     function stopHeroTimer() {
-      if (heroAutoTimer) clearInterval(heroAutoTimer);
+      if (heroAutoTimer) {
+        clearInterval(heroAutoTimer);
+        heroAutoTimer = null;
+      }
     }
 
     // --- Testimonials Carousel Engine (3 on Laptop/Desktop, 1 on Mobile) ---
