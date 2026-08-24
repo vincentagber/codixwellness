@@ -16,34 +16,83 @@
         extend: {
           colors: {
             'codix-green': '#57B952',
-            'codix-green-dark': '#48A344',
+            'codix-green-dark': '#469C42',
             'codix-navy': '#211C68',
-            'codix-purple': '#382898',
+            'codix-purple': '#3A2F99',
             'codix-orange': '#F2971F',
+            'codix-orange-dark': '#DE8413',
             'codix-bg-gray': '#F5F5F7',
           },
           fontFamily: {
-            sans: ['Lato', 'sans-serif'],
+            sans: ['Lato', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
           }
         }
       }
     }
   </script>
 
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
   <!-- Google Fonts: Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
     rel="stylesheet">
 
-  <!-- Font Awesome 6 Pro / Free CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
     body {
-      font-family: 'Lato', sans-serif;
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
       color: #333333;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container-codix {
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+
+    .top-bar-bg {
+      background-color: #57B952;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+
+    .newsletter-bg {
+      background: url('images/newsletter-bg.jpg') no-repeat center center;
+      background-size: cover;
+    }
+
+    .footer-green-bg {
+      background-color: #57B952;
     }
 
     .form-input {
@@ -96,342 +145,513 @@
       cursor: pointer;
     }
 
-    /* Modal dialog */
-    .modal-overlay {
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dropdown-menu.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Modal / Drawer Overlays */
+    .modal-overlay:not(.open) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .modal-overlay.open {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background-color: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px);
       z-index: 9999;
-      display: none;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .modal-overlay.open {
-      display: flex;
+    .mobile-drawer-panel {
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-menu-overlay.open .mobile-drawer-panel {
+      transform: translateX(0);
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-menu-overlay,
+      #mobile-menu-overlay {
+        display: none !important;
+      }
     }
   </style>
 </head>
 
-<body class="min-h-screen flex flex-col bg-white">
+<body class="font-sans antialiased text-slate-800 bg-white selection:bg-codix-green selection:text-white flex flex-col min-h-screen">
 
   <!-- ======================================================== -->
-  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                     -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR (Height ~40px)       -->
   <!-- ======================================================== -->
-  <aside class="bg-[#57B952] text-white text-xs py-2 px-4 select-none relative z-30" aria-label="Announcement">
-    <div class="max-w-[1320px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-center sm:text-left">
-      <p class="font-medium tracking-wide">
-        Free shipping all orders on over $60.
-      </p>
-      <div class="flex items-center gap-4 text-xs font-semibold">
-        <span class="cursor-pointer hover:underline flex items-center gap-1">EN <i class="fa-solid fa-chevron-down text-[9px]"></i></span>
-        <span class="text-white/40">|</span>
-        <span class="cursor-pointer hover:underline flex items-center gap-1">$ USD <i class="fa-solid fa-chevron-down text-[9px]"></i></span>
-        <span class="text-white/40">|</span>
-        <a href="login.html" class="hover:underline flex items-center gap-1">
-          <i class="fa-regular fa-user text-[11px]"></i> My account
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none"
+    aria-label="Announcement">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <!-- Left: Free Shipping message -->
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over $60.</span>
+      </div>
+
+      <!-- Right: Language, Currency, Account -->
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <!-- Language Selector -->
+        <div class="relative">
+          <button id="lang-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1 cursor-pointer"
+            aria-label="Select Language">
+            <span id="lang-label">EN</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="lang-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-lg border border-slate-100 py-1.5 z-50">
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('EN')">English (EN)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('ES')">Español (ES)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('FR')">Français (FR)</button>
+          </div>
+        </div>
+
+        <!-- Currency Selector -->
+        <div class="relative">
+          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1 cursor-pointer"
+            aria-label="Select Currency">
+            <span id="curr-label">$ USD</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="curr-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-lg border border-slate-100 py-1.5 z-50">
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectCurr('$ USD')">$ USD</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectCurr('€ EUR')">€ EUR</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectCurr('£ GBP')">£ GBP</button>
+          </div>
+        </div>
+
+        <!-- My Account Trigger -->
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition cursor-pointer">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
+          <span>My account</span>
         </a>
       </div>
     </div>
   </aside>
 
   <!-- ======================================================== -->
-  <!-- 2. MAIN CHECKOUT CONTAINER                              -->
+  <!-- 2. MAIN HEADER (Height ~80px)                            -->
   <!-- ======================================================== -->
-  <main class="flex-1 flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full border-t border-slate-100">
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm">
+    <div class="container-codix flex items-center justify-between h-[72px] sm:h-[80px] gap-2 sm:gap-4">
+      <!-- Left: Hamburger Button (Mobile) + Logo -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <button id="mobile-hamburger-btn" onclick="openMobileMenu()"
+          class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D7F4D8] text-codix-navy hover:bg-[#EDF8EE] flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95"
+          aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars text-base text-codix-navy"></i>
+        </button>
 
-    <!-- ======================================================== -->
-    <!-- LEFT COLUMN: CHECKOUT FORM (Express, Contact, Address, Payment) -->
-    <!-- ======================================================== -->
-    <div class="flex-1 px-4 sm:px-8 lg:pl-16 lg:pr-12 py-8 lg:py-12 bg-white max-w-full lg:max-w-[800px]">
-
-      <!-- Header Logo Centered -->
-      <div class="flex items-center justify-center mb-8">
-        <a href="index.html" class="inline-block hover:opacity-90 transition">
-          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-10 sm:h-12 w-auto">
+        <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain">
         </a>
       </div>
 
-      <!-- Express Checkout Block -->
-      <div class="mb-8">
-        <p class="text-center text-xs font-semibold text-slate-500 mb-3 tracking-wide">Express checkout</p>
-        <div class="grid grid-cols-2 gap-3 max-w-[480px] mx-auto">
-          <!-- Shop Pay Button -->
-          <button type="button" onclick="handleExpressCheckout('Shop Pay')"
-            class="h-12 rounded-lg text-white font-bold flex items-center justify-center gap-1.5 transition hover:brightness-110 active:scale-98 cursor-pointer shadow-xs"
-            style="background-color: #5A31F4;" aria-label="Express checkout with Shop Pay">
-            <span class="italic font-extrabold text-base tracking-tight">shop</span>
-            <span class="text-xs bg-white text-[#5A31F4] font-black px-1.5 py-0.5 rounded ml-0.5">pay</span>
+      <!-- Search Bar -->
+      <div id="search-container" class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form action="shop.html" method="GET"
+          class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition"
+          style="height: 50px; border-radius: 999px;" role="search">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm"></i>
+          <input name="q" type="text" placeholder="Search everything at codix wellness..."
+            class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2">
+          <button type="submit"
+            class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
           </button>
-
-          <!-- Google Pay Button -->
-          <button type="button" onclick="handleExpressCheckout('Google Pay')"
-            class="h-12 rounded-lg bg-[#111111] hover:bg-black text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
-            aria-label="Express checkout with Google Pay">
-            <i class="fa-brands fa-google text-sm"></i>
-            <span class="text-sm font-semibold tracking-tight">Pay</span>
-          </button>
-        </div>
-
-        <!-- OR Divider -->
-        <div class="relative my-7 flex items-center justify-center">
-          <div class="w-full border-t border-slate-200"></div>
-          <span class="absolute bg-white px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">OR</span>
-        </div>
+        </form>
       </div>
 
-      <!-- Main Checkout Form -->
-      <form id="checkout-form" onsubmit="handleOrderSubmit(event)" class="space-y-8">
+      <!-- Action Icons -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <!-- Wishlist -->
+        <a href="shop.html"
+          class="w-10 h-10 rounded-full border border-[#FECDD3] text-[#F43F5E] hover:bg-rose-50 flex items-center justify-center transition relative group"
+          aria-label="Wishlist">
+          <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
+        </a>
 
-        <!-- 1. Contact Section -->
-        <section aria-labelledby="contact-heading">
-          <div class="flex items-center justify-between mb-3">
-            <h2 id="contact-heading" class="text-lg font-bold text-slate-900 tracking-tight">Contact</h2>
-            <a href="login.html" class="text-xs font-bold text-codix-green hover:underline">Sign in</a>
+        <!-- Sign In -->
+        <a href="login.html" class="flex items-center gap-2 cursor-pointer group" aria-label="Sign In to Account">
+          <div
+            class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 flex items-center justify-center transition group-hover:scale-105">
+            <i class="fa-regular fa-user text-sm"></i>
           </div>
-          <div class="space-y-2.5">
-            <input type="email" id="customer-email" required placeholder="Email"
-              class="form-input">
-            <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
-              <input type="checkbox" checked class="custom-checkbox">
-              <span>Email me with news and offers</span>
-            </label>
+          <div class="hidden xl:flex flex-col leading-tight select-none">
+            <span class="text-[13px] font-bold text-slate-800 group-hover:text-codix-green transition">Sign In</span>
+            <span class="text-[10px] text-slate-400">Account</span>
           </div>
-        </section>
+        </a>
 
-        <!-- 2. Delivery / Shipping Address Section -->
-        <section aria-labelledby="delivery-heading">
-          <h2 id="delivery-heading" class="text-lg font-bold text-slate-900 tracking-tight mb-3">Delivery</h2>
-
-          <div class="space-y-3">
-            <!-- Country / Region -->
-            <div>
-              <label for="shipping-country" class="block text-[11px] font-semibold text-slate-500 mb-1">Country / Region</label>
-              <select id="shipping-country" class="form-select font-medium text-slate-800" onchange="calculateShipping()">
-                <option value="GB" selected>United Kingdom</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="NG">Nigeria</option>
-                <option value="DE">Germany</option>
-                <option value="FR">France</option>
-                <option value="AU">Australia</option>
-              </select>
-            </div>
-
-            <!-- First & Last Name -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <input type="text" id="first-name" placeholder="First name (optional)" class="form-input">
-              </div>
-              <div>
-                <input type="text" id="last-name" required placeholder="Last name" class="form-input">
-              </div>
-            </div>
-
-            <!-- Address Input with Search Icon -->
-            <div class="relative flex items-center">
-              <input type="text" id="shipping-address" required placeholder="Address" class="form-input pr-10" oninput="calculateShipping()">
-              <i class="fa-solid fa-magnifying-glass absolute right-3.5 text-slate-400 text-sm pointer-events-none"></i>
-            </div>
-
-            <!-- Apartment, suite, etc. -->
-            <div>
-              <input type="text" id="shipping-apartment" placeholder="Apartment, suite, etc. (optional)" class="form-input">
-            </div>
-
-            <!-- City & Postcode -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <input type="text" id="shipping-city" required placeholder="City" class="form-input">
-              </div>
-              <div>
-                <input type="text" id="shipping-postcode" required placeholder="Postcode" class="form-input" oninput="calculateShipping()">
-              </div>
-            </div>
-
-            <!-- Phone Input with Tooltip Icon -->
-            <div class="relative flex items-center">
-              <input type="tel" id="shipping-phone" placeholder="Phone" class="form-input pr-10">
-              <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="In case there is an issue with your delivery">
-                <i class="fa-regular fa-circle-question text-sm"></i>
-              </span>
-            </div>
-
-            <!-- Text me Checkbox -->
-            <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none pt-1">
-              <input type="checkbox" class="custom-checkbox">
-              <span>Text me with news and offers</span>
-            </label>
+        <!-- Shopping Cart -->
+        <a href="cart.html" class="flex items-center gap-2 cursor-pointer group select-none" aria-label="Shopping Cart">
+          <div
+            class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
+            <span id="cart-header-count"
+              class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">0</span>
           </div>
-        </section>
-
-        <!-- 3. Shipping Method Section -->
-        <section aria-labelledby="shipping-method-heading">
-          <div class="mb-2">
-            <h2 id="shipping-method-heading" class="text-lg font-bold text-slate-900 tracking-tight">Shipping method</h2>
-            <p class="text-xs text-slate-500 font-medium">Order Before 2 PM Monday-Friday for Same-Day Dispatch.</p>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total-display"
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">$0.00</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
           </div>
-
-          <div id="shipping-method-box" class="rounded-xl border border-slate-200 bg-[#F9FAFB] p-4 text-xs text-slate-600 transition">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <input type="radio" id="standard-shipping" name="shipping_rate" checked class="custom-checkbox">
-                <label for="standard-shipping" class="font-bold text-slate-800 cursor-pointer">
-                  Standard Tracked Delivery (2–3 business days)
-                </label>
-              </div>
-              <span id="shipping-method-price" class="font-bold text-slate-900">FREE</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- 4. Payment Section -->
-        <section aria-labelledby="payment-heading">
-          <div class="mb-3">
-            <h2 id="payment-heading" class="text-lg font-bold text-slate-900 tracking-tight">Payment</h2>
-            <p class="text-xs text-slate-500 font-medium">All transactions are secure and encrypted.</p>
-          </div>
-
-          <!-- Payment Container Box -->
-          <div class="rounded-xl border border-slate-300 overflow-hidden bg-white">
-            <!-- Header Tab: Credit Card -->
-            <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <input type="radio" id="pay-card" name="payment_method" checked class="custom-checkbox">
-                <label for="pay-card" class="text-xs font-bold text-slate-800 cursor-pointer">Credit card</label>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
-                <img src="images/pay-mastercard.png" alt="Mastercard" class="h-4 w-auto object-contain">
-                <img src="images/pay-amex.png" alt="Amex" class="h-4 w-auto object-contain">
-              </div>
-            </div>
-
-            <!-- Card Inputs Form -->
-            <div class="p-4 space-y-3 bg-[#FDFDFD]">
-              <!-- Card Number -->
-              <div class="relative flex items-center">
-                <input type="text" required placeholder="Card number" maxlength="19"
-                  class="form-input pr-10" id="card-number" oninput="formatCardNumber(this)">
-                <i class="fa-solid fa-lock absolute right-3.5 text-slate-400 text-xs"></i>
-              </div>
-
-              <!-- Expiry & CVV -->
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <input type="text" required placeholder="Expiration date (MM / YY)" maxlength="5"
-                    class="form-input" id="card-expiry" oninput="formatExpiry(this)">
-                </div>
-                <div class="relative flex items-center">
-                  <input type="password" required placeholder="Security code" maxlength="4"
-                    class="form-input pr-10" id="card-cvv">
-                  <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="3 or 4-digit code on the back of your card">
-                    <i class="fa-regular fa-circle-question text-sm"></i>
-                  </span>
-                </div>
-              </div>
-
-              <!-- Name on Card -->
-              <div>
-                <input type="text" required placeholder="Name on card" class="form-input" id="card-name">
-              </div>
-
-              <!-- Use shipping address as billing -->
-              <div class="pt-2">
-                <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer select-none">
-                  <input type="checkbox" checked class="custom-checkbox">
-                  <span>Use shipping address as billing address</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Save my information info -->
-          <div class="mt-4 pt-2 flex items-center justify-between text-xs text-slate-600">
-            <span>Save my information for a faster checkout</span>
-            <button type="button" class="text-xs font-bold text-codix-purple hover:underline cursor-pointer">Not now</button>
-          </div>
-
-          <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">
-            By paying, you agree to create a shop account subject to shop's <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
-          </p>
-
-          <!-- Submit Button: Continue / Pay now -->
-          <button type="submit" id="submit-order-btn"
-            class="mt-5 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-4 rounded-xl text-sm transition active:scale-98 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-            style="box-shadow: 0px 8px 18px rgba(87, 185, 82, 0.28);">
-            <i class="fa-solid fa-lock text-xs"></i>
-            <span>Continue</span>
-          </button>
-        </section>
-      </form>
+        </a>
+      </div>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- RIGHT COLUMN: ORDER SUMMARY SIDEBAR                     -->
-    <!-- ======================================================== -->
-    <div class="w-full lg:w-[480px] bg-[#F5F5F7] border-t lg:border-t-0 lg:border-l border-slate-200 px-4 sm:px-8 lg:px-10 py-8 lg:py-12">
-      <div class="sticky top-8 space-y-6">
+    <!-- Navigation Menu Bar -->
+    <nav class="block bg-white relative overflow-x-auto"
+      style="width: 100%; min-height: 64px; padding: 10px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); -webkit-overflow-scrolling: touch;">
+      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 48px;">
+        <div class="flex items-center gap-5 sm:gap-8 shrink-0">
+          <a href="shop.html" class="flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold"
+            style="background-color: #D7F4D8; color: #211C68;">
+            <img src="images/icon-categories.png" alt="" class="w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
+            <span>Product Categories</span>
+          </a>
+          <ul class="flex items-center gap-7 text-[13px] font-medium" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
+            <li><a href="cart.html" class="hover:text-codix-green transition py-2">Cart</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-        <!-- Products List in Cart -->
-        <div id="checkout-items-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-1">
-          <!-- Populated by JavaScript from Cart -->
+  <!-- ======================================================== -->
+  <!-- 3. BREADCRUMBS                                           -->
+  <!-- ======================================================== -->
+  <div class="bg-slate-50 border-b border-slate-200/80 py-3">
+    <div class="container-codix">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 font-medium" aria-label="Breadcrumb">
+        <a href="index.html" class="hover:text-codix-green transition">Home</a>
+        <span>/</span>
+        <a href="cart.html" class="hover:text-codix-green transition">Shopping Cart</a>
+        <span>/</span>
+        <span class="text-slate-900 font-bold">Checkout</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 4. MAIN CHECKOUT SECTION                                 -->
+  <!-- ======================================================== -->
+  <main class="flex-1 bg-white">
+    <div class="max-w-[1322px] mx-auto w-full flex flex-col lg:flex-row border-b border-slate-100">
+
+      <!-- ======================================================== -->
+      <!-- LEFT COLUMN: CHECKOUT FORM                              -->
+      <!-- ======================================================== -->
+      <div class="flex-1 px-4 sm:px-8 lg:px-12 py-8 lg:py-12 bg-white max-w-full lg:max-w-[780px]">
+
+        <!-- Express Checkout Block -->
+        <div class="mb-8">
+          <p class="text-center text-xs font-semibold text-slate-500 mb-3 tracking-wide">Express checkout</p>
+          <div class="grid grid-cols-2 gap-3 max-w-[480px] mx-auto">
+            <!-- Shop Pay Button -->
+            <button type="button" onclick="handleExpressCheckout('Shop Pay')"
+              class="h-12 rounded-lg text-white font-bold flex items-center justify-center gap-1.5 transition hover:brightness-110 active:scale-98 cursor-pointer shadow-xs"
+              style="background-color: #5A31F4;" aria-label="Express checkout with Shop Pay">
+              <span class="italic font-extrabold text-base tracking-tight">shop</span>
+              <span class="text-xs bg-white text-[#5A31F4] font-black px-1.5 py-0.5 rounded ml-0.5">pay</span>
+            </button>
+
+            <!-- Google Pay Button -->
+            <button type="button" onclick="handleExpressCheckout('Google Pay')"
+              class="h-12 rounded-lg bg-[#111111] hover:bg-black text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
+              aria-label="Express checkout with Google Pay">
+              <i class="fa-brands fa-google text-sm"></i>
+              <span class="text-sm font-semibold tracking-tight">Pay</span>
+            </button>
+          </div>
+
+          <!-- OR Divider -->
+          <div class="relative my-7 flex items-center justify-center">
+            <div class="w-full border-t border-slate-200"></div>
+            <span class="absolute bg-white px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">OR</span>
+          </div>
         </div>
 
-        <!-- Discount Code Input -->
-        <div class="flex items-center gap-2.5 pt-2">
-          <input type="text" id="discount-code" placeholder="Discount code or gift card"
-            class="form-input flex-1 bg-white uppercase font-bold text-xs">
-          <button type="button" onclick="applyDiscountCode()"
-            class="px-5 py-3 rounded-lg text-xs font-bold text-white transition hover:brightness-110 active:scale-95 cursor-pointer shrink-0"
-            style="background-color: #5A31F4;">
-            Apply
-          </button>
-        </div>
-        <div id="discount-feedback" class="text-xs font-semibold hidden"></div>
+        <!-- Main Checkout Form -->
+        <form id="checkout-form" onsubmit="handleOrderSubmit(event)" class="space-y-8">
 
-        <!-- Price Breakdown -->
-        <div class="space-y-3 pt-4 border-t border-slate-200 text-xs text-slate-600">
-          <div class="flex items-center justify-between">
-            <span class="font-medium">Subtotal</span>
-            <span id="summary-subtotal" class="font-bold text-slate-900">$0.00</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="font-medium">Shipping</span>
-            <span id="summary-shipping" class="font-semibold text-slate-700">Enter shipping address</span>
-          </div>
-          <div id="discount-row" class="flex items-center justify-between text-emerald-600 font-bold hidden">
-            <span>Discount (10% OFF)</span>
-            <span id="summary-discount">-$0.00</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="font-medium">Estimated taxes</span>
-            <span id="summary-taxes" class="font-bold text-slate-900">$0.00</span>
-          </div>
-        </div>
+          <!-- 1. Contact Section -->
+          <section aria-labelledby="contact-heading">
+            <div class="flex items-center justify-between mb-3">
+              <h2 id="contact-heading" class="text-lg font-bold text-slate-900 tracking-tight">Contact</h2>
+              <a href="login.html" class="text-xs font-bold text-codix-green hover:underline">Sign in</a>
+            </div>
+            <div class="space-y-2.5">
+              <input type="email" id="customer-email" required placeholder="Email"
+                class="form-input">
+              <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+                <input type="checkbox" checked class="custom-checkbox">
+                <span>Email me with news and offers</span>
+              </label>
+            </div>
+          </section>
 
-        <!-- Grand Total -->
-        <div class="pt-4 border-t border-slate-200 flex items-baseline justify-between">
-          <div>
-            <span class="text-sm font-bold text-slate-900 block">Total</span>
-            <span id="tax-inclusion-text" class="text-[11px] text-slate-400 block mt-0.5">Including $0.00 in taxes</span>
-          </div>
-          <div class="text-right">
-            <span class="text-xs text-slate-400 font-bold mr-1">USD</span>
-            <span id="summary-total" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">$0.00</span>
-          </div>
-        </div>
+          <!-- 2. Delivery / Shipping Address Section -->
+          <section aria-labelledby="delivery-heading">
+            <h2 id="delivery-heading" class="text-lg font-bold text-slate-900 tracking-tight mb-3">Delivery</h2>
 
-        <!-- Trust Badges & Guarantees -->
-        <div class="pt-4 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
-          <div class="flex items-center gap-1.5">
-            <i class="fa-solid fa-shield-halved text-codix-green text-xs"></i>
-            <span>256-Bit SSL Encryption</span>
+            <div class="space-y-3">
+              <!-- Country / Region -->
+              <div>
+                <label for="shipping-country" class="block text-[11px] font-semibold text-slate-500 mb-1">Country / Region</label>
+                <select id="shipping-country" class="form-select font-medium text-slate-800" onchange="calculateShipping()">
+                  <option value="GB" selected>United Kingdom</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="NG">Nigeria</option>
+                  <option value="DE">Germany</option>
+                  <option value="FR">France</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+
+              <!-- First & Last Name -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <input type="text" id="first-name" placeholder="First name (optional)" class="form-input">
+                </div>
+                <div>
+                  <input type="text" id="last-name" required placeholder="Last name" class="form-input">
+                </div>
+              </div>
+
+              <!-- Address Input with Search Icon -->
+              <div class="relative flex items-center">
+                <input type="text" id="shipping-address" required placeholder="Address" class="form-input pr-10" oninput="calculateShipping()">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 text-slate-400 text-sm pointer-events-none"></i>
+              </div>
+
+              <!-- Apartment, suite, etc. -->
+              <div>
+                <input type="text" id="shipping-apartment" placeholder="Apartment, suite, etc. (optional)" class="form-input">
+              </div>
+
+              <!-- City & Postcode -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <input type="text" id="shipping-city" required placeholder="City" class="form-input">
+                </div>
+                <div>
+                  <input type="text" id="shipping-postcode" required placeholder="Postcode" class="form-input" oninput="calculateShipping()">
+                </div>
+              </div>
+
+              <!-- Phone Input with Tooltip Icon -->
+              <div class="relative flex items-center">
+                <input type="tel" id="shipping-phone" placeholder="Phone" class="form-input pr-10">
+                <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="In case there is an issue with your delivery">
+                  <i class="fa-regular fa-circle-question text-sm"></i>
+                </span>
+              </div>
+
+              <!-- Text me Checkbox -->
+              <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none pt-1">
+                <input type="checkbox" class="custom-checkbox">
+                <span>Text me with news and offers</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- 3. Shipping Method Section -->
+          <section aria-labelledby="shipping-method-heading">
+            <div class="mb-2">
+              <h2 id="shipping-method-heading" class="text-lg font-bold text-slate-900 tracking-tight">Shipping method</h2>
+              <p class="text-xs text-slate-500 font-medium">Order Before 2 PM Monday-Friday for Same-Day Dispatch.</p>
+            </div>
+
+            <div id="shipping-method-box" class="rounded-xl border border-slate-200 bg-[#F9FAFB] p-4 text-xs text-slate-600 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" id="standard-shipping" name="shipping_rate" checked class="custom-checkbox">
+                  <label for="standard-shipping" class="font-bold text-slate-800 cursor-pointer">
+                    Standard Tracked Delivery (2–3 business days)
+                  </label>
+                </div>
+                <span id="shipping-method-price" class="font-bold text-slate-900">FREE</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Payment Section -->
+          <section aria-labelledby="payment-heading">
+            <div class="mb-3">
+              <h2 id="payment-heading" class="text-lg font-bold text-slate-900 tracking-tight">Payment</h2>
+              <p class="text-xs text-slate-500 font-medium">All transactions are secure and encrypted.</p>
+            </div>
+
+            <!-- Payment Container Box -->
+            <div class="rounded-xl border border-slate-300 overflow-hidden bg-white">
+              <!-- Header Tab: Credit Card -->
+              <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <input type="radio" id="pay-card" name="payment_method" checked class="custom-checkbox">
+                  <label for="pay-card" class="text-xs font-bold text-slate-800 cursor-pointer">Credit card</label>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
+                  <img src="images/pay-mastercard.png" alt="Mastercard" class="h-4 w-auto object-contain">
+                  <img src="images/pay-amex.png" alt="Amex" class="h-4 w-auto object-contain">
+                </div>
+              </div>
+
+              <!-- Card Inputs Form -->
+              <div class="p-4 space-y-3 bg-[#FDFDFD]">
+                <!-- Card Number -->
+                <div class="relative flex items-center">
+                  <input type="text" required placeholder="Card number" maxlength="19"
+                    class="form-input pr-10" id="card-number" oninput="formatCardNumber(this)">
+                  <i class="fa-solid fa-lock absolute right-3.5 text-slate-400 text-xs"></i>
+                </div>
+
+                <!-- Expiry & CVV -->
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <input type="text" required placeholder="Expiration date (MM / YY)" maxlength="5"
+                      class="form-input" id="card-expiry" oninput="formatExpiry(this)">
+                  </div>
+                  <div class="relative flex items-center">
+                    <input type="password" required placeholder="Security code" maxlength="4"
+                      class="form-input pr-10" id="card-cvv">
+                    <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="3 or 4-digit code on the back of your card">
+                      <i class="fa-regular fa-circle-question text-sm"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Name on Card -->
+                <div>
+                  <input type="text" required placeholder="Name on card" class="form-input" id="card-name">
+                </div>
+
+                <!-- Use shipping address as billing -->
+                <div class="pt-2">
+                  <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer select-none">
+                    <input type="checkbox" checked class="custom-checkbox">
+                    <span>Use shipping address as billing address</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Save my information info -->
+            <div class="mt-4 pt-2 flex items-center justify-between text-xs text-slate-600">
+              <span>Save my information for a faster checkout</span>
+              <button type="button" class="text-xs font-bold text-codix-purple hover:underline cursor-pointer">Not now</button>
+            </div>
+
+            <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">
+              By paying, you agree to create a shop account subject to shop's <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+            </p>
+
+            <!-- Submit Button: Continue / Pay now -->
+            <button type="submit" id="submit-order-btn"
+              class="mt-5 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-4 rounded-xl text-sm transition active:scale-98 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+              style="box-shadow: 0px 8px 18px rgba(87, 185, 82, 0.28);">
+              <i class="fa-solid fa-lock text-xs"></i>
+              <span>Continue</span>
+            </button>
+          </section>
+        </form>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- RIGHT COLUMN: ORDER SUMMARY SIDEBAR                     -->
+      <!-- ======================================================== -->
+      <div class="w-full lg:w-[480px] bg-[#F5F5F7] border-t lg:border-t-0 lg:border-l border-slate-200 px-4 sm:px-8 lg:px-10 py-8 lg:py-12">
+        <div class="sticky top-28 space-y-6">
+
+          <!-- Products List in Cart -->
+          <div id="checkout-items-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-1">
+            <!-- Populated by JavaScript from Cart -->
           </div>
-          <div class="flex items-center gap-1.5">
-            <i class="fa-solid fa-rotate-left text-codix-green text-xs"></i>
-            <span>30-Day Money Back</span>
+
+          <!-- Discount Code Input -->
+          <div class="flex items-center gap-2.5 pt-2">
+            <input type="text" id="discount-code" placeholder="Discount code or gift card"
+              class="form-input flex-1 bg-white uppercase font-bold text-xs">
+            <button type="button" onclick="applyDiscountCode()"
+              class="px-5 py-3 rounded-lg text-xs font-bold text-white transition hover:brightness-110 active:scale-95 cursor-pointer shrink-0"
+              style="background-color: #5A31F4;">
+              Apply
+            </button>
+          </div>
+          <div id="discount-feedback" class="text-xs font-semibold hidden"></div>
+
+          <!-- Price Breakdown -->
+          <div class="space-y-3 pt-4 border-t border-slate-200 text-xs text-slate-600">
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Subtotal</span>
+              <span id="summary-subtotal" class="font-bold text-slate-900">$0.00</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Shipping</span>
+              <span id="summary-shipping" class="font-semibold text-slate-700">FREE</span>
+            </div>
+            <div id="discount-row" class="flex items-center justify-between text-emerald-600 font-bold hidden">
+              <span>Discount (10% OFF)</span>
+              <span id="summary-discount">-$0.00</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Estimated taxes</span>
+              <span id="summary-taxes" class="font-bold text-slate-900">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Grand Total -->
+          <div class="pt-4 border-t border-slate-200 flex items-baseline justify-between">
+            <div>
+              <span class="text-sm font-bold text-slate-900 block">Total</span>
+              <span id="tax-inclusion-text" class="text-[11px] text-slate-400 block mt-0.5">Including $0.00 in taxes</span>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400 font-bold mr-1">USD</span>
+              <span id="summary-total" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Trust Badges & Guarantees -->
+          <div class="pt-4 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
+            <div class="flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved text-codix-green text-xs"></i>
+              <span>256-Bit SSL Encryption</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i class="fa-solid fa-rotate-left text-codix-green text-xs"></i>
+              <span>30-Day Money Back</span>
+            </div>
           </div>
         </div>
       </div>
@@ -439,7 +659,198 @@
   </main>
 
   <!-- ======================================================== -->
-  <!-- 3. ORDER SUCCESS MODAL                                   -->
+  <!-- 5. NEWSLETTER SECTION                                    -->
+  <!-- ======================================================== -->
+  <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
+    style="width: 100%; min-height: 240px;">
+    <div class="container-codix text-center max-w-xl mx-auto py-8">
+      <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
+      <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
+        Join over half a million vitamin lovers and get our latest deals, articles, and resources!
+      </p>
+      <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to our newsletter!');"
+        class="mt-5 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
+        <input type="email" required placeholder="Enter email address"
+          class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-2.5 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
+        <button type="submit"
+          class="w-full sm:w-auto bg-codix-orange hover:bg-codix-orange-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 6. BRAND LOGOS STRIP                                     -->
+  <!-- ======================================================== -->
+  <section class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
+    style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
+    aria-label="Partner Brands">
+    <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
+      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
+        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 7. FOOTER                                                -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white" aria-label="Footer">
+    <div class="container-codix pt-12 pb-6">
+      <!-- Footer Logo -->
+      <div>
+        <a href="index.html" class="inline-flex items-center justify-center transition hover:opacity-90"
+          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;"
+          aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain">
+        </a>
+      </div>
+
+      <!-- Horizontal Line Under Logo -->
+      <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <!-- Footer Main Columns -->
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14 mt-6">
+        <!-- 3 Links Columns: Company, Help, Shop -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full" style="max-width: 881px; min-height: 321.32px; gap: 77px;">
+          <!-- Col 1: Company -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Company</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+              <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 2: Help -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Help</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Shop -->
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Shop</h4>
+            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Col 4: Follow Our Social Media -->
+        <div class="flex flex-col justify-between w-full lg:w-[417.57px] shrink-0"
+          style="max-width: 417.57px; min-height: 153.58px; gap: 22.69px;">
+          <h4 class="text-lg sm:text-xl font-bold text-white tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-wrap gap-x-2.5 gap-y-3 items-center">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Instagram">
+              Instagram
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="YouTube">
+              Youtube
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Facebook">
+              Facebook
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="LinkedIn">
+              LinkedIn
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="Twitter">
+              Twitter
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+              style="background-color: #3A2F99;" aria-label="TikTok">
+              Tik Tok
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/90">
+        <p>© 2026 Codix Wellness. All Rights Reserved.</p>
+        <div class="flex items-center gap-2">
+          <img src="images/pay-amex.png" alt="Amex" class="h-4 w-auto object-contain">
+          <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
+          <img src="images/pay-paypal.png" alt="PayPal" class="h-4 w-auto object-contain">
+          <img src="images/pay-mastercard.png" alt="Mastercard" class="h-4 w-auto object-contain">
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- 8. MOBILE MENU DRAWER OVERLAY                            -->
+  <!-- ======================================================== -->
+  <div id="mobile-menu-overlay" class="modal-overlay mobile-menu-overlay" onclick="closeMobileMenuOnBackdrop(event)">
+    <div class="mobile-drawer-panel fixed top-0 left-0 bottom-0 w-[300px] sm:w-[340px] bg-white z-50 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto object-contain">
+          <button onclick="closeMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 cursor-pointer">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <ul class="space-y-3 text-sm font-bold text-slate-800">
+          <li><a href="index.html" class="block py-2 hover:text-codix-green transition">Home</a></li>
+          <li><a href="about.html" class="block py-2 hover:text-codix-green transition">About Us</a></li>
+          <li><a href="shop.html" class="block py-2 hover:text-codix-green transition">Shop</a></li>
+          <li><a href="cart.html" class="block py-2 hover:text-codix-green transition">Cart</a></li>
+          <li><a href="index.html#support" class="block py-2 hover:text-codix-green transition">Support</a></li>
+          <li><a href="index.html#blog" class="block py-2 hover:text-codix-green transition">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="pt-6 border-t border-slate-100 space-y-2">
+        <a href="login.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-regular fa-user text-codix-green"></i> My Account / Sign In
+        </a>
+        <a href="cart.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-solid fa-cart-shopping text-codix-green"></i> View Cart
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 9. ORDER SUCCESS MODAL                                   -->
   <!-- ======================================================== -->
   <div id="order-success-modal" class="modal-overlay p-4">
     <div class="bg-white rounded-3xl p-8 sm:p-10 max-w-md w-full text-center shadow-2xl relative border border-slate-100">
@@ -471,7 +882,7 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- 4. JAVASCRIPT LOGIC                                      -->
+  <!-- 10. JAVASCRIPT LOGIC                                     -->
   <!-- ======================================================== -->
   <script>
     let checkoutItems = [];
@@ -480,7 +891,57 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadCartItems();
       renderOrderSummary();
+      initDropdowns();
     });
+
+    function openMobileMenu() {
+      const el = document.getElementById('mobile-menu-overlay');
+      if (el) { el.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeMobileMenu() {
+      const el = document.getElementById('mobile-menu-overlay');
+      if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+    function closeMobileMenuOnBackdrop(e) {
+      if (e.target.id === 'mobile-menu-overlay') closeMobileMenu();
+    }
+
+    function initDropdowns() {
+      const langBtn = document.getElementById('lang-btn');
+      const langDrop = document.getElementById('lang-dropdown');
+      const currBtn = document.getElementById('curr-btn');
+      const currDrop = document.getElementById('curr-dropdown');
+
+      if (langBtn && langDrop) {
+        langBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          langDrop.classList.toggle('open');
+          if (currDrop) currDrop.classList.remove('open');
+        });
+      }
+
+      if (currBtn && currDrop) {
+        currBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currDrop.classList.toggle('open');
+          if (langDrop) langDrop.classList.remove('open');
+        });
+      }
+
+      document.addEventListener('click', () => {
+        if (langDrop) langDrop.classList.remove('open');
+        if (currDrop) currDrop.classList.remove('open');
+      });
+    }
+
+    function selectLang(lang) {
+      const el = document.getElementById('lang-label');
+      if (el) el.textContent = lang;
+    }
+    function selectCurr(curr) {
+      const el = document.getElementById('curr-label');
+      if (el) el.textContent = curr;
+    }
 
     function loadCartItems() {
       const saved = localStorage.getItem('codix_cart');
@@ -496,7 +957,7 @@
         }
       }
 
-      // Default sample product matching Figma mockup if cart is freshly empty
+      // Default sample product matching Figma mockup if cart is empty
       checkoutItems = [
         {
           id: 'p1',
@@ -511,6 +972,10 @@
     function renderOrderSummary() {
       const container = document.getElementById('checkout-items-list');
       if (!container) return;
+
+      const totalCount = checkoutItems.reduce((sum, item) => sum + (item.qty || 1), 0);
+      const headerCount = document.getElementById('cart-header-count');
+      if (headerCount) headerCount.textContent = totalCount;
 
       if (checkoutItems.length === 0) {
         container.innerHTML = `
@@ -556,6 +1021,8 @@
       const grandTotal = discountedSubtotal + shippingCost + taxes;
 
       document.getElementById('summary-subtotal').textContent = '$' + subtotal.toFixed(2);
+      const headerTotal = document.getElementById('cart-header-total-display');
+      if (headerTotal) headerTotal.textContent = '$' + subtotal.toFixed(2);
       
       const shippingEl = document.getElementById('summary-shipping');
       if (shippingCost === 0) {
