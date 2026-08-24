@@ -994,3 +994,100 @@ footer {
 .footer-green-bg {
   background-color: #57B952;
 }
+
+/* ======================================================== */
+/* FRAMER MOTION ANIMATION ENGINE                           */
+/* ======================================================== */
+
+/* Base Framer Initial States */
+[data-framer] {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition-property: opacity, transform;
+  transition-duration: 0.85s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); /* Framer spring easing */
+}
+
+/* Animations */
+[data-framer="fade-up"] {
+  transform: translate3d(0, 36px, 0);
+}
+
+[data-framer="fade-down"] {
+  transform: translate3d(0, -36px, 0);
+}
+
+[data-framer="fade-left"] {
+  transform: translate3d(-40px, 0, 0);
+}
+
+[data-framer="fade-right"] {
+  transform: translate3d(40px, 0, 0);
+}
+
+[data-framer="scale-up"] {
+  transform: scale3d(0.92, 0.92, 1);
+}
+
+[data-framer="fade"] {
+  transform: none;
+}
+
+/* Framer In-View / Animated State */
+[data-framer].framer-in-view,
+.framer-in-view [data-framer],
+.framer-in-view[data-framer] {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1) !important;
+}
+
+/* Framer Stagger Delays */
+[data-framer-delay="50"] { transition-delay: 50ms; }
+[data-framer-delay="100"] { transition-delay: 100ms; }
+[data-framer-delay="150"] { transition-delay: 150ms; }
+[data-framer-delay="200"] { transition-delay: 200ms; }
+[data-framer-delay="250"] { transition-delay: 250ms; }
+[data-framer-delay="300"] { transition-delay: 300ms; }
+[data-framer-delay="350"] { transition-delay: 350ms; }
+[data-framer-delay="400"] { transition-delay: 400ms; }
+[data-framer-delay="450"] { transition-delay: 450ms; }
+[data-framer-delay="500"] { transition-delay: 500ms; }
+[data-framer-delay="600"] { transition-delay: 600ms; }
+[data-framer-delay="700"] { transition-delay: 700ms; }
+[data-framer-delay="800"] { transition-delay: 800ms; }
+
+/* Framer Micro-interactions (Hover Spring Physics) */
+.framer-card {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+.framer-card:hover {
+  transform: translateY(-6px);
+}
+
+.framer-btn {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+.framer-btn:hover {
+  transform: translateY(-2px);
+}
+.framer-btn:active {
+  transform: scale(0.96);
+}
+
+/* Framer Smooth Float */
+@keyframes framerFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.framer-float {
+  animation: framerFloat 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-framer] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
