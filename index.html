@@ -139,397 +139,48 @@
       background-repeat: repeat;
     }
 
-    /* Mega Menu Transitions */
-    .mega-menu {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
-      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.25s;
-    }
+    
 
-    .mega-menu-wrapper:hover .mega-menu,
-    .mega-menu.is-open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    /* Hero Carousel Isolation */
-    #hero-carousel-container {
-      overflow: hidden !important;
-      position: relative;
-    }
-
-    .hero-slide {
-      display: none !important;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      z-index: 0 !important;
-    }
-
-    .hero-slide.active {
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      z-index: 10 !important;
-    }
-
-    /* Modal Overlay Absolute Isolation */
-    .modal-overlay:not(.open) {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-
-    .modal-overlay.open {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    /* Product Card Interactive */
-    .product-card {
-      transition: transform 0.25s ease;
-      background: transparent !important;
-      box-shadow: none !important;
-      height: fit-content;
-    }
-
-    .product-card:hover {
-      box-shadow: none !important;
-      background: transparent !important;
-    }
-
-    .product-card .product-img {
-      transition: transform 0.35s ease;
-    }
-
-    .product-card:hover .product-img {
-      transform: scale(1.07);
-    }
-
-    /* Bento Promo Cards */
-    .bento-card {
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .bento-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
-    }
-
-    .bento-card img {
-      transition: transform 0.4s ease;
-    }
-
-    .bento-card:hover img {
-      transform: scale(1.05);
-    }
-
-    /* Special Offers Card */
-    .special-offer-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Testimonial Cards (3 on Desktop/Laptop, 1 on Mobile with Track Slider) */
-    .testimonial-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .testimonial-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-    }
-
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.96) translateY(4px);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    /* Dropdown Menus */
-    .dropdown-menu {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-6px);
-      transition: all 0.2s ease;
-    }
-
-    .dropdown-menu.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    /* Modals & Cart Drawer */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(3px);
-      z-index: 200;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .modal-overlay.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-dialog {
-      transform: scale(0.94);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.open .modal-dialog {
-      transform: scale(1);
-    }
-
-    .cart-drawer-panel {
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.open .cart-drawer-panel {
-      transform: translateX(0);
-    }
-
-    /* Mobile Menu Drawer */
-    .mobile-drawer-panel {
-      transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .mobile-menu-overlay.open .mobile-drawer-panel {
-      transform: translateX(0);
-    }
-
-    @media (min-width: 1024px) {
-      .mobile-menu-overlay,
-      #mobile-menu-overlay {
-        display: none !important;
-      }
-    }
-
-    /* Review Background (Figma spec: 1920x532, #181440 with custom wave texture) */
-    .reviews-gradient-bg {
-      background: #181440 url('images/testimonial-bg.jpg') center/cover no-repeat;
-      min-height: 532px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-    }
-
-    /* Newsletter Background (Exact Figma Image 1920x240) */
-    .newsletter-bg {
-      background: url('images/newsletter-bg.jpg') no-repeat center center;
-      background-size: cover;
-      position: relative;
-    }
-
-    /* Brand Strip */
-    .brand-strip-bg {
-      background-color: #3A2F99;
-    }
-
-    /* Footer Background */
-    .footer-green-bg {
-      background-color: #57B952;
-    }
-
-    /* Social Pill */
-    .social-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #ffffff;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .social-pill:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-    }
-
-    /* Category Tab Styles */
-    .cat-tab-btn {
-      transition: all 0.22s ease;
-      cursor: pointer;
-    }
-
-    .cat-tab-btn.active {
-      background-color: #3A2F99;
-      color: #ffffff;
-    }
-
-    .cat-tab-btn:not(.active) {
-      background-color: #EDF8EE;
-      color: #211C68;
-    }
-
-    .cat-tab-btn:not(.active):hover {
-      background-color: #DFF4E1;
-    }
-
-    /* Best Selling Tab Styles */
-    .bs-tab-btn {
-      transition: all 0.22s ease;
-      cursor: pointer;
-    }
-
-    .bs-tab-btn.active {
-      background-color: #3A2F99;
-      color: #ffffff;
-    }
-
-    .bs-tab-btn:not(.active) {
-      background-color: #EDF8EE;
-      color: #211C68;
-    }
-
-    .bs-tab-btn:not(.active):hover {
-      background-color: #DFF4E1;
-    }
-
-    /* Badge Pulse */
-    @keyframes pulseGlow {
-
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.15);
-      }
-    }
-
-    .badge-pulse {
-      animation: pulseGlow 2.2s ease-in-out infinite;
-    }
-
-    /* Toast Notification */
-    #toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 300;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .toast-msg {
-      pointer-events: auto;
-      animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes slideInToast {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94A3B8;
-    }
   
-    /* Mega Menu Transitions & Active State */
-    .mega-menu-wrapper {
-      position: relative;
-    }
-
+    /* Mega Menu Clean Styling & Active State */
     .mega-menu-btn {
       background-color: #D7F4D8;
       color: #211C68;
       transition: all 0.2s ease;
+      border: none;
+      outline: none;
+      box-shadow: none !important;
     }
 
     .mega-menu-btn.active,
-    .mega-menu-wrapper.is-open .mega-menu-btn {
+    .mega-menu-btn.is-active {
       background-color: #382898 !important;
       color: #ffffff !important;
     }
 
     .mega-menu-btn.active .mega-cat-icon,
-    .mega-menu-wrapper.is-open .mega-cat-icon {
+    .mega-menu-btn.is-active .mega-cat-icon {
       filter: brightness(0) invert(1);
     }
 
     .mega-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 10px;
-      width: 980px;
-      max-width: calc(100vw - 32px);
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.18);
-      padding: 28px 32px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
-      z-index: 100;
-      display: block;
+      box-shadow: 0 20px 40px -15px rgba(25, 33, 61, 0.15);
     }
 
-    .mega-menu-wrapper.is-open .mega-menu,
-    .mega-menu.is-open,
-    .mega-menu.open {
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      transform: translateY(0) !important;
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMenu 0.18s ease-out;
+    }
+
+    @keyframes fadeInMenu {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .mega-menu h4 {
@@ -541,7 +192,7 @@
 
     .mega-menu a {
       display: block;
-      font-size: 12px;
+      font-size: 13px;
       color: #475569;
       padding: 3px 0;
       text-decoration: none;
@@ -2849,43 +2500,35 @@
         e.stopPropagation();
         e.preventDefault();
       }
-      const wrapper = document.querySelector('.mega-menu-wrapper');
       const btn = document.getElementById('mega-menu-btn');
       const menu = document.getElementById('mega-menu-dropdown');
-      if (!wrapper || !menu) return;
+      if (!btn || !menu) return;
 
-      const isOpen = wrapper.classList.contains('is-open');
-      if (isOpen) {
-        wrapper.classList.remove('is-open');
-        menu.classList.remove('is-open');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
-        }
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
       } else {
-        wrapper.classList.add('is-open');
-        menu.classList.add('is-open');
-        if (btn) {
-          btn.classList.add('active');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
       }
     }
 
     document.addEventListener('click', (e) => {
-      const wrapper = document.querySelector('.mega-menu-wrapper');
-      if (wrapper && !wrapper.contains(e.target)) {
-        wrapper.classList.remove('is-open');
-        const menu = document.getElementById('mega-menu-dropdown');
-        if (menu) menu.classList.remove('is-open');
-        const btn = document.getElementById('mega-menu-btn');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
         }
       }
-    });
-</script>
+    });</script>
 </body>
 
 </html>
