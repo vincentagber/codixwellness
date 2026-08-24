@@ -416,16 +416,17 @@
       </div>
     </div>
 
-    <!-- Navigation Menu Bar -->
-    <nav class="block bg-white relative overflow-x-auto"
-      style="width: 100%; min-height: 64px; padding: 10px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); -webkit-overflow-scrolling: touch;">
-      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 48px;">
-        <div class="flex items-center gap-5 sm:gap-8 shrink-0">
-          <!-- Product Categories Button with Mega Menu -->
+        <!-- Navigation Menu Bar -->
+    <nav class="block bg-white relative"
+      style="width: 100%; min-height: 58px; padding: 6px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.04);"
+      aria-label="Main Navigation">
+      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 46px;">
+        <!-- Left Group: Product Categories + Nav Links -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
           <!-- Product Categories Button with Mega Menu -->
           <div class="mega-menu-wrapper relative">
             <button id="mega-menu-btn" onclick="toggleMegaMenu(event)"
-              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition cursor-pointer"
+              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer"
               aria-haspopup="true" aria-expanded="false">
               <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
               <span>Product Categories</span>
@@ -505,26 +506,22 @@
               </div>
             </div>
           </div>
-          </div>
-          <ul class="flex items-center gap-7 text-[13px] font-medium" style="color: #211C68;">
+
+          <!-- Nav Links -->
+          <ul class="flex items-center gap-7 text-[13px] sm:text-[14px] font-bold" style="color: #211C68;">
             <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
-            <li><a href="shop.html" class="text-codix-green font-bold transition py-2">Shop</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
           </ul>
         </div>
-        <div class="flex items-center justify-between text-[15px]"
-          style="width: 120.96px; height: 36.50px; gap: 1px; color: #211C68;">
-          <a href="shop.html"
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1"><i
-              class="fa-solid fa-arrows-rotate"></i></a>
-          <button onclick="openModal('wishlist-modal')"
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"><i
-              class="fa-regular fa-heart"></i></button>
-          <button onclick="openCartDrawer()"
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"><i
-              class="fa-solid fa-cart-shopping"></i></button>
+
+        <!-- Right Quick Icons -->
+        <div class="flex items-center gap-4 text-[15px]" style="color: #211C68;">
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Compare Products" aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></a>
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+          <a href="cart.html" class="hover:text-codix-green transition p-1" title="Shopping Cart" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
       </div>
     </nav>
