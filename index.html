@@ -959,7 +959,7 @@
         </div>
 
         <!-- 5-Column Product Grid (5 items) -->
-        <div id="popular-products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5"
+        <div id="popular-products-grid" class="grid gap-x-5 gap-y-7 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
           role="tabpanel" style="min-height: 428px;">
           <!-- Populated by JavaScript -->
         </div>
@@ -970,12 +970,12 @@
     <!-- 7. PLUS BANNER & FEATURED PRODUCTS HEADER (Exact Figma 1321x292.10px Frame) -->
     <!-- ======================================================== -->
     <section class="pt-10 pb-4 overflow-visible" aria-label="Plus Delivery & Featured Products Header">
-      <div class="container-codix relative" style="min-height: 292.1px;">
+      <div class="container-codix relative" style="min-height: 292.1px; height: 292.1px;">
 
         <!-- Upper: Promotional Banner Container (Exact Figma 1321x206.98px) -->
         <div
           class="relative shadow-sm flex items-center justify-center group cursor-pointer overflow-visible w-full rounded-[10.64px]"
-          style="min-height: 206.98px; height: 206.98px; top: -4px; opacity: 1; background: #C6EAF8 url('images/plus-banner-bg.jpg') no-repeat center center; background-size: cover;">
+          style="min-height: 206.98px; height: 206.98px; top: 0; opacity: 1; background: #C6EAF8 url('images/plus-banner-bg.jpg') no-repeat center center; background-size: cover;">
 
           <!-- Product Visuals (Exact Figma left: 250.18px, top: 87.1px, width: 287.82px, height: 205px) -->
           <div
@@ -1010,17 +1010,18 @@
 
         <!-- Lower Portion of the same Parent Section: Featured Products Title & Arrows -->
         <div
-          class="relative w-full flex items-end justify-between pt-6 md:pt-0 md:absolute md:bottom-0 md:left-0 md:right-0 px-2 sm:px-4 pb-1 z-10">
-          <!-- Featured Products Heading -->
-          <div class="md:pl-[533px] text-left flex items-end">
-            <h2 class="text-2xl sm:text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-tight mb-0"
-              style="color: #382898; font-family: 'Lato', sans-serif;">
+          class="relative w-full flex items-end justify-between pt-6 md:pt-0 md:absolute md:bottom-0 md:left-0 md:right-0 px-2 sm:px-4 pb-0 z-10"
+          style="bottom: 0px;">
+          <!-- Featured Products Heading (Starts under Collagen box, baseline on same bottom line) -->
+          <div class="md:pl-[425px] lg:pl-[445px] text-left flex items-end">
+            <h2 class="text-2xl sm:text-[28px] lg:text-[32px] font-extrabold tracking-tight leading-none mb-0"
+              style="color: #382898; font-family: 'Lato', sans-serif; line-height: 1;">
               Featured Products
             </h2>
           </div>
 
           <!-- Navigation Arrow Controls (Exact Figma 57.18x26.47px, 26.47px circles with #F0F0F0) -->
-          <div class="flex items-center gap-[4.24px]" style="width: 57.18px; height: 26.47px; opacity: 1;">
+          <div class="flex items-center gap-[4.24px] mb-0.5" style="width: 57.18px; height: 26.47px; opacity: 1;">
             <button onclick="scrollFeaturedGrid(-1)"
               class="flex items-center justify-center transition cursor-pointer hover:bg-[#E2E2E2] active:scale-95 text-slate-700 border-0 p-0"
               style="width: 26.47px; height: 26.47px; border-radius: 52.95px; background: #F0F0F0; opacity: 1;"
@@ -2022,31 +2023,31 @@
 
     // --- Product Database matching Figma Mockup ---
     const PRODUCT_DATABASE = {
-      // Popular Categories List (Exact Figma Products)
+      // Popular Categories List (Matches Featured Products Layout)
       popular: [
-        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements,Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-1.png' },
-        { id: 'p2', name: 'YOUR GUMMIE Collagen Plus –', cat: 'Supplements,Beauty & Wellness', badge: 'Sale New', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-2.png' },
-        { id: 'p3', name: 'Selcea Liver Support Capsules', cat: 'Supplements,Liver Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 124, rating: 4.5, img: 'images/f-pop-3.png' },
-        { id: 'p4', name: 'Everose – Evening Primrose Oil', cat: 'Supplements,Healthy Lip Profile', badge: 'Sale', price: '$16.00 – $35.00', reviews: 58, rating: 5, img: 'images/f-pop-4.png' },
-        { id: 'p5', name: 'Your Gummy – Kids Multi Gummies', cat: 'Supplements,Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 86, rating: 4.5, img: 'images/f-pop-5.png' },
+        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'p2', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
+        { id: 'p3', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png' },
+        { id: 'p4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
+        { id: 'p5', name: 'Codix Fatburner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
       ],
 
       // Medicine Category Products
       medicines: [
-        { id: 'm1', name: 'Flexicod – Joint Health Support', cat: 'Medicines, Joint Support', badge: 'New', price: '$18.00 – $26.00', reviews: 102, rating: 5, img: 'images/product-gummie.jpg' },
-        { id: 'm2', name: 'Codix Fatburner – Metabolism', cat: 'Medicines, Weight Management', badge: 'Sale', price: '$22.00 – $35.00', reviews: 97, rating: 5, img: 'images/fatburner.png' },
-        { id: 'm3', name: 'Codix Multi Plus Cold Relief', cat: 'Medicines, Immune Relief', badge: 'New', price: '$16.00 – $25.00', reviews: 64, rating: 5, img: 'images/product-red.jpg' },
-        { id: 'm4', name: 'Selcoa Hepato Balance', cat: 'Medicines, Liver Care', badge: 'Sale', price: '$19.00 – $28.00', reviews: 88, rating: 5, img: 'images/product-capsules.jpg' },
-        { id: 'm5', name: 'Flexicod Ultra Joint Gel', cat: 'Medicines, Mobility', badge: 'New', price: '$15.00 – $24.00', reviews: 45, rating: 5, img: 'images/f-pop-1.png' },
+        { id: 'm1', name: 'Flexicod – Joint Health Support', cat: 'Medicines, Joint Support', badge: 'New', price: '$18.00 – $26.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
+        { id: 'm2', name: 'Codix Fatburner – Metabolism Support', cat: 'Medicines, Weight Management', badge: 'Sale', price: '$22.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
+        { id: 'm3', name: 'Codix Multi Plus Cold Relief', cat: 'Medicines, Immune Relief', badge: 'New', price: '$16.00 – $25.00', reviews: 64, rating: 5, img: 'images/f-grid-7.png' },
+        { id: 'm4', name: 'Selcoa Hepato Balance', cat: 'Medicines, Liver Care', badge: 'Sale', price: '$19.00 – $28.00', reviews: 88, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'm5', name: 'Flexicod Ultra Joint Gel', cat: 'Medicines, Mobility', badge: 'New', price: '$15.00 – $24.00', reviews: 45, rating: 5, img: 'images/f-grid-10.png' },
       ],
 
       // Herbs Category Products
       herbs: [
-        { id: 'h1', name: 'Codix Maca Root Pure Botanical', cat: 'Herbs, Energy & Vitality', badge: 'New', price: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/product-capsules.jpg' },
-        { id: 'h2', name: 'Your Gummy – Apple Cider Vinegar', cat: 'Herbs, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/product-red.jpg' },
-        { id: 'h3', name: 'Essence – Evening Primrose Oil', cat: 'Herbs, Lip Balance', badge: 'New', price: '$16.00 – $22.00', reviews: 58, rating: 5, img: 'images/product-purple.jpg' },
-        { id: 'h4', name: 'Organic Tart Cherry Extract', cat: 'Herbs, Joint & Recovery', badge: 'Sale', price: '$18.00 – $28.00', reviews: 76, rating: 5, img: 'images/product-gummie.jpg' },
-        { id: 'h5', name: 'Elderberry Immune Booster Extract', cat: 'Herbs, Immune Support', badge: 'New', price: '$16.00 – $26.00', reviews: 52, rating: 5, img: 'images/f-pop-5.png' },
+        { id: 'h1', name: 'Codix Maca Root Pure Botanical', cat: 'Herbs, Energy & Vitality', badge: 'New', price: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'h2', name: 'Your Gummy – Apple Cider Vinegar', cat: 'Herbs, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png' },
+        { id: 'h3', name: 'Essence – Evening Primrose Oil', cat: 'Herbs, Lip Balance', badge: 'New', price: '$16.00 – $22.00', reviews: 58, rating: 5, img: 'images/f-grid-12.png' },
+        { id: 'h4', name: 'Organic Tart Cherry Extract', cat: 'Herbs, Joint & Recovery', badge: 'Sale', price: '$18.00 – $28.00', reviews: 76, rating: 5, img: 'images/f-grid-14.png' },
+        { id: 'h5', name: 'Elderberry Immune Booster Extract', cat: 'Herbs, Immune Support', badge: 'New', price: '$16.00 – $26.00', reviews: 52, rating: 5, img: 'images/f-grid-15.png' },
       ],
 
       // 15 Featured Products Grid matching Figma 5x3 exactly
@@ -2075,11 +2076,11 @@
 
       // Best Selling list
       bestselling: [
-        { id: 'b1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements,Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
-        { id: 'b2', name: 'YOUR GUMMIE Collagen Plus –', cat: 'Supplements,Beauty & Wellness', badge: 'Sale New', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-pop-2.png' },
-        { id: 'b3', name: 'Selcea Liver Support Capsules', cat: 'Supplements,Liver Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 124, rating: 4.5, img: 'images/f-pop-3.png' },
-        { id: 'b4', name: 'Everose – Evening Primrose Oil', cat: 'Supplements,Healthy Lip Profile', badge: 'Sale', price: '$16.00 – $35.00', reviews: 58, rating: 5, img: 'images/f-pop-4.png' },
-        { id: 'b5', name: 'Your Gummy – Kids Multi Gummies', cat: 'Supplements,Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 86, rating: 4.5, img: 'images/f-pop-5.png' },
+        { id: 'b1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'b2', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
+        { id: 'b3', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png' },
+        { id: 'b4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
+        { id: 'b5', name: 'Codix Fatburner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '$16.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
       ]
     };
 
