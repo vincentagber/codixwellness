@@ -729,19 +729,19 @@
     <!-- ======================================================== -->
     <!-- 6. POPULAR CATEGORIES WITH PRODUCT GRID                 -->
     <!-- ======================================================== -->
-    <section id="shop" class="pt-12 lg:pt-14" aria-label="Popular Categories">
+    <section id="shop" class="pt-12 lg:pt-14" aria-label="Popular Categories" data-framer="fade-up">
       <div class="container-codix">
-        <div class="space-y-6 mb-7 sm:mb-8">
-          <h2 class="text-center text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Popular Categories</h2>
+        <div class="flex flex-col items-center justify-center mx-auto mb-8 sm:mb-10 max-w-[503px]">
+          <h2 class="text-center text-2xl sm:text-[32px] font-black tracking-tight mb-5"
+            style="color: #3A2F99; font-family: 'Lato', sans-serif;">
+            Popular Categories
+          </h2>
 
-          <!-- Category Tabs Switcher -->
-          <div class="flex flex-wrap justify-center gap-2.5" role="tablist" aria-label="Filter Popular Categories">
-            <button class="cat-tab-btn active rounded-full px-6 py-2 text-xs font-bold" data-category="Supplements"
-              role="tab" aria-selected="true">Supplements</button>
-            <button class="cat-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Medicines" role="tab"
-              aria-selected="false">Medicines</button>
-            <button class="cat-tab-btn rounded-full px-6 py-2 text-xs font-bold" data-category="Herbs" role="tab"
-              aria-selected="false">Herbs</button>
+          <!-- Category Tabs Switcher (Exact Figma 502.52x110.36 Hug) -->
+          <div class="flex flex-wrap items-center justify-center gap-3.5" role="tablist" aria-label="Filter Popular Categories">
+            <button class="cat-tab-btn active" data-category="Supplements" role="tab" aria-selected="true">Supplements</button>
+            <button class="cat-tab-btn" data-category="Medicines" role="tab" aria-selected="false">Medicines</button>
+            <button class="cat-tab-btn" data-category="Herbs" role="tab" aria-selected="false">Herbs</button>
           </div>
         </div>
 
