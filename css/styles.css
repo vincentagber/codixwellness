@@ -76,13 +76,14 @@ body {
 
 /* ---- Product Card Hover Effects ---- */
 .product-card {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.25s ease;
+  background: transparent !important;
+  box-shadow: none !important;
+  height: fit-content;
 }
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: none !important;
+  background: transparent !important;
 }
 .product-card .product-img {
   transition: transform 0.4s ease;

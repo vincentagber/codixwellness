@@ -1218,12 +1218,12 @@
       for (let i = 0; i < fullStars; i++) starsHTML += `<i class="fa-solid fa-star text-[11px]" style="color: #F6A018;"></i>`;
 
       return `
-        <article class="product-card bg-transparent flex flex-col justify-between group transition duration-300 w-full">
-          <a href="product.html?id=${p.id}" class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-md transition-shadow duration-300 block" style="aspect-ratio: 242 / 220; min-height: 220px; border-radius: 8px;">
+        <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full h-fit self-start">
+          <a href="product.html?id=${p.id}" class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-sm transition-shadow duration-300 block w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;">
             <span class="absolute top-2.5 left-2.5 z-10 bg-[#00D06C] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">Sale</span>
             <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </a>
-          <div class="pt-2.5 flex flex-col justify-between flex-1">
+          <div class="pt-2 flex flex-col w-full">
             <div>
               <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${p.cat}</p>
               <a href="product.html?id=${p.id}" class="hover:text-codix-green transition">

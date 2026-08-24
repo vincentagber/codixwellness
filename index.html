@@ -199,13 +199,15 @@
 
     /* Product Card Interactive */
     .product-card {
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.25s ease;
+      background: transparent !important;
+      box-shadow: none !important;
+      height: fit-content;
     }
 
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 14px 28px rgba(33, 28, 104, 0.09);
+      box-shadow: none !important;
+      background: transparent !important;
     }
 
     .product-card .product-img {
@@ -2137,15 +2139,15 @@
       ` : '';
 
       return `
-        <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full" data-id="${product.id}">
+        <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full h-fit self-start" data-id="${product.id}">
           <!-- Product Image Box (Lavender/Light Gray #F2F2FA, radius 8px) -->
-          <div class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-md transition-shadow duration-300" style="aspect-ratio: 242 / 220; min-height: 220px; border-radius: 8px;">
+          <div class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-sm transition-shadow duration-300 w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;">
             ${badgeHTML}
             <img src="${product.img}" alt="${product.name}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </div>
 
           <!-- Product Details -->
-          <div class="pt-2 flex flex-col">
+          <div class="pt-2 flex flex-col w-full">
             <div>
               <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${product.cat}</p>
               <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
