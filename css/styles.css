@@ -123,7 +123,19 @@ body {
   background: #3A2F99 !important;
   background-color: #3A2F99 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(58, 47, 153, 0.25) !important;
+  box-shadow: none !important;
+}
+
+/* ---- Scrollbar Utility & Removal ---- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* ---- Product Card Hover Effects ---- */
