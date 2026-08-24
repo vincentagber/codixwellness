@@ -607,80 +607,81 @@
   <!-- ======================================================== -->
   <!-- NEWSLETTER SECTION                                       -->
   <!-- ======================================================== -->
+    <!-- ======================================================== -->
+  <!-- NEWSLETTER SECTION                                       -->
+  <!-- ======================================================== -->
   <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
-    style="width: 100%; min-height: 240px;">
-    <div class="container-codix text-center max-w-xl mx-auto py-8">
+    style="width: 100%; min-height: 240px;" aria-label="Newsletter Subscription">
+    <div class="container-codix text-center max-w-xl mx-auto py-10 sm:py-12">
       <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
       <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
         Join over half a million vitamin lovers and get our latest deals, articles, and resources!
       </p>
-      <form onsubmit="event.preventDefault(); alert('Subscribed to newsletter!');"
-        class="mt-5 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
-        <input type="email" required placeholder="Enter email address"
-          class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-2.5 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
+      <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to our newsletter!');"
+        class="mt-6 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
+        <input type="email" required placeholder="Email address"
+          class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-3 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
         <button type="submit"
-          class="w-full sm:w-auto bg-codix-orange hover:bg-codix-orange-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer">
-          Subscribe
+          class="w-full sm:w-auto bg-[#F2971F] hover:bg-[#DE8413] text-white text-xs font-bold px-7 py-3 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
+          <i class="fa-regular fa-paper-plane text-[11px]"></i>
+          <span>Subscribe</span>
         </button>
       </form>
     </div>
   </section>
 
   <!-- ======================================================== -->
-  <!-- BRAND LOGOS STRIP (Side-by-Side Mobile & Desktop)       -->
+  <!-- BRAND LOGOS STRIP (6 Partner Brands)                  -->
   <!-- ======================================================== -->
-  <section class="brand-strip-bg px-3 sm:px-6 py-4 sm:py-6 flex items-center justify-center"
-    style="width: 100%; max-width: 1920px; min-height: 120px; background: #3A2F99; opacity: 1; margin-inline: auto;"
+  <section class="brand-strip-bg px-3 sm:px-6 py-6 flex items-center justify-center"
+    style="width: 100%; background-color: #382898;"
     aria-label="Partner Brands">
-    <div class="grid grid-cols-5 items-center justify-items-center gap-2 sm:gap-6 w-full max-w-[1216px] mx-auto">
-      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+    <div class="grid grid-cols-3 sm:grid-cols-6 items-center justify-items-center gap-4 sm:gap-8 w-full max-w-[1216px] mx-auto">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
-      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-amere-clean.png" alt="Amere" class="max-h-[26px] sm:max-h-[30px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
-      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[30px] sm:max-h-[46px] md:max-h-[50px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
-      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[26px] sm:max-h-[38px] md:max-h-[42px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[32px] sm:max-h-[36px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
-      <div class="flex items-center justify-center p-1 sm:p-2 w-full h-[60px] sm:h-[90px]">
-        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[28px] sm:max-h-[42px] md:max-h-[46px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[28px] sm:max-h-[32px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
     </div>
   </section>
 
   <!-- ======================================================== -->
-  <!-- 15. FOOTER -->
+  <!-- MAIN FOOTER                                              -->
   <!-- ======================================================== -->
-  <footer class="footer-green-bg text-white" aria-label="Footer">
-    <div class="container-codix pt-12 pb-6">
-      <!-- Footer Logo (Width: 192px, Height: 55px, Radius: 2px, Background: #CBE9C9) -->
+  <footer class="footer-green-bg text-white" style="background-color: #57B952;" aria-label="Footer">
+    <div class="container-codix pt-12 pb-8">
+      <!-- Footer Logo Box (White/mint background card) -->
       <div>
-        <a href="index.html" class="inline-flex items-center justify-center transition hover:opacity-90"
-          style="width: 192px; height: 55px; background-color: #CBE9C9; border-radius: 2px; gap: 10px; padding: 6px 14px;"
-          aria-label="Codix Wellness Homepage">
-          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain"
-            onerror="this.style.display='none';document.getElementById('fallback-footer-logo').style.display='flex'">
-          <div id="fallback-footer-logo" class="hidden items-center text-base font-black tracking-tight"
-            style="display:none">
-            <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
-          </div>
+        <a href="index.html" class="inline-flex items-center justify-center bg-[#CBE9C9] rounded-[2px] px-4 py-2 transition hover:opacity-90 shadow-xs"
+          style="width: 192px; height: 55px;" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain">
         </a>
       </div>
 
-      <!-- Horizontal Line Under Logo (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
-      <div class="my-8" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+      <!-- Top Horizontal Line Under Logo -->
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
 
-      <!-- Footer Main Columns (Left 3 Columns 881px, Right Social Media 417.57px) -->
-      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14 mt-6">
-        <!-- 3 Links Columns: Company, Help, Shop (Width: 881px, Height: 321.32px, Gap: 77px) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 w-full" style="max-width: 881px; min-height: 321.32px; gap: 77px;">
+      <!-- Footer Main Columns -->
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14">
+        <!-- 3 Links Columns: Company, Help, Shop -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full lg:max-w-[780px] gap-8 sm:gap-12">
           <!-- Col 1: Company -->
           <div>
-            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Company</h4>
-            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Company</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
@@ -690,8 +691,8 @@
 
           <!-- Col 2: Help -->
           <div>
-            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Help</h4>
-            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Help</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
               <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
               <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
@@ -701,100 +702,85 @@
 
           <!-- Col 3: Shop -->
           <div>
-            <h4 class="text-lg sm:text-xl font-bold text-white mb-6">Shop</h4>
-            <ul class="space-y-4 text-sm sm:text-base text-white/90 font-normal">
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Immunity</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">General Wellness</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a>
-              </li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a>
-              </li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Shop</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="shop.html?cat=Immunity" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="shop.html?cat=General%20Wellness" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="shop.html?cat=Beauty" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="shop.html?cat=Joints" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a></li>
+              <li><a href="shop.html?cat=Weight" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a></li>
+              <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-white hover:underline transition">Sexual Health</a></li>
             </ul>
           </div>
         </div>
 
-        <!-- Col 4: Follow Our Social Media (Width: 417.57px, Height: 153.58px, Gap: 22.69px) -->
-        <div class="flex flex-col justify-between w-full lg:w-[417.57px] shrink-0"
-          style="max-width: 417.57px; min-height: 153.58px; gap: 22.69px;">
-          <h4 class="text-lg sm:text-xl font-bold text-white tracking-normal">Follow Our Social Media</h4>
-          <div class="flex flex-wrap gap-x-2.5 gap-y-3 items-center">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="Instagram">
-              Instagram
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="YouTube">
-              Youtube
-            </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="Facebook">
-              Facebook
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="LinkedIn">
-              LinkedIn
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="Twitter">
-              Twitter
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
-              class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
-              style="background-color: #3A2F99;" aria-label="TikTok">
-              Tik Tok
-            </a>
+        <!-- Col 4: Follow Our Social Media (Right Side) -->
+        <div class="flex flex-col w-full lg:w-[380px] shrink-0">
+          <h4 class="text-base sm:text-lg font-bold text-white mb-4 tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-col gap-2.5">
+            <!-- Row 1: Instagram, Youtube, Facebook -->
+            <div class="flex flex-wrap gap-2">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Instagram">
+                Instagram
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="YouTube">
+                Youtube
+              </a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Facebook">
+                Facebook
+              </a>
+            </div>
+            <!-- Row 2: LinkedIn, Twitter, TikTok -->
+            <div class="flex flex-wrap gap-2">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="LinkedIn">
+                LinkedIn
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Twitter">
+                Twitter
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="TikTok">
+                Tik Tok
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Horizontal Divider Before Copyright (Width: 1517.14px, Border: 1.33px solid #CBE9C9) -->
-      <div class="mt-12 mb-6" style="width: 100%; max-width: 1517.14px; height: 0px; border-top: 1.33px solid #CBE9C9;">
-      </div>
+      <!-- Bottom Horizontal Line Above Copyright -->
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
 
-      <!-- Bottom Bar: Copyright, Terms & Payment Logos (Width: 1518px, Height: 46px) -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mx-auto"
-        style="width: 100%; max-width: 1518px; min-height: 46px;">
-        <div class="flex flex-wrap items-center gap-2 text-center sm:text-left text-[11px] text-white/75 font-normal">
-          <span>Copyright © 2026 Codix Wellness</span>
-          <span class="text-white/40">|</span>
-          <span>Design by Ostech</span>
-          <span class="text-white/40">|</span>
-          <a href="about.html" class="hover:text-white transition">Terms of Use</a>
-          <span class="text-white/40">|</span>
-          <a href="about.html" class="hover:text-white transition">Privacy Policy</a>
+      <!-- Bottom Copyright, Terms & Payment Badges -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/90">
+        <!-- Left: Copyright & Design Credit -->
+        <p class="text-center md:text-left">
+          Copyright © 2026 Codix Wellness &nbsp;|&nbsp; Design by Ostech
+        </p>
+
+        <!-- Center: Terms & Privacy -->
+        <div class="flex items-center gap-2 text-center">
+          <a href="#" class="hover:underline transition">Terms of Use</a>
+          <span>|</span>
+          <a href="#" class="hover:underline transition">Privacy Policy</a>
         </div>
 
-        <!-- Separated Payment Badges with Individual Spacing (Height: 46px container) -->
-        <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 h-[46px]">
-          <div
-            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
-            title="American Express">
-            <img src="images/pay-amex.png" alt="American Express" class="max-h-5 max-w-full object-contain"
-              loading="lazy">
-          </div>
-          <div
-            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
-            title="VISA">
-            <img src="images/pay-visa.png" alt="VISA" class="max-h-5 max-w-full object-contain" loading="lazy">
-          </div>
-          <div
-            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
-            title="PayPal">
-            <img src="images/pay-paypal.png" alt="PayPal" class="max-h-5 max-w-full object-contain" loading="lazy">
-          </div>
-          <div
-            class="bg-white px-2 py-1 rounded-lg shadow-sm flex items-center justify-center h-[34px] w-[52px] hover:scale-105 transition-transform"
-            title="Mastercard">
-            <img src="images/pay-mastercard.png" alt="Mastercard" class="max-h-5 max-w-full object-contain"
-              loading="lazy">
-          </div>
+        <!-- Right: 4 Payment Icons -->
+        <div class="flex items-center gap-2">
+          <img src="images/pay-amex.png" alt="American Express" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-visa.png" alt="Visa" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-paypal.png" alt="PayPal" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-mastercard.png" alt="Mastercard" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
         </div>
       </div>
     </div>
