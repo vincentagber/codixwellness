@@ -1131,7 +1131,7 @@
           <div class="flex justify-between items-center text-xs font-bold text-slate-800">
             <span>Total</span><span id="drawer-cart-total" class="font-extrabold">$77.96</span>
           </div>
-          <button onclick="alert('Proceeding to secure checkout...')"
+          <button onclick="triggerCheckout()"
             class="w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-full transition shadow-sm flex items-center justify-center text-xs uppercase tracking-wider active:scale-95 cursor-pointer">
             CHECKOUT
           </button>
@@ -1367,6 +1367,7 @@
           </div>
         `).join('');
       }
+      localStorage.setItem('codix_cart', JSON.stringify(cartItems));
     }
     function addToCart(id, name, price, img) {
       const item = cartItems.find(i => i.id === id);
@@ -1387,6 +1388,14 @@
       if (e && e.target.id !== 'cart-drawer-overlay' && !e.target.closest('button[aria-label="Close Cart"]')) return;
       const el = document.getElementById('cart-drawer-overlay');
       if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+    function triggerCheckout() {
+      if (cartItems.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+      localStorage.setItem('codix_cart', JSON.stringify(cartItems));
+      window.location.href = 'checkout.html';
     }
 
     // --- Wishlist Logic ---

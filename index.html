@@ -2255,6 +2255,8 @@
           </div>
         `).join('');
       }
+
+      localStorage.setItem('codix_cart', JSON.stringify(cartItems));
     }
 
     function addToCart(id, name, price, img) {
@@ -2306,11 +2308,11 @@
 
     function triggerCheckout() {
       if (cartItems.length === 0) {
-        alert('Your cart is empty.');
+        showToast('Your cart is empty. Add products to checkout.', 'fa-circle-exclamation', false);
         return;
       }
-      alert('Thank you for choosing Codix Wellness! Proceeding to secure checkout...');
-      closeCartDrawer();
+      localStorage.setItem('codix_cart', JSON.stringify(cartItems));
+      window.location.href = 'checkout.html';
     }
 
     // --- Wishlist Management ---
@@ -2787,6 +2789,13 @@
       }
 
       // 10. Initial UI Update for Cart and Wishlist
+      const savedCart = localStorage.getItem('codix_cart');
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart);
+          if (Array.isArray(parsed)) cartItems = parsed;
+        } catch (e) {}
+      }
       updateCartUI();
       updateWishlistUI();
     });

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Codix Wellness</title>
+  <meta name="description"
+    content="Secure checkout page for Codix Wellness. Fast, encrypted order processing with Express Checkout options.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'codix-green': '#57B952',
+            'codix-green-dark': '#48A344',
+            'codix-navy': '#211C68',
+            'codix-purple': '#382898',
+            'codix-orange': '#F2971F',
+            'codix-bg-gray': '#F5F5F7',
+          },
+          fontFamily: {
+            sans: ['Lato', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome 6 Pro / Free CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      color: #333333;
+      background-color: #FFFFFF;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 13px;
+      color: #1e293b;
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #57B952;
+      box-shadow: 0 0 0 3px rgba(87, 185, 82, 0.15);
+    }
+
+    .form-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 13px;
+      color: #1e293b;
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #57B952;
+      box-shadow: 0 0 0 3px rgba(87, 185, 82, 0.15);
+    }
+
+    .custom-checkbox {
+      accent-color: #382898;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Modal dialog */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-white">
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                     -->
+  <!-- ======================================================== -->
+  <aside class="bg-[#57B952] text-white text-xs py-2 px-4 select-none relative z-30" aria-label="Announcement">
+    <div class="max-w-[1320px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-center sm:text-left">
+      <p class="font-medium tracking-wide">
+        Free shipping all orders on over $60.
+      </p>
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <span class="cursor-pointer hover:underline flex items-center gap-1">EN <i class="fa-solid fa-chevron-down text-[9px]"></i></span>
+        <span class="text-white/40">|</span>
+        <span class="cursor-pointer hover:underline flex items-center gap-1">$ USD <i class="fa-solid fa-chevron-down text-[9px]"></i></span>
+        <span class="text-white/40">|</span>
+        <a href="login.html" class="hover:underline flex items-center gap-1">
+          <i class="fa-regular fa-user text-[11px]"></i> My account
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN CHECKOUT CONTAINER                              -->
+  <!-- ======================================================== -->
+  <main class="flex-1 flex flex-col lg:flex-row max-w-[1440px] mx-auto w-full border-t border-slate-100">
+
+    <!-- ======================================================== -->
+    <!-- LEFT COLUMN: CHECKOUT FORM (Express, Contact, Address, Payment) -->
+    <!-- ======================================================== -->
+    <div class="flex-1 px-4 sm:px-8 lg:pl-16 lg:pr-12 py-8 lg:py-12 bg-white max-w-full lg:max-w-[800px]">
+
+      <!-- Header Logo Centered -->
+      <div class="flex items-center justify-center mb-8">
+        <a href="index.html" class="inline-block hover:opacity-90 transition">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-10 sm:h-12 w-auto">
+        </a>
+      </div>
+
+      <!-- Express Checkout Block -->
+      <div class="mb-8">
+        <p class="text-center text-xs font-semibold text-slate-500 mb-3 tracking-wide">Express checkout</p>
+        <div class="grid grid-cols-2 gap-3 max-w-[480px] mx-auto">
+          <!-- Shop Pay Button -->
+          <button type="button" onclick="handleExpressCheckout('Shop Pay')"
+            class="h-12 rounded-lg text-white font-bold flex items-center justify-center gap-1.5 transition hover:brightness-110 active:scale-98 cursor-pointer shadow-xs"
+            style="background-color: #5A31F4;" aria-label="Express checkout with Shop Pay">
+            <span class="italic font-extrabold text-base tracking-tight">shop</span>
+            <span class="text-xs bg-white text-[#5A31F4] font-black px-1.5 py-0.5 rounded ml-0.5">pay</span>
+          </button>
+
+          <!-- Google Pay Button -->
+          <button type="button" onclick="handleExpressCheckout('Google Pay')"
+            class="h-12 rounded-lg bg-[#111111] hover:bg-black text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
+            aria-label="Express checkout with Google Pay">
+            <i class="fa-brands fa-google text-sm"></i>
+            <span class="text-sm font-semibold tracking-tight">Pay</span>
+          </button>
+        </div>
+
+        <!-- OR Divider -->
+        <div class="relative my-7 flex items-center justify-center">
+          <div class="w-full border-t border-slate-200"></div>
+          <span class="absolute bg-white px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">OR</span>
+        </div>
+      </div>
+
+      <!-- Main Checkout Form -->
+      <form id="checkout-form" onsubmit="handleOrderSubmit(event)" class="space-y-8">
+
+        <!-- 1. Contact Section -->
+        <section aria-labelledby="contact-heading">
+          <div class="flex items-center justify-between mb-3">
+            <h2 id="contact-heading" class="text-lg font-bold text-slate-900 tracking-tight">Contact</h2>
+            <a href="login.html" class="text-xs font-bold text-codix-green hover:underline">Sign in</a>
+          </div>
+          <div class="space-y-2.5">
+            <input type="email" id="customer-email" required placeholder="Email"
+              class="form-input">
+            <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+              <input type="checkbox" checked class="custom-checkbox">
+              <span>Email me with news and offers</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 2. Delivery / Shipping Address Section -->
+        <section aria-labelledby="delivery-heading">
+          <h2 id="delivery-heading" class="text-lg font-bold text-slate-900 tracking-tight mb-3">Delivery</h2>
+
+          <div class="space-y-3">
+            <!-- Country / Region -->
+            <div>
+              <label for="shipping-country" class="block text-[11px] font-semibold text-slate-500 mb-1">Country / Region</label>
+              <select id="shipping-country" class="form-select font-medium text-slate-800" onchange="calculateShipping()">
+                <option value="GB" selected>United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="NG">Nigeria</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="AU">Australia</option>
+              </select>
+            </div>
+
+            <!-- First & Last Name -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <input type="text" id="first-name" placeholder="First name (optional)" class="form-input">
+              </div>
+              <div>
+                <input type="text" id="last-name" required placeholder="Last name" class="form-input">
+              </div>
+            </div>
+
+            <!-- Address Input with Search Icon -->
+            <div class="relative flex items-center">
+              <input type="text" id="shipping-address" required placeholder="Address" class="form-input pr-10" oninput="calculateShipping()">
+              <i class="fa-solid fa-magnifying-glass absolute right-3.5 text-slate-400 text-sm pointer-events-none"></i>
+            </div>
+
+            <!-- Apartment, suite, etc. -->
+            <div>
+              <input type="text" id="shipping-apartment" placeholder="Apartment, suite, etc. (optional)" class="form-input">
+            </div>
+
+            <!-- City & Postcode -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <input type="text" id="shipping-city" required placeholder="City" class="form-input">
+              </div>
+              <div>
+                <input type="text" id="shipping-postcode" required placeholder="Postcode" class="form-input" oninput="calculateShipping()">
+              </div>
+            </div>
+
+            <!-- Phone Input with Tooltip Icon -->
+            <div class="relative flex items-center">
+              <input type="tel" id="shipping-phone" placeholder="Phone" class="form-input pr-10">
+              <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="In case there is an issue with your delivery">
+                <i class="fa-regular fa-circle-question text-sm"></i>
+              </span>
+            </div>
+
+            <!-- Text me Checkbox -->
+            <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none pt-1">
+              <input type="checkbox" class="custom-checkbox">
+              <span>Text me with news and offers</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 3. Shipping Method Section -->
+        <section aria-labelledby="shipping-method-heading">
+          <div class="mb-2">
+            <h2 id="shipping-method-heading" class="text-lg font-bold text-slate-900 tracking-tight">Shipping method</h2>
+            <p class="text-xs text-slate-500 font-medium">Order Before 2 PM Monday-Friday for Same-Day Dispatch.</p>
+          </div>
+
+          <div id="shipping-method-box" class="rounded-xl border border-slate-200 bg-[#F9FAFB] p-4 text-xs text-slate-600 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" id="standard-shipping" name="shipping_rate" checked class="custom-checkbox">
+                <label for="standard-shipping" class="font-bold text-slate-800 cursor-pointer">
+                  Standard Tracked Delivery (2–3 business days)
+                </label>
+              </div>
+              <span id="shipping-method-price" class="font-bold text-slate-900">FREE</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Payment Section -->
+        <section aria-labelledby="payment-heading">
+          <div class="mb-3">
+            <h2 id="payment-heading" class="text-lg font-bold text-slate-900 tracking-tight">Payment</h2>
+            <p class="text-xs text-slate-500 font-medium">All transactions are secure and encrypted.</p>
+          </div>
+
+          <!-- Payment Container Box -->
+          <div class="rounded-xl border border-slate-300 overflow-hidden bg-white">
+            <!-- Header Tab: Credit Card -->
+            <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <input type="radio" id="pay-card" name="payment_method" checked class="custom-checkbox">
+                <label for="pay-card" class="text-xs font-bold text-slate-800 cursor-pointer">Credit card</label>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
+                <img src="images/pay-mastercard.png" alt="Mastercard" class="h-4 w-auto object-contain">
+                <img src="images/pay-amex.png" alt="Amex" class="h-4 w-auto object-contain">
+              </div>
+            </div>
+
+            <!-- Card Inputs Form -->
+            <div class="p-4 space-y-3 bg-[#FDFDFD]">
+              <!-- Card Number -->
+              <div class="relative flex items-center">
+                <input type="text" required placeholder="Card number" maxlength="19"
+                  class="form-input pr-10" id="card-number" oninput="formatCardNumber(this)">
+                <i class="fa-solid fa-lock absolute right-3.5 text-slate-400 text-xs"></i>
+              </div>
+
+              <!-- Expiry & CVV -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <input type="text" required placeholder="Expiration date (MM / YY)" maxlength="5"
+                    class="form-input" id="card-expiry" oninput="formatExpiry(this)">
+                </div>
+                <div class="relative flex items-center">
+                  <input type="password" required placeholder="Security code" maxlength="4"
+                    class="form-input pr-10" id="card-cvv">
+                  <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="3 or 4-digit code on the back of your card">
+                    <i class="fa-regular fa-circle-question text-sm"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Name on Card -->
+              <div>
+                <input type="text" required placeholder="Name on card" class="form-input" id="card-name">
+              </div>
+
+              <!-- Use shipping address as billing -->
+              <div class="pt-2">
+                <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer select-none">
+                  <input type="checkbox" checked class="custom-checkbox">
+                  <span>Use shipping address as billing address</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save my information info -->
+          <div class="mt-4 pt-2 flex items-center justify-between text-xs text-slate-600">
+            <span>Save my information for a faster checkout</span>
+            <button type="button" class="text-xs font-bold text-codix-purple hover:underline cursor-pointer">Not now</button>
+          </div>
+
+          <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">
+            By paying, you agree to create a shop account subject to shop's <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+          </p>
+
+          <!-- Submit Button: Continue / Pay now -->
+          <button type="submit" id="submit-order-btn"
+            class="mt-5 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-4 rounded-xl text-sm transition active:scale-98 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+            style="box-shadow: 0px 8px 18px rgba(87, 185, 82, 0.28);">
+            <i class="fa-solid fa-lock text-xs"></i>
+            <span>Continue</span>
+          </button>
+        </section>
+      </form>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- RIGHT COLUMN: ORDER SUMMARY SIDEBAR                     -->
+    <!-- ======================================================== -->
+    <div class="w-full lg:w-[480px] bg-[#F5F5F7] border-t lg:border-t-0 lg:border-l border-slate-200 px-4 sm:px-8 lg:px-10 py-8 lg:py-12">
+      <div class="sticky top-8 space-y-6">
+
+        <!-- Products List in Cart -->
+        <div id="checkout-items-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-1">
+          <!-- Populated by JavaScript from Cart -->
+        </div>
+
+        <!-- Discount Code Input -->
+        <div class="flex items-center gap-2.5 pt-2">
+          <input type="text" id="discount-code" placeholder="Discount code or gift card"
+            class="form-input flex-1 bg-white uppercase font-bold text-xs">
+          <button type="button" onclick="applyDiscountCode()"
+            class="px-5 py-3 rounded-lg text-xs font-bold text-white transition hover:brightness-110 active:scale-95 cursor-pointer shrink-0"
+            style="background-color: #5A31F4;">
+            Apply
+          </button>
+        </div>
+        <div id="discount-feedback" class="text-xs font-semibold hidden"></div>
+
+        <!-- Price Breakdown -->
+        <div class="space-y-3 pt-4 border-t border-slate-200 text-xs text-slate-600">
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Subtotal</span>
+            <span id="summary-subtotal" class="font-bold text-slate-900">$0.00</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Shipping</span>
+            <span id="summary-shipping" class="font-semibold text-slate-700">Enter shipping address</span>
+          </div>
+          <div id="discount-row" class="flex items-center justify-between text-emerald-600 font-bold hidden">
+            <span>Discount (10% OFF)</span>
+            <span id="summary-discount">-$0.00</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-medium">Estimated taxes</span>
+            <span id="summary-taxes" class="font-bold text-slate-900">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Grand Total -->
+        <div class="pt-4 border-t border-slate-200 flex items-baseline justify-between">
+          <div>
+            <span class="text-sm font-bold text-slate-900 block">Total</span>
+            <span id="tax-inclusion-text" class="text-[11px] text-slate-400 block mt-0.5">Including $0.00 in taxes</span>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400 font-bold mr-1">USD</span>
+            <span id="summary-total" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Trust Badges & Guarantees -->
+        <div class="pt-4 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
+          <div class="flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-codix-green text-xs"></i>
+            <span>256-Bit SSL Encryption</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i class="fa-solid fa-rotate-left text-codix-green text-xs"></i>
+            <span>30-Day Money Back</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 3. ORDER SUCCESS MODAL                                   -->
+  <!-- ======================================================== -->
+  <div id="order-success-modal" class="modal-overlay p-4">
+    <div class="bg-white rounded-3xl p-8 sm:p-10 max-w-md w-full text-center shadow-2xl relative border border-slate-100">
+      <div class="w-16 h-16 bg-emerald-100 text-codix-green rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-900 mb-2">Order Confirmed!</h3>
+      <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+        Thank you for your order! We have sent a confirmation email with tracking details to <strong id="success-email" class="text-slate-900">your email</strong>.
+      </p>
+      <div class="bg-slate-50 rounded-2xl p-4 mb-6 border border-slate-100 text-left text-xs space-y-1.5">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Order Number:</span>
+          <span class="font-mono font-bold text-slate-800" id="success-order-id">#CW-84920</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Total Paid:</span>
+          <span class="font-bold text-slate-900" id="success-order-total">$0.00</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Status:</span>
+          <span class="font-bold text-emerald-600">Processing Dispatch</span>
+        </div>
+      </div>
+      <a href="index.html" class="block w-full bg-codix-green hover:bg-codix-green-dark text-white font-bold py-3.5 rounded-full text-xs transition shadow-md">
+        Back to Home
+      </a>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 4. JAVASCRIPT LOGIC                                      -->
+  <!-- ======================================================== -->
+  <script>
+    let checkoutItems = [];
+    let discountApplied = 0;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCartItems();
+      renderOrderSummary();
+    });
+
+    function loadCartItems() {
+      const saved = localStorage.getItem('codix_cart');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            checkoutItems = parsed;
+            return;
+          }
+        } catch (e) {
+          console.error('Error reading cart:', e);
+        }
+      }
+
+      // Default sample product matching Figma mockup if cart is freshly empty
+      checkoutItems = [
+        {
+          id: 'p1',
+          name: 'Y’our Gummie Kids Multi Gummies™',
+          price: 19.00,
+          qty: 1,
+          img: 'images/f-grid-2.png'
+        }
+      ];
+    }
+
+    function renderOrderSummary() {
+      const container = document.getElementById('checkout-items-list');
+      if (!container) return;
+
+      if (checkoutItems.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-slate-400">
+            <i class="fa-solid fa-cart-shopping text-3xl text-slate-300 mb-2"></i>
+            <p class="text-xs font-semibold">Your cart is empty.</p>
+            <a href="shop.html" class="mt-3 inline-block text-xs font-bold text-codix-green hover:underline">Continue Shopping</a>
+          </div>
+        `;
+      } else {
+        container.innerHTML = checkoutItems.map(item => `
+          <div class="flex items-center justify-between gap-4">
+            <div class="relative shrink-0">
+              <div class="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1.5 flex items-center justify-center shadow-xs">
+                <img src="${item.img || item.image || 'images/f-grid-2.png'}" alt="${(item.name || '').replace(/<[^>]*>?/gm, '')}" class="max-h-full max-w-full object-contain">
+              </div>
+              <span class="absolute -top-2 -right-2 w-5 h-5 bg-[#4B5563] text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                ${item.qty || 1}
+              </span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate leading-snug">${item.name}</h4>
+              <p class="text-[11px] text-slate-400">${item.plan || 'Standard'}</p>
+            </div>
+            <span class="text-xs sm:text-sm font-bold text-slate-900 shrink-0">
+              $${((item.price || 19.00) * (item.qty || 1)).toFixed(2)}
+            </span>
+          </div>
+        `).join('');
+      }
+
+      calculateTotals();
+    }
+
+    function calculateTotals() {
+      const subtotal = checkoutItems.reduce((sum, item) => sum + ((item.price || 19.00) * (item.qty || 1)), 0);
+      const discountAmount = subtotal * discountApplied;
+      const discountedSubtotal = subtotal - discountAmount;
+
+      const shippingCost = (subtotal >= 60 || subtotal === 0) ? 0 : 0;
+      const taxRate = 0.075;
+      const taxes = discountedSubtotal * taxRate;
+      const grandTotal = discountedSubtotal + shippingCost + taxes;
+
+      document.getElementById('summary-subtotal').textContent = '$' + subtotal.toFixed(2);
+      
+      const shippingEl = document.getElementById('summary-shipping');
+      if (shippingCost === 0) {
+        shippingEl.textContent = 'FREE';
+        shippingEl.className = 'font-bold text-emerald-600';
+      } else {
+        shippingEl.textContent = '$' + shippingCost.toFixed(2);
+        shippingEl.className = 'font-bold text-slate-900';
+      }
+
+      const discountRow = document.getElementById('discount-row');
+      const discountVal = document.getElementById('summary-discount');
+      if (discountApplied > 0) {
+        discountRow.classList.remove('hidden');
+        discountVal.textContent = '-$' + discountAmount.toFixed(2);
+      } else {
+        discountRow.classList.add('hidden');
+      }
+
+      document.getElementById('summary-taxes').textContent = '$' + taxes.toFixed(2);
+      document.getElementById('tax-inclusion-text').textContent = 'Including $' + taxes.toFixed(2) + ' in taxes';
+      document.getElementById('summary-total').textContent = '$' + grandTotal.toFixed(2);
+    }
+
+    function applyDiscountCode() {
+      const codeInput = document.getElementById('discount-code');
+      const feedback = document.getElementById('discount-feedback');
+      const code = codeInput.value.trim().toUpperCase();
+
+      if (!code) return;
+
+      if (code === 'SAVE10' || code === 'WELCOME' || code === 'CODIX10') {
+        discountApplied = 0.10;
+        feedback.textContent = 'Coupon applied: 10% discount!';
+        feedback.className = 'text-xs font-semibold text-emerald-600 block mt-1.5';
+      } else {
+        discountApplied = 0;
+        feedback.textContent = 'Invalid discount code. Try "SAVE10"';
+        feedback.className = 'text-xs font-semibold text-rose-500 block mt-1.5';
+      }
+      calculateTotals();
+    }
+
+    function calculateShipping() {
+      calculateTotals();
+    }
+
+    function formatCardNumber(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 16);
+      let formatted = v.match(/.{1,4}/g)?.join(' ') || v;
+      input.value = formatted;
+    }
+
+    function formatExpiry(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length >= 2) {
+        input.value = v.slice(0, 2) + ' / ' + v.slice(2);
+      } else {
+        input.value = v;
+      }
+    }
+
+    function handleExpressCheckout(method) {
+      alert('Connecting to ' + method + ' secure gateway...');
+    }
+
+    function handleOrderSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('customer-email').value;
+      const total = document.getElementById('summary-total').textContent;
+
+      document.getElementById('success-email').textContent = email;
+      document.getElementById('success-order-total').textContent = total;
+      document.getElementById('success-order-id').textContent = '#CW-' + Math.floor(10000 + Math.random() * 90000);
+
+      localStorage.removeItem('codix_cart');
+
+      document.getElementById('order-success-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  </script>
+</body>
+
+</html>

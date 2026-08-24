@@ -415,7 +415,7 @@
               <span id="summary-total" class="text-xl text-codix-navy font-black">$76.21</span>
             </div>
 
-            <button onclick="alert('Redirecting to secure checkout gateway...');"
+            <button onclick="proceedToCheckout();"
               class="w-full bg-codix-green hover:bg-codix-green-dark text-white font-extrabold py-3.5 px-6 rounded-full shadow-md hover:shadow-lg transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer text-sm">
               <i class="fa-solid fa-lock text-xs"></i>
               <span>Proceed to Checkout</span>
@@ -802,6 +802,15 @@
       } else {
         alert('Invalid promo code. Try WELLNESS10');
       }
+    }
+
+    function proceedToCheckout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty. Please add items before checking out.');
+        return;
+      }
+      window.location.href = 'checkout.html';
     }
 
     document.addEventListener('DOMContentLoaded', renderCart);
