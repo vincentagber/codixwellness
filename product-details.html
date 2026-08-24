@@ -1167,10 +1167,7 @@
     let basePrice = 29.99;
     let subPrice = 19.49;
 
-    const DEFAULT_CART = [
-      { id: 1, name: 'Y’our Gummie Kids Multi Gummies™', plan: 'Subscription (35% Off)', price: 19.49, qty: 1, image: 'images/product-benefit-bottle-exact.png' },
-      { id: 2, name: 'Selcea Marine Collagen Lift', plan: 'One-Time Purchase', price: 56.72, qty: 1, image: 'images/product-selcea.jpg' }
-    ];
+    const DEFAULT_CART = [];
 
     function getLocalCart() {
       const saved = localStorage.getItem('codix_cart');
@@ -1185,10 +1182,7 @@
       updateCartUI();
     }
 
-    let wishlist = [
-      { id: 1, name: 'Y’our Gummie Kids Multi Gummies™', price: 19.49, image: 'images/product-benefit-bottle-exact.png' },
-      { id: 2, name: 'Codix Everose Evening Primrose', price: 38.99, image: 'images/product-everose.jpg' }
-    ];
+    let wishlist = [];
 
     function switchProductMainImage(src, btn) {
       document.getElementById('main-product-img').src = src;

@@ -607,7 +607,7 @@
           aria-label="View Wishlist">
           <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
           <span id="wishlist-badge"
-            class="absolute -top-1 -right-1 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
+            class="absolute -top-1 -right-1 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full items-center justify-center border-2 border-white" style="display: none;">0</span>
         </button>
 
         <!-- Compare Icon (Green Outline Circle with opposing arrows) -->
@@ -2001,12 +2001,12 @@
         </a>
         <button onclick="openModal('wishlist-modal'); closeMobileMenu()"
           class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-red-50 rounded-lg transition cursor-pointer">
-          <i class="fa-regular fa-heart text-red-500"></i> Wishlist (<span id="mobile-wl-count">2</span>)
+          <i class="fa-regular fa-heart text-red-500"></i> Wishlist (<span id="mobile-wl-count">0</span>)
         </button>
         <button onclick="openCartDrawer(); closeMobileMenu()"
           class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition cursor-pointer">
           <i class="fa-solid fa-cart-shopping text-codix-green"></i> Shopping Cart (<span
-            id="mobile-cart-count">1</span>)
+            id="mobile-cart-count">0</span>)
         </button>
       </div>
     </div>
@@ -2107,15 +2107,8 @@
     ];
 
     // --- State ---
-    let cartItems = [
-      { id: 'cart-1', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' },
-      { id: 'cart-2', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' }
-    ];
-
-    let wishlistItems = [
-      { id: 'wl-1', name: "YOUR GUMMIE Collagen Plus", cat: "Supplements, Beauty", price: 28.00, img: 'images/f-grid-6.png' },
-      { id: 'wl-2', name: "Codix Everose Daily Care", cat: "Supplements, Healthy Lip Profile", price: 32.00, img: 'images/f-grid-4.png' }
-    ];
+    let cartItems = [];
+    let wishlistItems = [];
 
     // --- Generator for Product Card Markup matching Figma ---
     function generateProductCard(product) {

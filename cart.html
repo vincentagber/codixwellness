@@ -704,10 +704,7 @@
     function closeMobileMenuOnBackdrop(e) {
       if (e.target.id === 'mobile-menu-overlay') closeMobileMenu();
     }
-    const DEFAULT_CART = [
-      { id: 1, name: 'Y’our Gummie Kids Multi Gummies™', plan: 'Subscription (35% Off)', price: 19.49, qty: 1, image: 'images/product-benefit-bottle-exact.png' },
-      { id: 2, name: 'Selcea Marine Collagen Lift', plan: 'One-Time Purchase', price: 56.72, qty: 1, image: 'images/product-selcea.jpg' }
-    ];
+    const DEFAULT_CART = [];
 
     function getCart() {
       const saved = localStorage.getItem('codix_cart');

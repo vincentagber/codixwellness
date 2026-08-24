@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================================
   // 5. SHOPPING CART
   // =============================================
-  let cart = [{ id: "p1", name: "Codix Vitamin C+D Boost", price: 18.0, quantity: 1 }];
+  let cart = [];
 
   function updateCartUI() {
     const cartCount = document.querySelectorAll(".cart-count");
@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================================
   // 7. WISHLIST MODAL
   // =============================================
-  let wishlist = ["Your Gummie Fish Oil", "Codix Everose"];
+  let wishlist = [];
   const wishlistOverlay = document.getElementById("wishlist-overlay");
 
   function openWishlist() {

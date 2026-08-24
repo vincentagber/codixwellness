@@ -1202,15 +1202,8 @@
     let currentPage = 1;
     const PAGE_SIZE = 9;
 
-    let cartItems = [
-      { id: 'c1', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' },
-      { id: 'c2', name: "Y’our Gummie<br>Kids Multi Gummies™", price: 19.49, qty: 2, img: 'images/f-grid-2.png' }
-    ];
-
-    let wishlistItems = [
-      { id: 'wl-1', name: "YOUR GUMMIE Collagen Plus", cat: "Supplements, Beauty", price: 28.00, img: 'images/f-grid-6.png' },
-      { id: 'wl-2', name: "Codix Everose Daily Care", cat: "Supplements, Healthy Lip Profile", price: 32.00, img: 'images/f-grid-4.png' }
-    ];
+    let cartItems = [];
+    let wishlistItems = [];
 
     function renderShopProductCard(p) {
       const fullStars = Math.floor(p.rating);
