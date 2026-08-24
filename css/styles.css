@@ -642,46 +642,58 @@ body {
 }
 
 /* ---- Mega Menu ---- */
+.mega-menu-wrapper {
+  position: relative;
+}
+
 .mega-menu {
   position: absolute;
-  top: calc(100% + 12px);
+  top: 100%;
   left: 0;
-  width: 640px;
-  max-width: 90vw;
-  background: #fff;
+  margin-top: 10px;
+  width: 980px;
+  max-width: calc(100vw - 32px);
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  padding: 20px;
-  display: none;
-  z-index: 50;
-  gap: 24px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.18);
+  padding: 28px 32px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  z-index: 100;
+  display: block;
 }
 
-.category-dropdown:hover .mega-menu,
-.category-dropdown:focus-within .mega-menu,
-.mega-menu.open {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.mega-menu-wrapper:hover .mega-menu,
+.mega-menu-wrapper:focus-within .mega-menu,
+.mega-menu.open,
+.mega-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.mega-menu h5 {
+.mega-menu h4 {
   font-size: 13px;
   font-weight: 700;
-  color: #3a2f99;
-  margin-bottom: 10px;
+  color: #211C68;
+  margin-bottom: 12px;
 }
 
 .mega-menu a {
   display: block;
-  font-size: 13px;
-  color: #334155;
-  padding: 6px 0;
+  font-size: 12px;
+  color: #475569;
+  padding: 3px 0;
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 
 .mega-menu a:hover {
-  color: #57b952;
+  color: #57B952 !important;
+  font-weight: 600;
 }
 
 /* ---- Brand Strip ---- */
