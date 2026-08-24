@@ -2247,10 +2247,12 @@
 
     function nextHeroSlide() {
       showHeroSlide(currentHeroIndex + 1);
+      startHeroTimer();
     }
 
     function prevHeroSlide() {
       showHeroSlide(currentHeroIndex - 1);
+      startHeroTimer();
     }
 
     function goToHeroSlide(index) {
@@ -2497,12 +2499,7 @@
       });
 
       // 4. Hero Carousel Setup
-      const heroNext = document.getElementById('hero-next-btn');
-      const heroPrev = document.getElementById('hero-prev-btn');
       const heroContainer = document.getElementById('hero-carousel-container');
-
-      if (heroNext) heroNext.addEventListener('click', nextHeroSlide);
-      if (heroPrev) heroPrev.addEventListener('click', prevHeroSlide);
 
       if (heroContainer) {
         heroContainer.addEventListener('mouseenter', stopHeroTimer);
