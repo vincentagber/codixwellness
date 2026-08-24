@@ -139,397 +139,46 @@
       background-repeat: repeat;
     }
 
-    /* Mega Menu Transitions */
-    .mega-menu {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
-      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.25s;
-    }
+    
 
-    .mega-menu-wrapper:hover .mega-menu,
-    .mega-menu.is-open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    /* Hero Carousel Isolation */
-    #hero-carousel-container {
-      overflow: hidden !important;
-      position: relative;
-    }
-
-    .hero-slide {
-      display: none !important;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      z-index: 0 !important;
-    }
-
-    .hero-slide.active {
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      z-index: 10 !important;
-    }
-
-    /* Modal Overlay Absolute Isolation */
-    .modal-overlay:not(.open) {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-
-    .modal-overlay.open {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    /* Product Card Interactive */
-    .product-card {
-      transition: transform 0.25s ease;
-      background: transparent !important;
-      box-shadow: none !important;
-      height: fit-content;
-    }
-
-    .product-card:hover {
-      box-shadow: none !important;
-      background: transparent !important;
-    }
-
-    .product-card .product-img {
-      transition: transform 0.35s ease;
-    }
-
-    .product-card:hover .product-img {
-      transform: scale(1.07);
-    }
-
-    /* Bento Promo Cards */
-    .bento-card {
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .bento-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
-    }
-
-    .bento-card img {
-      transition: transform 0.4s ease;
-    }
-
-    .bento-card:hover img {
-      transform: scale(1.05);
-    }
-
-    /* Special Offers Card */
-    .special-offer-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Testimonial Cards (3 on Desktop/Laptop, 1 on Mobile with Track Slider) */
-    .testimonial-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .testimonial-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-    }
-
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.96) translateY(4px);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    /* Dropdown Menus */
-    .dropdown-menu {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-6px);
-      transition: all 0.2s ease;
-    }
-
-    .dropdown-menu.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    /* Modals & Cart Drawer */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(3px);
-      z-index: 200;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .modal-overlay.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-dialog {
-      transform: scale(0.94);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.open .modal-dialog {
-      transform: scale(1);
-    }
-
-    .cart-drawer-panel {
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.open .cart-drawer-panel {
-      transform: translateX(0);
-    }
-
-    /* Mobile Menu Drawer */
-    .mobile-drawer-panel {
-      transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .mobile-menu-overlay.open .mobile-drawer-panel {
-      transform: translateX(0);
-    }
-
-    @media (min-width: 1024px) {
-      .mobile-menu-overlay,
-      #mobile-menu-overlay {
-        display: none !important;
-      }
-    }
-
-    /* Review Background (Figma spec: 1920x532, #181440 with custom wave texture) */
-    .reviews-gradient-bg {
-      background: #181440 url('images/testimonial-bg.jpg') center/cover no-repeat;
-      min-height: 532px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-    }
-
-    /* Newsletter Background (Exact Figma Image 1920x240) */
-    .newsletter-bg {
-      background: url('images/newsletter-bg.jpg') no-repeat center center;
-      background-size: cover;
-      position: relative;
-    }
-
-    /* Brand Strip */
-    .brand-strip-bg {
-      background-color: #3A2F99;
-    }
-
-    /* Footer Background */
-    .footer-green-bg {
-      background-color: #57B952;
-    }
-
-    /* Social Pill */
-    .social-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #ffffff;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .social-pill:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-    }
-
-    /* Category Tab Styles */
-    .cat-tab-btn {
-      transition: all 0.22s ease;
-      cursor: pointer;
-    }
-
-    .cat-tab-btn.active {
-      background-color: #3A2F99;
-      color: #ffffff;
-    }
-
-    .cat-tab-btn:not(.active) {
-      background-color: #EDF8EE;
-      color: #211C68;
-    }
-
-    .cat-tab-btn:not(.active):hover {
-      background-color: #DFF4E1;
-    }
-
-    /* Best Selling Tab Styles */
-    .bs-tab-btn {
-      transition: all 0.22s ease;
-      cursor: pointer;
-    }
-
-    .bs-tab-btn.active {
-      background-color: #3A2F99;
-      color: #ffffff;
-    }
-
-    .bs-tab-btn:not(.active) {
-      background-color: #EDF8EE;
-      color: #211C68;
-    }
-
-    .bs-tab-btn:not(.active):hover {
-      background-color: #DFF4E1;
-    }
-
-    /* Badge Pulse */
-    @keyframes pulseGlow {
-
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.15);
-      }
-    }
-
-    .badge-pulse {
-      animation: pulseGlow 2.2s ease-in-out infinite;
-    }
-
-    /* Toast Notification */
-    #toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 300;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .toast-msg {
-      pointer-events: auto;
-      animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes slideInToast {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94A3B8;
-    }
   
-    /* Mega Menu Transitions & Active State */
-    .mega-menu-wrapper {
-      position: relative;
-    }
-
+    /* Mega Menu Clean Styling & Active State */
     .mega-menu-btn {
       background-color: #D7F4D8;
       color: #211C68;
       transition: all 0.2s ease;
+      border: none;
+      outline: none;
+      box-shadow: none !important;
     }
 
-    .mega-menu-btn.active,
-    .mega-menu-wrapper.is-open .mega-menu-btn {
+    .mega-menu-btn.active {
       background-color: #382898 !important;
       color: #ffffff !important;
     }
 
-    .mega-menu-btn.active .mega-cat-icon,
-    .mega-menu-wrapper.is-open .mega-cat-icon {
+    .mega-menu-btn.active .mega-cat-icon {
       filter: brightness(0) invert(1);
     }
 
     .mega-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 10px;
-      width: 980px;
-      max-width: calc(100vw - 32px);
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.18);
-      padding: 28px 32px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
-      z-index: 100;
-      display: block;
+      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.2);
     }
 
-    .mega-menu-wrapper.is-open .mega-menu,
-    .mega-menu.is-open,
-    .mega-menu.open {
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      transform: translateY(0) !important;
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMega 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInMega {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .mega-menu h4 {
@@ -541,7 +190,7 @@
 
     .mega-menu a {
       display: block;
-      font-size: 12px;
+      font-size: 13px;
       color: #475569;
       padding: 3px 0;
       text-decoration: none;
@@ -724,98 +373,25 @@
     <!-- ======================================================== -->
     <!-- 3. NAVIGATION BAR & MEGA MENU -->
     <!-- ======================================================== -->
-    <nav class="block bg-white relative overflow-x-auto"
-      style="width: 100%; min-height: 64px; padding: 10px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); -webkit-overflow-scrolling: touch;"
+        <!-- Navigation Menu Bar -->
+    <nav class="block bg-white relative border-t border-b border-slate-200"
+      style="width: 100%; min-height: 52px; padding: 6px 0;"
       aria-label="Main Navigation">
-      <div class="container-codix h-full flex items-center justify-between gap-6" style="min-height: 48px;">
+      <div class="container-codix relative flex items-center justify-between gap-6" style="min-height: 44px;">
         <!-- Left Group: Product Categories + Nav Links -->
-        <div class="flex items-center gap-5 sm:gap-8 shrink-0">
-          <!-- Product Categories Button with Mega Menu -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
+          <!-- Product Categories Button -->
           <div class="mega-menu-wrapper relative">
             <button id="mega-menu-btn" onclick="toggleMegaMenu(event)"
-              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition cursor-pointer"
+              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer"
               aria-haspopup="true" aria-expanded="false">
               <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
               <span>Product Categories</span>
             </button>
-
-            <!-- Rich Mega Menu Dropdown Matching Figma (6 Columns) -->
-            <div id="mega-menu-dropdown"
-              class="mega-menu absolute top-full left-0 mt-3 w-[940px] max-w-[calc(100vw-32px)] bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 sm:p-7 z-50 transition-all"
-              role="menu">
-              <!-- Menu Header Title -->
-              <h3 class="text-sm sm:text-base font-bold pb-3 mb-4 border-b border-slate-100" style="color: #3A2F99;">
-                Product Categories
-              </h3>
-
-              <!-- 6-Column Grid Layout -->
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-6">
-                <!-- Col 1: Immunity -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">Immunity</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
-                    <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
-                    <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Iron</a></li>
-                    <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Elderberry</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 2: General Wellness -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">General Wellness</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell multivitamin</a></li>
-                    <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Kids Multi</a></li>
-                    <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Women Multi</a></li>
-                    <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Men Multi</a></li>
-                    <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Fish Oil</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 3: Beauty & Skin Health -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">Beauty &amp; Skin Health</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Hair, skin &amp; Nails</a></li>
-                    <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen plus biotin</a></li>
-                    <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Beauty plus</a></li>
-                    <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Mag plus</a></li>
-                    <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Evening primrose Oil</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 4: Joint, Bone & Muscle Health -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">Joint, Bone &amp; Muscle Health</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod</a></li>
-                    <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Codferol</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 5: Weight Management & Metabolism -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">Weight Management &amp; Metabolism</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Fat Burner</a></li>
-                    <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Apple cider vinegar</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 6: Sexual Health -->
-                <div>
-                  <h4 class="text-[13px] font-bold mb-3" style="color: #211C68;">Sexual Health</h4>
-                  <ul class="space-y-2 text-[12px] text-slate-600">
-                    <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Maca root</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Nav Links -->
-          <ul class="flex items-center gap-7 text-[13px] font-medium" style="color: #211C68;">
+          <ul class="flex items-center gap-7 text-[13px] sm:text-[14px] font-bold" style="color: #211C68;">
             <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
@@ -825,17 +401,84 @@
         </div>
 
         <!-- Right Quick Icons -->
-        <div class="flex items-center justify-between text-[15px]"
-          style="width: 120.96px; height: 36.50px; gap: 1px; color: #211C68;">
-          <button
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
-            aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></button>
-          <button onclick="openModal('wishlist-modal')"
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
-            aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
-          <button onclick="openCartDrawer()"
-            class="hover:text-codix-green transition flex items-center justify-center h-full flex-1 p-1 cursor-pointer"
-            aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></button>
+        <div class="flex items-center gap-4 text-[15px]" style="color: #211C68;">
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Compare Products" aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></a>
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+          <a href="cart.html" class="hover:text-codix-green transition p-1" title="Shopping Cart" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+
+        <!-- Full-Width Mega Menu Dropdown Outside Header Flow -->
+        <div id="mega-menu-dropdown"
+          class="mega-menu absolute top-full left-0 right-0 mt-3 w-full bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10 z-50 transition-all hidden"
+          role="menu">
+          <!-- Menu Header Title -->
+          <h3 class="text-base font-bold pb-3 mb-6 border-b border-slate-100" style="color: #3A2F99;">
+            Product Categories
+          </h3>
+
+          <!-- 6-Column Grid Layout -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
+            <!-- Col 1: Immunity -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Immunity</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Iron</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Elderberry</a></li>
+              </ul>
+            </div>
+
+            <!-- Col 2: General Wellness -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">General Wellness</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell multivitamin</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Kids Multi</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Women Multi</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Men Multi</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Fish Oil</a></li>
+              </ul>
+            </div>
+
+            <!-- Col 3: Beauty & Skin Health -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Beauty &amp; Skin Health</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Hair, skin &amp; Nails</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen plus biotin</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Beauty plus</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Mag plus</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Evening primrose Oil</a></li>
+              </ul>
+            </div>
+
+            <!-- Col 4: Joint, Bone & Muscle Health -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Joint, Bone &amp; Muscle Health</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod</a></li>
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Codferol</a></li>
+              </ul>
+            </div>
+
+            <!-- Col 5: Weight Management & Metabolism -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Weight Management &amp; Metabolism</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Fat Burner</a></li>
+                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Apple cider vinegar</a></li>
+              </ul>
+            </div>
+
+            <!-- Col 6: Sexual Health -->
+            <div>
+              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Sexual Health</h4>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Maca root</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -2849,43 +2492,35 @@
         e.stopPropagation();
         e.preventDefault();
       }
-      const wrapper = document.querySelector('.mega-menu-wrapper');
       const btn = document.getElementById('mega-menu-btn');
       const menu = document.getElementById('mega-menu-dropdown');
-      if (!wrapper || !menu) return;
+      if (!btn || !menu) return;
 
-      const isOpen = wrapper.classList.contains('is-open');
-      if (isOpen) {
-        wrapper.classList.remove('is-open');
-        menu.classList.remove('is-open');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
-        }
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
       } else {
-        wrapper.classList.add('is-open');
-        menu.classList.add('is-open');
-        if (btn) {
-          btn.classList.add('active');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
       }
     }
 
     document.addEventListener('click', (e) => {
-      const wrapper = document.querySelector('.mega-menu-wrapper');
-      if (wrapper && !wrapper.contains(e.target)) {
-        wrapper.classList.remove('is-open');
-        const menu = document.getElementById('mega-menu-dropdown');
-        if (menu) menu.classList.remove('is-open');
-        const btn = document.getElementById('mega-menu-btn');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
         }
       }
-    });
-</script>
+    });</script>
 </body>
 
 </html>

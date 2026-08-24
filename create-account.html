@@ -99,56 +99,46 @@
     
 
   
-    /* Mega Menu Transitions & Active State */
-    .mega-menu-wrapper {
-      position: relative;
-    }
+    
 
+  
+    /* Mega Menu Clean Styling & Active State */
     .mega-menu-btn {
       background-color: #D7F4D8;
       color: #211C68;
       transition: all 0.2s ease;
+      border: none;
+      outline: none;
+      box-shadow: none !important;
     }
 
-    .mega-menu-btn.active,
-    .mega-menu-wrapper.is-open .mega-menu-btn {
+    .mega-menu-btn.active {
       background-color: #382898 !important;
       color: #ffffff !important;
     }
 
-    .mega-menu-btn.active .mega-cat-icon,
-    .mega-menu-wrapper.is-open .mega-cat-icon {
+    .mega-menu-btn.active .mega-cat-icon {
       filter: brightness(0) invert(1);
     }
 
     .mega-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 10px;
-      width: 980px;
-      max-width: calc(100vw - 32px);
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.18);
-      padding: 28px 32px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
-      z-index: 100;
-      display: block;
+      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.2);
     }
 
-    .mega-menu-wrapper.is-open .mega-menu,
-    .mega-menu.is-open,
-    .mega-menu.open {
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      transform: translateY(0) !important;
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMega 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInMega {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .mega-menu h4 {
@@ -160,7 +150,7 @@
 
     .mega-menu a {
       display: block;
-      font-size: 12px;
+      font-size: 13px;
       color: #475569;
       padding: 3px 0;
       text-decoration: none;
@@ -710,42 +700,34 @@
         e.stopPropagation();
         e.preventDefault();
       }
-      const wrapper = document.querySelector('.mega-menu-wrapper');
       const btn = document.getElementById('mega-menu-btn');
       const menu = document.getElementById('mega-menu-dropdown');
-      if (!wrapper || !menu) return;
+      if (!btn || !menu) return;
 
-      const isOpen = wrapper.classList.contains('is-open');
-      if (isOpen) {
-        wrapper.classList.remove('is-open');
-        menu.classList.remove('is-open');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
-        }
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
       } else {
-        wrapper.classList.add('is-open');
-        menu.classList.add('is-open');
-        if (btn) {
-          btn.classList.add('active');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
       }
     }
 
     document.addEventListener('click', (e) => {
-      const wrapper = document.querySelector('.mega-menu-wrapper');
-      if (wrapper && !wrapper.contains(e.target)) {
-        wrapper.classList.remove('is-open');
-        const menu = document.getElementById('mega-menu-dropdown');
-        if (menu) menu.classList.remove('is-open');
-        const btn = document.getElementById('mega-menu-btn');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
         }
       }
-    });
-</script>
+    });</script>
 </body>
 </html>
