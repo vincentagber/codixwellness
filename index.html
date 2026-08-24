@@ -157,6 +157,21 @@
       background-color: #57B952;
     }
 
+    .dropdown-menu {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      display: none !important;
+      transform: translateY(6px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dropdown-menu.open {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
+      transform: translateY(0);
+    }
+
     /* Mega Menu Clean Styling & Active State */
     .mega-menu-btn {
       background-color: #D7F4D8;
@@ -2202,30 +2217,37 @@
 
     // --- Hero Carousel Engine ---
     let currentHeroIndex = 0;
-    const heroSlides = document.querySelectorAll('.hero-slide');
     let heroAutoTimer = null;
 
+    function getHeroSlides() {
+      return document.querySelectorAll('.hero-slide');
+    }
+
     function showHeroSlide(index) {
-      try {
-        heroSlides.forEach((slide, i) => {
-          slide.classList.toggle('active', i === index);
-        });
-      } catch (err) {
-        console.error('Hero slide transition error:', err);
-      }
+      const slides = getHeroSlides();
+      if (!slides.length) return;
+      currentHeroIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === currentHeroIndex);
+      });
     }
 
     function nextHeroSlide() {
-      currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
+      const slides = getHeroSlides();
+      if (!slides.length) return;
+      currentHeroIndex = (currentHeroIndex + 1) % slides.length;
       showHeroSlide(currentHeroIndex);
     }
 
     function prevHeroSlide() {
-      currentHeroIndex = (currentHeroIndex - 1 + heroSlides.length) % heroSlides.length;
+      const slides = getHeroSlides();
+      if (!slides.length) return;
+      currentHeroIndex = (currentHeroIndex - 1 + slides.length) % slides.length;
       showHeroSlide(currentHeroIndex);
     }
 
     function startHeroTimer() {
+      stopHeroTimer();
       heroAutoTimer = setInterval(nextHeroSlide, 5000);
     }
 

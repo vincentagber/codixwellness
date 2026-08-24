@@ -958,3 +958,38 @@ footer {
 .mobile-menu-overlay.open .mobile-drawer-panel {
   transform: translateX(0);
 }
+
+/* Dropdown Menus */
+.dropdown-menu {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  transform: translateY(6px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dropdown-menu.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  transform: translateY(0);
+}
+
+/* Background Sections */
+.reviews-gradient-bg {
+  background: #181440 url('../images/testimonial-bg.jpg') center/cover no-repeat;
+  min-height: 532px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.newsletter-bg {
+  background: url('../images/newsletter-bg.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.footer-green-bg {
+  background-color: #57B952;
+}
