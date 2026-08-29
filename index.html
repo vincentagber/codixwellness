@@ -1893,6 +1893,8 @@
         </span>
       ` : '';
 
+      const displayPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(product.rawPrice) : (product.price || '£' + product.rawPrice);
+
       return `
         <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full h-fit self-start" data-id="${product.id}">
           <!-- Product Image Box (Lavender/Light Gray #F2F2FA, radius 8px) -->
@@ -1904,26 +1906,24 @@
           <!-- Product Details -->
           <div class="pt-2 flex flex-col w-full">
             <div>
-              const displayPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(product.rawPrice) : (product.price || '£' + product.rawPrice);
-              return `
-                <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${product.cat}</p>
-                <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
-                <div class="mt-1 flex items-center gap-1.5">
-                  <div class="flex items-center gap-0.5">${starsHTML}</div>
-                  <span class="text-[11px] font-medium text-[#7E8B9B]">${reviewText}</span>
-                </div>
-                <p class="mt-1 text-[14px] font-bold text-[#201850]">${displayPrice}</p>
+              <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${product.cat}</p>
+              <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
+              <div class="mt-1 flex items-center gap-1.5">
+                <div class="flex items-center gap-0.5">${starsHTML}</div>
+                <span class="text-[11px] font-medium text-[#7E8B9B]">${reviewText}</span>
               </div>
-
-              <!-- Full-width Pale Mint Pill CTA Button (#EEF8F0) -->
-              <button onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.rawPrice}, '${product.img}')" class="mt-2.5 w-full h-[40px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] sm:text-[13px] font-bold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #201850; border-radius: 9999px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
-                <i class="fa-solid fa-cart-shopping text-[11px] text-[#201850]" aria-hidden="true"></i>
-                <span>Select options</span>
-              </button>
+              <p class="mt-1 text-[14px] font-bold text-[#201850]">${displayPrice}</p>
             </div>
-          </article>
-        `;
-      }
+
+            <!-- Full-width Pale Mint Pill CTA Button (#EEF8F0) -->
+            <button onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.rawPrice}, '${product.img}')" class="mt-2.5 w-full h-[40px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] sm:text-[13px] font-bold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #201850; border-radius: 9999px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
+              <i class="fa-solid fa-cart-shopping text-[11px] text-[#201850]" aria-hidden="true"></i>
+              <span>Select options</span>
+            </button>
+          </div>
+        </article>
+      `;
+    }
 
       // --- Render Products into Grid ---
       function renderProductGrid(elementId, products) {
