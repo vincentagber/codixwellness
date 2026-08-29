@@ -272,7 +272,7 @@
         <div class="relative">
           <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
             aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">$ USD</span>
+            <span id="curr-label">£ GBP</span>
             <i class="fa-solid fa-chevron-down text-[9px]"></i>
           </button>
           <div id="curr-dropdown"
@@ -869,12 +869,13 @@
       const tbody = document.getElementById('cart-table-body');
       const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const formattedSubtotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(subtotal) : `£${subtotal.toFixed(2)}`;
 
       document.getElementById('cart-header-count').textContent = totalCount;
       document.getElementById('cart-page-count').textContent = totalCount;
-      document.getElementById('cart-header-total-display').textContent = `$${subtotal.toFixed(2)}`;
-      document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-      document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('cart-header-total-display').textContent = formattedSubtotal;
+      document.getElementById('summary-subtotal').textContent = formattedSubtotal;
+      document.getElementById('summary-total').textContent = formattedSubtotal;
 
       if (cart.length === 0) {
         tbody.innerHTML = `
@@ -887,19 +888,22 @@
         return;
       }
 
-      tbody.innerHTML = cart.map((item, idx) => `
+      tbody.innerHTML = cart.map((item, idx) => {
+        const itemUnitPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(item.price) : `£${item.price.toFixed(2)}`;
+        const itemLineTotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(item.price * item.qty) : `£${(item.price * item.qty).toFixed(2)}`;
+        return `
         <div class="py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4 w-full sm:w-1/2">
-            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain rounded-xl bg-slate-50 p-1.5 border border-slate-100 shrink-0">
+            <img src="${item.image || item.img || 'images/f-grid-2.png'}" alt="${item.name}" class="w-16 h-16 object-contain rounded-xl bg-slate-50 p-1.5 border border-slate-100 shrink-0">
             <div class="min-w-0">
               <a href="product.html" class="text-sm font-bold text-slate-900 hover:text-codix-green transition truncate block">${item.name}</a>
               <span class="text-xs text-slate-400 block mt-0.5">${item.plan || 'Standard'}</span>
-              <span class="text-xs font-extrabold text-codix-green sm:hidden block mt-1">$${item.price.toFixed(2)}</span>
+              <span class="text-xs font-extrabold text-codix-green sm:hidden block mt-1">${itemUnitPrice}</span>
             </div>
           </div>
 
           <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-1/2">
-            <span class="hidden sm:block text-sm font-bold text-slate-700">$${item.price.toFixed(2)}</span>
+            <span class="hidden sm:block text-sm font-bold text-slate-700">${itemUnitPrice}</span>
             
             <!-- Quantity Stepper -->
             <div class="flex items-center justify-between border border-slate-200 rounded-full bg-slate-50 px-3 py-1.5 w-[96px]">
@@ -909,7 +913,7 @@
             </div>
 
             <!-- Line Total -->
-            <span class="text-sm font-black text-slate-900 min-w-[70px] text-right">$${(item.price * item.qty).toFixed(2)}</span>
+            <span class="text-sm font-black text-slate-900 min-w-[70px] text-right">${itemLineTotal}</span>
 
             <!-- Remove Item -->
             <button onclick="removeItem(${idx})" class="text-slate-300 hover:text-red-500 transition p-1.5 text-sm cursor-pointer" title="Remove item">
@@ -917,8 +921,11 @@
             </button>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
+
+    window.addEventListener('codixCurrencyChanged', renderCart);
 
     function updateQty(idx, delta) {
       const cart = getCart();
@@ -996,6 +1003,7 @@
       }
     });</script>
   <script src="js/framer.js"></script>
+  <script src="js/currency.js"></script>
 </body>
 
 </html>

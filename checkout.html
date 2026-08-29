@@ -299,7 +299,7 @@
         <div class="relative">
           <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1 cursor-pointer"
             aria-label="Select Currency">
-            <span id="curr-label">$ USD</span>
+            <span id="curr-label">£ GBP</span>
             <i class="fa-solid fa-chevron-down text-[9px]"></i>
           </button>
           <div id="curr-dropdown"
@@ -792,11 +792,11 @@
           <div class="pt-4 border-t border-slate-200 flex items-baseline justify-between">
             <div>
               <span class="text-sm font-bold text-slate-900 block">Total</span>
-              <span id="tax-inclusion-text" class="text-[11px] text-slate-400 block mt-0.5">Including $0.00 in taxes</span>
+              <span id="tax-inclusion-text" class="text-[11px] text-slate-400 block mt-0.5">Including £0.00 in taxes</span>
             </div>
             <div class="text-right">
-              <span class="text-xs text-slate-400 font-bold mr-1">USD</span>
-              <span id="summary-total" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">$0.00</span>
+              <span id="summary-currency-code" class="text-xs text-slate-400 font-bold mr-1">GBP</span>
+              <span id="summary-total" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">£0.00</span>
             </div>
           </div>
 
@@ -1122,8 +1122,12 @@
       if (el) el.textContent = lang;
     }
     function selectCurr(curr) {
-      const el = document.getElementById('curr-label');
-      if (el) el.textContent = curr;
+      if (typeof CodixCurrency !== 'undefined') {
+        CodixCurrency.setCurrency(curr);
+      } else {
+        const el = document.getElementById('curr-label');
+        if (el) el.textContent = curr;
+      }
     }
 
     function loadCartItems() {
@@ -1140,12 +1144,12 @@
         }
       }
 
-      // Default sample product matching Figma mockup if cart is empty
+      // Default sample product matching official catalog if cart is empty
       checkoutItems = [
         {
           id: 'p1',
           name: 'Y’our Gummie Kids Multi Gummies™',
-          price: 19.00,
+          price: 9.17,
           qty: 1,
           img: 'images/f-grid-2.png'
         }
@@ -1169,7 +1173,9 @@
           </div>
         `;
       } else {
-        container.innerHTML = checkoutItems.map(item => `
+        container.innerHTML = checkoutItems.map(item => {
+          const itemUnitPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format((item.price || 9.17) * (item.qty || 1)) : `£${((item.price || 9.17) * (item.qty || 1)).toFixed(2)}`;
+          return `
           <div class="flex items-center justify-between gap-4">
             <div class="relative shrink-0">
               <div class="w-16 h-16 rounded-xl bg-white border border-slate-200 p-1.5 flex items-center justify-center shadow-xs">
@@ -1184,17 +1190,18 @@
               <p class="text-[11px] text-slate-400">${item.plan || 'Standard'}</p>
             </div>
             <span class="text-xs sm:text-sm font-bold text-slate-900 shrink-0">
-              $${((item.price || 19.00) * (item.qty || 1)).toFixed(2)}
+              ${itemUnitPrice}
             </span>
           </div>
-        `).join('');
+        `;
+        }).join('');
       }
 
       calculateTotals();
     }
 
     function calculateTotals() {
-      const subtotal = checkoutItems.reduce((sum, item) => sum + ((item.price || 19.00) * (item.qty || 1)), 0);
+      const subtotal = checkoutItems.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0);
       const discountAmount = subtotal * discountApplied;
       const discountedSubtotal = subtotal - discountAmount;
 
@@ -1203,16 +1210,24 @@
       const taxes = discountedSubtotal * taxRate;
       const grandTotal = discountedSubtotal + shippingCost + taxes;
 
-      document.getElementById('summary-subtotal').textContent = '$' + subtotal.toFixed(2);
+      const formattedSubtotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(subtotal) : `£${subtotal.toFixed(2)}`;
+      const formattedTaxes = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(taxes) : `£${taxes.toFixed(2)}`;
+      const formattedGrandTotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(grandTotal) : `£${grandTotal.toFixed(2)}`;
+      const currCode = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.getCurrent().code : 'GBP';
+
+      const codeEl = document.getElementById('summary-currency-code');
+      if (codeEl) codeEl.textContent = currCode;
+
+      document.getElementById('summary-subtotal').textContent = formattedSubtotal;
       const headerTotal = document.getElementById('cart-header-total-display');
-      if (headerTotal) headerTotal.textContent = '$' + subtotal.toFixed(2);
+      if (headerTotal) headerTotal.textContent = formattedSubtotal;
       
       const shippingEl = document.getElementById('summary-shipping');
       if (shippingCost === 0) {
         shippingEl.textContent = 'FREE';
         shippingEl.className = 'font-bold text-emerald-600';
       } else {
-        shippingEl.textContent = '$' + shippingCost.toFixed(2);
+        shippingEl.textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(shippingCost) : `£${shippingCost.toFixed(2)}`;
         shippingEl.className = 'font-bold text-slate-900';
       }
 
@@ -1220,15 +1235,19 @@
       const discountVal = document.getElementById('summary-discount');
       if (discountApplied > 0) {
         discountRow.classList.remove('hidden');
-        discountVal.textContent = '-$' + discountAmount.toFixed(2);
+        discountVal.textContent = '-' + ((typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(discountAmount) : `£${discountAmount.toFixed(2)}`);
       } else {
         discountRow.classList.add('hidden');
       }
 
-      document.getElementById('summary-taxes').textContent = '$' + taxes.toFixed(2);
-      document.getElementById('tax-inclusion-text').textContent = 'Including $' + taxes.toFixed(2) + ' in taxes';
-      document.getElementById('summary-total').textContent = '$' + grandTotal.toFixed(2);
+      document.getElementById('summary-taxes').textContent = formattedTaxes;
+      document.getElementById('tax-inclusion-text').textContent = `Including ${formattedTaxes} in taxes`;
+      document.getElementById('summary-total').textContent = formattedGrandTotal;
     }
+
+    window.addEventListener('codixCurrencyChanged', () => {
+      renderOrderSummary();
+    });
 
     function applyDiscountCode() {
       const codeInput = document.getElementById('discount-code');
@@ -1323,6 +1342,7 @@
       }
     });</script>
   <script src="js/framer.js"></script>
+  <script src="js/currency.js"></script>
 </body>
 
 </html>

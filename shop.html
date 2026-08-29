@@ -322,7 +322,7 @@
         <div class="relative">
           <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
             aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">$ USD</span>
+            <span id="curr-label">£ GBP</span>
             <i class="fa-solid fa-chevron-down text-[9px]"></i>
           </button>
           <div id="curr-dropdown"
@@ -1376,6 +1376,8 @@
       let starsHTML = '';
       for (let i = 0; i < fullStars; i++) starsHTML += `<i class="fa-solid fa-star text-[11px]" style="color: #F6A018;"></i>`;
 
+      const displayPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(p.price) : '£' + p.price.toFixed(2);
+
       return `
         <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full h-fit self-start">
           <a href="product.html?id=${p.id}" class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-sm transition-shadow duration-300 block w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;">
@@ -1392,7 +1394,7 @@
                 <div class="flex items-center gap-0.5">${starsHTML}</div>
                 <span class="text-[11px] font-medium text-[#7E8B9B]">(${p.reviews} reviews)</span>
               </div>
-              <p class="mt-1 text-[14px] font-bold text-[#201850]">${p.priceStr}</p>
+              <p class="mt-1 text-[14px] font-bold text-[#201850]">${displayPrice}</p>
             </div>
             <a href="product.html?id=${p.id}" class="mt-2.5 w-full h-[40px] py-2 px-4 rounded-full flex items-center justify-center gap-2 text-[12px] sm:text-[13px] font-bold transition cursor-pointer active:scale-95 border-0" style="background-color: #EEF8F0; color: #201850; border-radius: 9999px;" onmouseover="this.style.backgroundColor='#DCF3E1'" onmouseout="this.style.backgroundColor='#EEF8F0'">
               <i class="fa-solid fa-cart-shopping text-[11px] text-[#201850]"></i>
@@ -1459,7 +1461,9 @@
       const displayEl = document.getElementById('price-range-display');
       if (fillEl) fillEl.style.width = pct + '%';
       if (thumbEl) thumbEl.style.left = pct + '%';
-      if (displayEl) displayEl.textContent = `$5.00 - $${currentMaxPrice.toFixed(2)}`;
+      const minDisplay = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(minVal) : `£${minVal.toFixed(2)}`;
+      const maxDisplay = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(currentMaxPrice) : `£${currentMaxPrice.toFixed(2)}`;
+      if (displayEl) displayEl.textContent = `${minDisplay} - ${maxDisplay}`;
       currentPage = 1;
       renderShopGrid();
     }
@@ -1541,11 +1545,13 @@
       const countEl = document.getElementById('drawer-cart-count');
       const subtotalEl = document.getElementById('drawer-cart-subtotal');
       const totalEl = document.getElementById('drawer-cart-total');
+      const formattedSubtotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(subtotal) : `£${subtotal.toFixed(2)}`;
+
       if (badge) badge.textContent = totalCount;
-      if (headerTotal) headerTotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (headerTotal) headerTotal.textContent = formattedSubtotal;
       if (countEl) countEl.textContent = totalCount;
-      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `$${subtotal.toFixed(2)}`;
+      if (subtotalEl) subtotalEl.textContent = formattedSubtotal;
+      if (totalEl) totalEl.textContent = formattedSubtotal;
       const c = document.getElementById('cart-items-container');
       if (c) {
         c.innerHTML = cartItems.map(item => `
@@ -1559,7 +1565,7 @@
                 <button onclick="removeCartItem('${item.id}')" class="text-slate-500 hover:text-red-500 p-0.5 cursor-pointer"><i class="fa-solid fa-trash-can text-sm"></i></button>
               </div>
               <div class="flex items-center justify-between mt-2">
-                <span class="text-xs sm:text-sm font-bold text-[#181440]">$ ${(item.price * item.qty).toFixed(2)}</span>
+                <span class="text-xs sm:text-sm font-bold text-[#181440]">${(typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(item.price * item.qty) : '£' + (item.price * item.qty).toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -1612,7 +1618,7 @@
             <div class="flex-1 min-w-0">
               <p class="text-[11px] font-semibold text-[#382898] truncate">${item.cat}</p>
               <h4 class="text-xs font-bold text-[#181440] truncate leading-tight mt-0.5">${item.name}</h4>
-              <span class="text-xs font-black text-[#181440]">$${item.price.toFixed(2)}</span>
+              <span class="text-xs font-black text-[#181440]">${(typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(item.price) : '£' + item.price.toFixed(2)}</span>
             </div>
             <button onclick="addToCart('${item.id}', '${item.name}', ${item.price}, '${item.img}'); removeWishlistItem(${idx});" class="bg-[#57B952] text-white text-[11px] font-bold px-3.5 py-2 rounded-full cursor-pointer">Add</button>
           </div>
@@ -1708,6 +1714,15 @@
       updateCartUI();
       updateWishlistUI();
       showTestimonial(0);
+
+      // Re-render shop and update cart when currency changes
+      window.addEventListener('codixCurrencyChanged', () => {
+        renderShopGrid();
+        updateCartUI();
+        updateWishlistUI();
+        const rangeInput = document.getElementById('price-range');
+        if (rangeInput) updatePriceFilter(rangeInput.value);
+      });
     });
   </script>
 <script>
@@ -1746,6 +1761,7 @@
       }
     });</script>
   <script src="js/framer.js"></script>
+  <script src="js/currency.js"></script>
 </body>
 
 </html>
