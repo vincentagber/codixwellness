@@ -1190,6 +1190,41 @@
         </div>
       </div>
 
+      <!-- Corporate Contact & Regional Presence (Official Codix Pharma Info) -->
+      <div class="mt-10 pt-8 border-t border-[#CBE9C9]/30 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-white/90">
+        <!-- Address & Registration -->
+        <div class="flex items-start gap-3">
+          <i class="fa-solid fa-location-dot text-[#CBE9C9] text-base mt-0.5 shrink-0"></i>
+          <div>
+            <p class="font-bold text-white">207 Ikorodu Road, Ilupeju, Lagos, Nigeria</p>
+            <p class="text-white/70 text-[11px] mt-0.5">RC: 468418</p>
+          </div>
+        </div>
+
+        <!-- Phone Numbers -->
+        <div class="flex items-start gap-3">
+          <i class="fa-solid fa-phone text-[#CBE9C9] text-base mt-0.5 shrink-0"></i>
+          <div class="space-y-0.5">
+            <p class="font-semibold text-white">+234(0)171 50025 &nbsp;|&nbsp; +234(0)171 50026</p>
+            <p class="font-semibold text-white">+234(0) 808 526 4255</p>
+          </div>
+        </div>
+
+        <!-- Email & Web -->
+        <div class="flex items-start gap-3">
+          <i class="fa-solid fa-envelope text-[#CBE9C9] text-base mt-0.5 shrink-0"></i>
+          <div>
+            <a href="mailto:info@codixgroup.com" class="font-semibold text-white hover:text-[#CBE9C9] transition block">info@codixgroup.com</a>
+            <a href="https://www.codixgroup.com" target="_blank" rel="noopener noreferrer" class="text-white/80 hover:text-white transition text-[11px] block mt-0.5">www.codixgroup.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regional Presence Strip -->
+      <div class="mt-6 py-2.5 px-4 rounded-lg bg-white/5 border border-white/10 text-center text-[11px] text-white/80 font-medium tracking-wide">
+        <span class="text-[#CBE9C9] font-bold mr-1.5">Presence:</span> Nigeria &bull; United Kingdom &bull; Ghana &bull; Sierra Leone &bull; Liberia &bull; Zambia &bull; The Gambia &bull; Kenya &bull; Cameroon &bull; Guinea Bissau &bull; Senegal &bull; Ivory Coast
+      </div>
+
       <!-- Bottom Horizontal Line Above Copyright -->
       <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
 
@@ -1342,23 +1377,23 @@
   </div>
 
   <script>
-    // --- Shop Database (15 items) ---
+    // --- Shop Database matching Official Codix Catalog ---
     const ALL_SHOP_PRODUCTS = [
-      { id: 's1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-1.png', size: '50ml' },
-      { id: 's2', name: 'Your Gummie – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100ml' },
-      { id: 's3', name: 'Your Gummie Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png', size: '75ml' },
-      { id: 's4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: 24.00, priceStr: '$16.00 – $35.00', reviews: 102, rating: 5, img: 'images/f-grid-4.png', size: '100ml' },
-      { id: 's5', name: 'Codix Fatburner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: 22.00, priceStr: '$16.00 – $35.00', reviews: 97, rating: 5, img: 'images/f-grid-5.png', size: '50ml' },
-      { id: 's6', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 29.99, priceStr: '$16.00 – $35.00', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' },
-      { id: 's7', name: 'Your Gummie – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
-      { id: 's8', name: 'Codix Maca Root', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: 18.00, priceStr: '$16.00 – $35.00', reviews: 89, rating: 5, img: 'images/f-grid-8.png', size: '100mg' },
-      { id: 's9', name: 'Your Gummie – 5-HTP Complex', cat: 'Supplements, Immune Support', badge: 'Sale', price: 20.00, priceStr: '$16.00 – $35.00', reviews: 112, rating: 5, img: 'images/f-grid-9.png', size: '250mg' },
-      { id: 's10', name: 'Your Gummie – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
-      { id: 's11', name: 'Your Gummie – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 21.00, priceStr: '$16.00 – $35.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
-      { id: 's12', name: 'Your Gummie – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 23.00, priceStr: '$16.00 – $35.00', reviews: 168, rating: 5, img: 'images/f-grid-12.png', size: '100ml' },
-      { id: 's13', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: 16.00, priceStr: '$16.00 – $35.00', reviews: 59, rating: 5, img: 'images/f-grid-13.png', size: '30ml' },
-      { id: 's14', name: 'Your Gummie – Iron', cat: 'Supplements, Blood Health', badge: 'Sale', price: 19.00, priceStr: '$16.00 – $35.00', reviews: 74, rating: 5, img: 'images/f-grid-14.png', size: '500ml' },
-      { id: 's15', name: 'Your Gummie – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: 19.49, priceStr: '$16.00 – $35.00', reviews: 1, rating: 5, img: 'images/f-grid-15.png', size: '400mg' }
+      { id: 's1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 9.17, priceStr: '£9.17', reviews: 1, rating: 5, img: 'images/f-grid-1.png', size: '50ml' },
+      { id: 's2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: 7.08, priceStr: '£7.08', reviews: 103, rating: 5, img: 'images/f-grid-2.png', size: '100ml' },
+      { id: 's3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: 4.58, priceStr: '£4.58', reviews: 59, rating: 5, img: 'images/f-grid-13.png', size: '30ml' },
+      { id: 's4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: 8.33, priceStr: '£8.33', reviews: 102, rating: 5, img: 'images/f-grid-4.png', size: '100ml' },
+      { id: 's5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: 7.50, priceStr: '£7.50', reviews: 97, rating: 5, img: 'images/f-grid-5.png', size: '50ml' },
+      { id: 's6', name: 'SelCEA – Hepato & Liver Support', cat: 'Supplements, Liver Care', badge: 'Sale', price: 6.88, priceStr: '£6.88', reviews: 88, rating: 5, img: 'images/f-grid-8.png', size: '100mg' },
+      { id: 's7', name: 'Codix MacaRoot Pure Botanical', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: 10.42, priceStr: '£10.42', reviews: 89, rating: 5, img: 'images/f-grid-8.png', size: '100mg' },
+      { id: 's8', name: 'Codix Everose Evening Primrose Oil', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 13.33, priceStr: '£13.33', reviews: 58, rating: 5, img: 'images/f-grid-12.png', size: '100ml' },
+      { id: 's9', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 14.50, priceStr: '£14.50', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' },
+      { id: 's10', name: 'Your Gummie – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 8.50, priceStr: '£8.50', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
+      { id: 's11', name: 'Your Gummie – 5-HTP Complex', cat: 'Supplements, Immune Support', badge: 'Sale', price: 9.00, priceStr: '£9.00', reviews: 112, rating: 5, img: 'images/f-grid-9.png', size: '250mg' },
+      { id: 's12', name: 'Your Gummie – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 8.50, priceStr: '£8.50', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
+      { id: 's13', name: 'Your Gummie – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 9.00, priceStr: '£9.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
+      { id: 's14', name: 'Your Gummie – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 9.50, priceStr: '£9.50', reviews: 168, rating: 5, img: 'images/f-grid-12.png', size: '100ml' },
+      { id: 's15', name: 'Your Gummie Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: 8.00, priceStr: '£8.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png', size: '75ml' }
     ];
 
     let currentCategory = 'all';
