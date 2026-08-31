@@ -114,7 +114,7 @@
     .top-bar-bg {
       background-color: #57B952;
       position: relative;
-      overflow: hidden;
+      overflow: visible !important; z-index: 100;
     }
 
     .top-bar-bg::before {
@@ -153,9 +153,11 @@
     }
 
     .dropdown-menu.open {
+      z-index: 99999 !important;
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
+    
     }
 
     .modal-overlay:not(.open) {
@@ -287,7 +289,7 @@
   <!-- ======================================================== -->
   <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR (Height ~40px)       -->
   <!-- ======================================================== -->
-  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-50 select-none"
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-[100] overflow-visible select-none"
     aria-label="Announcement">
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
       <!-- Left: Free Shipping message -->
@@ -305,7 +307,7 @@
             <i class="fa-solid fa-chevron-down text-[9px]"></i>
           </button>
           <div id="lang-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
             <button
               class="lang-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
               data-val="EN">English (EN)</button>
@@ -326,7 +328,7 @@
             <i class="fa-solid fa-chevron-down text-[9px]"></i>
           </button>
           <div id="curr-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-50">
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
             <button
               class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
               data-val="$ USD">$ USD</button>

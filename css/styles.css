@@ -267,10 +267,12 @@ body {
   transition: all 0.2s ease;
 }
 .dropdown-menu.open {
+      z-index: 99999 !important;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
+
+    }
 
 /* ---- Search Results ---- */
 .search-results {
@@ -556,7 +558,7 @@ body {
   display: flex;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible !important; z-index: 100;
 }
 
 /* ---- Main Header ---- */
@@ -1035,11 +1037,13 @@ footer {
 }
 
 .dropdown-menu.open {
+      z-index: 99999 !important;
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
   transform: translateY(0);
-}
+
+    }
 
 /* Background Sections */
 .reviews-gradient-bg {
