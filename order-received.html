@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation | Codix Wellness</title>
+  <meta name="description" content="Thank you for your order with Codix Wellness. Track your order and view receipt.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tailwind.css">
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .top-bar-bg { background-color: #57B952; position: relative; overflow: visible !important; z-index: 100 !important; }
+    .dropdown-menu { opacity: 0 !important; visibility: hidden !important; display: none !important; transform: translateY(6px); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); z-index: 99999 !important; }
+    .dropdown-menu.open { opacity: 1 !important; visibility: visible !important; display: block !important; transform: translateY(0); z-index: 99999 !important; }
+  </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#57B952] selection:text-white">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <div class="container-codix max-w-[1200px] mx-auto px-4 sm:px-6 h-[72px] sm:h-[80px] flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2" aria-label="Codix Wellness Home">
+        <img src="images/logo-codix.png" alt="Codix Wellness" class="h-10 sm:h-12 w-auto object-contain">
+      </a>
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <a href="shop.html" class="text-[#382898] hover:text-[#57B952] flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-left text-[11px]"></i>
+          <span>Continue Shopping</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container-codix max-w-[900px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <!-- Success Banner -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 text-center mb-8">
+      <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-emerald-50 text-[#57B952] flex items-center justify-center text-2xl sm:text-3xl mb-4 shadow-inner">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <span class="text-xs font-bold text-[#57B952] uppercase tracking-widest block mb-1">Order Confirmed</span>
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">Thank you for your order!</h1>
+      <p class="text-slate-500 text-sm mt-2 max-w-lg mx-auto">
+        We have received your order and sent a detailed confirmation receipt to <strong id="receipt-email" class="text-slate-800">your email</strong>.
+      </p>
+
+      <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-3.5 text-xs text-slate-700">
+        <div><span class="text-slate-400">Order Number:</span> <strong id="receipt-order-id" class="text-slate-900 font-black">#CW-00000</strong></div>
+        <span class="text-slate-300 hidden sm:inline">•</span>
+        <div><span class="text-slate-400">Status:</span> <span id="receipt-order-status" class="font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px]">Processing</span></div>
+        <span class="text-slate-300 hidden sm:inline">•</span>
+        <div><span class="text-slate-400">Payment:</span> <strong id="receipt-payment-method" class="text-slate-900 font-bold">Paystack</strong></div>
+      </div>
+    </div>
+
+    <!-- Direct Bank Transfer Instruction Box (Shown only if BACS payment) -->
+    <div id="bank-transfer-box" class="bg-[#F0FDF4] border border-emerald-200 rounded-3xl p-6 sm:p-8 mb-8 hidden">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div class="flex-1">
+          <h2 class="text-base font-black text-slate-900">Direct Bank Transfer Instructions</h2>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Please make your payment directly into our official bank account. Use your <strong>Order ID</strong> as the payment reference. Your order will be dispatched as soon as funds clear.
+          </p>
+          <div class="grid sm:grid-cols-3 gap-3 mt-4 bg-white p-4 rounded-2xl border border-emerald-100 text-xs">
+            <div>
+              <span class="text-slate-400 block text-[11px]">Bank Name</span>
+              <strong class="text-slate-900 font-bold">Zenith Bank PLC</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[11px]">Account Number</span>
+              <strong class="text-slate-900 font-bold text-sm tracking-wide">1015694200</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[11px]">Account Name</span>
+              <strong class="text-slate-900 font-bold">Codix Wellness Ltd</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Items & Billing Summary -->
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Left 2 Cols: Itemized List -->
+      <div class="md:col-span-2 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8">
+        <h2 class="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100">Ordered Items</h2>
+        <div id="receipt-items-list" class="space-y-4">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="border-t border-slate-100 mt-6 pt-4 space-y-2 text-xs text-slate-600">
+          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><strong id="receipt-subtotal" class="text-slate-800">£0.00</strong></div>
+          <div class="flex justify-between"><span class="text-slate-500">Shipping</span><strong class="text-emerald-600">FREE</strong></div>
+          <div class="flex justify-between"><span class="text-slate-500">Estimated Taxes</span><strong id="receipt-tax" class="text-slate-800">£0.00</strong></div>
+          <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-100"><span class="text-slate-900">Grand Total</span><strong id="receipt-total" class="text-base text-[#181440]">£0.00</strong></div>
+        </div>
+      </div>
+
+      <!-- Right 1 Col: Customer Details & Help -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+          <h2 class="text-sm font-bold text-slate-900 mb-3">Delivery Address</h2>
+          <div id="receipt-delivery-address" class="text-xs text-slate-600 leading-relaxed">
+            <p id="receipt-customer-name" class="font-bold text-slate-900"></p>
+            <p id="receipt-customer-address"></p>
+            <p id="receipt-customer-phone" class="mt-1 text-slate-500"></p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 text-center">
+          <i class="fa-solid fa-headset text-2xl text-[#382898] mb-2"></i>
+          <h3 class="text-xs font-bold text-slate-900">Need assistance?</h3>
+          <p class="text-[11px] text-slate-500 mt-1">Our customer wellness team is ready to support you.</p>
+          <a href="index.html#support" class="mt-3 inline-block bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-4 py-2 rounded-xl transition">
+            Contact Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/currency.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('order_id') || 'CW-' + Math.floor(100000 + Math.random() * 900000);
+      const method = urlParams.get('method');
+
+      // Fetch order details
+      let order = null;
+      if (typeof CodixAPI !== 'undefined') {
+        order = await CodixAPI.getOrder(orderId);
+      }
+
+      if (!order) {
+        order = {
+          order_id: orderId,
+          status: method === 'bacs' ? 'On Hold (Awaiting Transfer)' : 'Processing',
+          payment_method: method === 'bacs' ? 'Direct Bank Transfer' : 'Paystack Debit/Credit Card',
+          billing: {
+            name: 'Valued Customer',
+            email: 'customer@codixwellness.com',
+            address: '123 Health Ave, Lagos, Nigeria',
+            phone: '+234 800 CODIX'
+          },
+          items: [
+            { name: 'Codferol Vitamin D3 + K2', qty: 1, price: 9.17, img: 'images/f-grid-1.png' }
+          ],
+          total: '9.86'
+        };
+      }
+
+      // Populate UI
+      document.getElementById('receipt-order-id').textContent = '#' + (order.order_id || orderId);
+      document.getElementById('receipt-email').textContent = order.billing ? (order.billing.email || order.billing.first_name || 'your email') : 'your email';
+      document.getElementById('receipt-payment-method').textContent = order.payment_method || (method === 'bacs' ? 'Direct Bank Transfer' : 'Paystack');
+
+      const statusEl = document.getElementById('receipt-order-status');
+      if (statusEl) {
+        statusEl.textContent = order.status || (method === 'bacs' ? 'Awaiting Payment' : 'Processing');
+        if (method === 'bacs') {
+          statusEl.className = 'font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px]';
+        }
+      }
+
+      if (method === 'bacs' || (order.payment_method && order.payment_method.toLowerCase().includes('bank'))) {
+        const bankBox = document.getElementById('bank-transfer-box');
+        if (bankBox) bankBox.classList.remove('hidden');
+      }
+
+      // Delivery Address
+      if (order.billing) {
+        const nameEl = document.getElementById('receipt-customer-name');
+        if (nameEl) nameEl.textContent = order.billing.name || (order.billing.first_name ? `${order.billing.first_name} ${order.billing.last_name || ''}` : 'Customer');
+        const addrEl = document.getElementById('receipt-customer-address');
+        if (addrEl) addrEl.textContent = order.billing.address || (order.billing.address_1 ? `${order.billing.address_1}, ${order.billing.city || ''}` : '');
+        const phoneEl = document.getElementById('receipt-customer-phone');
+        if (phoneEl) phoneEl.textContent = order.billing.phone || '';
+      }
+
+      // Items
+      const itemsContainer = document.getElementById('receipt-items-list');
+      const items = order.items || [];
+      if (itemsContainer && items.length > 0) {
+        itemsContainer.innerHTML = items.map(it => {
+          const formatted = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format((it.price || 9.17) * (it.qty || 1)) : `£${((it.price || 9.17) * (it.qty || 1)).toFixed(2)}`;
+          return `
+            <div class="flex items-center justify-between gap-3 py-2 border-b border-slate-50 last:border-0">
+              <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 p-1 flex items-center justify-center shrink-0">
+                <img src="${it.img || it.image || 'images/f-grid-1.png'}" alt="${it.name || 'Product'}" class="max-h-full max-w-full object-contain">
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-xs font-bold text-slate-900 truncate">${it.name || 'Product'}</h4>
+                <p class="text-[11px] text-slate-400">Qty: ${it.qty || 1}</p>
+              </div>
+              <span class="text-xs font-bold text-slate-800 shrink-0">${formatted}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const totalVal = parseFloat(order.total || 9.86);
+      const subtotalVal = totalVal / 1.075;
+      const taxVal = totalVal - subtotalVal;
+
+      document.getElementById('receipt-subtotal').textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(subtotalVal) : `£${subtotalVal.toFixed(2)}`;
+      document.getElementById('receipt-tax').textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(taxVal) : `£${taxVal.toFixed(2)}`;
+      document.getElementById('receipt-total').textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(totalVal) : `£${totalVal.toFixed(2)}`;
+    });
+  </script>
+</body>
+</html>

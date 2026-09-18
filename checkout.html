@@ -673,12 +673,12 @@
             </div>
 
             <!-- Payment Container Box -->
-            <div class="rounded-xl border border-slate-300 overflow-hidden bg-white">
-              <!-- Header Tab: Credit Card -->
-              <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <input type="radio" id="pay-card" name="payment_method" checked class="custom-checkbox">
-                  <label for="pay-card" class="text-xs font-bold text-slate-800 cursor-pointer">Credit card</label>
+            <div class="rounded-xl border border-slate-300 overflow-hidden bg-white space-y-0">
+              <!-- Option 1: Paystack (Debit/Credit Card, Bank Transfer, Apple Pay) -->
+              <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-paystack').click()">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" id="pay-paystack" name="payment_method" value="paystack" checked class="custom-checkbox" onchange="togglePaymentFields()">
+                  <label for="pay-paystack" class="text-xs font-bold text-slate-900 cursor-pointer">Paystack (Debit/Credit Card, Bank, USSD)</label>
                 </div>
                 <div class="flex items-center gap-1.5">
                   <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
@@ -687,41 +687,31 @@
                 </div>
               </div>
 
-              <!-- Card Inputs Form -->
-              <div class="p-4 space-y-3 bg-[#FDFDFD]">
-                <!-- Card Number -->
-                <div class="relative flex items-center">
-                  <input type="text" required placeholder="Card number" maxlength="19"
-                    class="form-input pr-10" id="card-number" oninput="formatCardNumber(this)">
-                  <i class="fa-solid fa-lock absolute right-3.5 text-slate-400 text-xs"></i>
-                </div>
+              <!-- Paystack Notice -->
+              <div id="paystack-notice-box" class="p-4 bg-[#FDFDFD] border-b border-slate-200 text-xs text-slate-600">
+                <p class="leading-relaxed">
+                  You will be securely redirected to Paystack to complete your purchase using Visa, Mastercard, Verve, Bank Transfer, or Apple Pay.
+                </p>
+              </div>
 
-                <!-- Expiry & CVV -->
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <input type="text" required placeholder="Expiration date (MM / YY)" maxlength="5"
-                      class="form-input" id="card-expiry" oninput="formatExpiry(this)">
-                  </div>
-                  <div class="relative flex items-center">
-                    <input type="password" required placeholder="Security code" maxlength="4"
-                      class="form-input pr-10" id="card-cvv">
-                    <span class="absolute right-3.5 text-slate-400 hover:text-slate-600 text-xs cursor-help" title="3 or 4-digit code on the back of your card">
-                      <i class="fa-regular fa-circle-question text-sm"></i>
-                    </span>
-                  </div>
+              <!-- Option 2: Direct Bank Transfer (BACS) -->
+              <div class="bg-[#F8FAFC] p-4 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-bacs').click()">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" id="pay-bacs" name="payment_method" value="bacs" class="custom-checkbox" onchange="togglePaymentFields()">
+                  <label for="pay-bacs" class="text-xs font-bold text-slate-900 cursor-pointer">Direct Bank Transfer (Manual Transfer)</label>
                 </div>
+                <i class="fa-solid fa-building-columns text-slate-500 text-sm"></i>
+              </div>
 
-                <!-- Name on Card -->
-                <div>
-                  <input type="text" required placeholder="Name on card" class="form-input" id="card-name">
-                </div>
-
-                <!-- Use shipping address as billing -->
-                <div class="pt-2">
-                  <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer select-none">
-                    <input type="checkbox" checked class="custom-checkbox">
-                    <span>Use shipping address as billing address</span>
-                  </label>
+              <!-- Direct Bank Transfer Details -->
+              <div id="bacs-details-box" class="p-4 bg-[#F0FDF4] border-t border-emerald-100 text-xs text-slate-700 hidden">
+                <p class="font-medium leading-relaxed mb-3">
+                  Make your payment directly into our bank account. Please use your Order ID as the payment reference.
+                </p>
+                <div class="space-y-1 bg-white p-3 rounded-xl border border-emerald-200 text-xs">
+                  <div><span class="text-slate-400">Bank:</span> <strong class="text-slate-900 font-bold">Zenith Bank PLC</strong></div>
+                  <div><span class="text-slate-400">Account Number:</span> <strong class="text-slate-900 font-bold tracking-wide">1015694200</strong></div>
+                  <div><span class="text-slate-400">Account Name:</span> <strong class="text-slate-900 font-bold">Codix Wellness Ltd</strong></div>
                 </div>
               </div>
             </div>
@@ -733,15 +723,15 @@
             </div>
 
             <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">
-              By paying, you agree to create a shop account subject to shop's <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+              By placing your order, you agree to Codix Wellness's <a href="#" class="underline">Terms of Service</a> and <a href="#" class="underline">Privacy Policy</a>. Real-time inventory is verified upon checkout.
             </p>
 
-            <!-- Submit Button: Continue / Pay now -->
+            <!-- Submit Button: Place Order / Pay with Paystack -->
             <button type="submit" id="submit-order-btn"
               class="mt-5 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-4 rounded-xl text-sm transition active:scale-98 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               style="box-shadow: 0px 8px 18px rgba(87, 185, 82, 0.28);">
               <i class="fa-solid fa-lock text-xs"></i>
-              <span>Continue</span>
+              <span id="submit-btn-text">Place Order &amp; Pay</span>
             </button>
           </section>
         </form>
@@ -1289,23 +1279,120 @@
       }
     }
 
-    function handleExpressCheckout(method) {
-      alert('Connecting to ' + method + ' secure gateway...');
+    function togglePaymentFields() {
+      const isBacs = document.getElementById('pay-bacs')?.checked;
+      const bacsBox = document.getElementById('bacs-details-box');
+      const paystackBox = document.getElementById('paystack-notice-box');
+      const btnText = document.getElementById('submit-btn-text');
+
+      if (isBacs) {
+        if (bacsBox) bacsBox.classList.remove('hidden');
+        if (paystackBox) paystackBox.classList.add('hidden');
+        if (btnText) btnText.textContent = 'Place Order (Bank Transfer)';
+      } else {
+        if (bacsBox) bacsBox.classList.add('hidden');
+        if (paystackBox) paystackBox.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'Place Order & Pay with Paystack';
+      }
     }
 
-    function handleOrderSubmit(e) {
+    async function handleOrderSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('customer-email').value;
-      const total = document.getElementById('summary-total').textContent;
+      const submitBtn = document.getElementById('submit-order-btn');
+      const btnText = document.getElementById('submit-btn-text');
 
-      document.getElementById('success-email').textContent = email;
-      document.getElementById('success-order-total').textContent = total;
-      document.getElementById('success-order-id').textContent = '#CW-' + Math.floor(10000 + Math.random() * 90000);
+      if (checkoutItems.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
 
-      localStorage.removeItem('codix_cart');
+      // Collect customer information
+      const email = document.getElementById('customer-email')?.value || '';
+      const firstName = document.getElementById('first-name')?.value || '';
+      const lastName = document.getElementById('last-name')?.value || '';
+      const address = document.getElementById('address')?.value || '';
+      const city = document.getElementById('city')?.value || '';
+      const state = document.getElementById('state')?.value || '';
+      const phone = document.getElementById('customer-phone')?.value || '';
+      const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'paystack';
 
-      document.getElementById('order-success-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
+      const grandTotalRaw = checkoutItems.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0) * (1 - discountApplied) * 1.075;
+      const currencyCode = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.getCurrent().code : 'GBP';
+
+      const orderPayload = {
+        payment_method: paymentMethod,
+        currency: currencyCode,
+        total: grandTotalRaw.toFixed(2),
+        billing: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone,
+          address_1: address,
+          city: city,
+          state: state,
+          country: 'NG'
+        },
+        items: checkoutItems.map(item => ({
+          id: item.id || 'p1',
+          name: item.name,
+          price: item.price || 9.17,
+          qty: item.qty || 1,
+          img: item.img || 'images/f-grid-2.png'
+        }))
+      };
+
+      // Loading state
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying inventory & placing order...';
+
+      try {
+        const orderResult = await CodixAPI.createOrder(orderPayload);
+
+        if (!orderResult.success && orderResult.code === 'stock_conflict') {
+          const conflictMsg = orderResult.conflicts.map(c => `• ${c.name}: ${c.reason}`).join('\n');
+          alert(`Inventory Alert:\n${conflictMsg}\n\nPlease adjust your cart quantity to proceed.`);
+          if (submitBtn) submitBtn.disabled = false;
+          if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Paystack';
+          return;
+        }
+
+        const orderId = orderResult.order_id;
+
+        if (paymentMethod === 'paystack') {
+          // Launch Paystack Inline Modal
+          CodixAPI.payWithPaystack(
+            {
+              email: email,
+              amount: grandTotalRaw,
+              currency: currencyCode,
+              orderId: orderId,
+              name: `${firstName} ${lastName}`.trim()
+            },
+            async function (response) {
+              // On Payment Success
+              await CodixAPI.verifyPaystack(orderId, response.reference);
+              localStorage.removeItem('codix_cart');
+              window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&status=paid`;
+            },
+            function () {
+              // On Window Close
+              alert('Payment process was not completed. Your order has been placed on hold.');
+              localStorage.removeItem('codix_cart');
+              window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&method=pending`;
+            }
+          );
+        } else {
+          // Direct Bank Transfer (BACS)
+          localStorage.removeItem('codix_cart');
+          window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&method=bacs`;
+        }
+      } catch (err) {
+        alert('An unexpected error occurred during order processing. Please try again.');
+        console.error(err);
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Place Order';
+      }
     }
   </script>
 <script>
@@ -1343,8 +1430,10 @@
         }
       }
     });</script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="js/framer.js"></script>
   <script src="js/currency.js"></script>
+  <script src="js/api.js"></script>
 </body>
 
 </html>

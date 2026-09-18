@@ -440,13 +440,13 @@
       </div>
 
       <!-- Form Inputs -->
-      <form onsubmit="event.preventDefault(); alert('Signed in successfully!'); window.location.href='index.html';" class="flex flex-col gap-4 my-auto">
+      <form id="login-form" onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-4 my-auto">
         <!-- Email address -->
         <div>
           <label class="block text-xs font-bold text-[#181440] mb-1.5">Email address</label>
           <div class="relative flex items-center">
             <i class="fa-regular fa-envelope absolute left-4 text-[#57B952] text-sm"></i>
-            <input type="email" required value="johncarter@outlook.com" placeholder="Email address"
+            <input type="email" id="login-email" required value="johncarter@outlook.com" placeholder="Email address"
               class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#57B952] focus:outline-none focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
           </div>
         </div>
@@ -456,9 +456,9 @@
           <label class="block text-xs font-bold text-[#181440] mb-1.5">Password</label>
           <div class="relative flex items-center">
             <i class="fa-solid fa-lock absolute left-4 text-slate-400 text-sm"></i>
-            <input type="password" required value="password123" placeholder="Password"
+            <input type="password" id="login-password" required value="password123" placeholder="Password"
               class="w-full pl-11 pr-11 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
-            <button type="button" class="absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer" aria-label="Toggle password visibility">
+            <button type="button" onclick="togglePasswordVisibility('login-password')" class="absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer" aria-label="Toggle password visibility">
               <i class="fa-regular fa-eye text-sm"></i>
             </button>
           </div>
@@ -469,7 +469,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit"
+        <button type="submit" id="login-btn"
           class="mt-2 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
           style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
           Sign in
@@ -710,8 +710,48 @@
           }
         }
       }
-    });</script>
+    });
+
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Signing in...';
+      }
+
+      try {
+        const result = await CodixAPI.login(email, password);
+        if (result.success) {
+          window.location.href = 'index.html';
+        } else {
+          alert('Login failed. Please verify your credentials.');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Sign in';
+          }
+        }
+      } catch (err) {
+        alert('An error occurred during sign in.');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Sign in';
+        }
+      }
+    }
+  </script>
   <script src="js/framer.js"></script>
   <script src="js/currency.js"></script>
+  <script src="js/api.js"></script>
 </body>
 </html>
