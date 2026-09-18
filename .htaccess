@@ -1,0 +1,74 @@
+# Automatic RewriteBase detection
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+#########################################
+# FORCE HTTPS
+#########################################
+
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://codixwellness.co.uk%{REQUEST_URI} [R=301,L]
+
+#########################################
+# NEVER REWRITE WORDPRESS CORE
+#########################################
+
+RewriteRule ^wp-admin/ - [L]
+RewriteRule ^wp-login\.php$ - [L]
+RewriteRule ^wp-content/ - [L]
+RewriteRule ^wp-includes/ - [L]
+RewriteRule ^wp-json/? wp-json.php [L,QSA]
+RewriteRule ^xmlrpc\.php$ - [L]
+RewriteRule ^wp-cron\.php$ - [L]
+
+#########################################
+# REST API FALLBACK (?rest_route=...)
+#########################################
+
+RewriteCond %{QUERY_STRING} (^|&)rest_route= [NC]
+RewriteRule ^ wp-json.php [L,QSA]
+
+#########################################
+# CANONICAL STATIC PAGE URLS
+#########################################
+
+RewriteRule ^$ index.html [L]
+RewriteRule ^about/?$ about.html [R=301,L]
+RewriteRule ^contact/?$ contact.html [R=301,L]
+RewriteRule ^blog/?$ blog.html [R=301,L]
+RewriteRule ^wp-api/?$ wp-api.php [L,QSA]
+
+#########################################
+# EXISTING FILES/FOLDERS
+#########################################
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+#########################################
+# WORDPRESS
+#########################################
+
+RewriteRule ^index\.php$ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+
+</IfModule>
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
