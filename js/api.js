@@ -12,8 +12,8 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var API_BASE = window.CODIX_API_BASE || '/wp-json';
-  var PAYSTACK_PUBLIC_KEY = window.CODIX_PAYSTACK_KEY || 'pk_test_sample_codix_wellness';
+  var API_BASE = (typeof window !== 'undefined' && window.CODIX_API_BASE) || '/wp-json';
+  var PAYSTACK_PUBLIC_KEY = (typeof window !== 'undefined' && window.CODIX_PAYSTACK_KEY) || 'pk_test_sample_codix_wellness';
 
   var CodixAPI = {
     /**
@@ -82,8 +82,10 @@
           headers: this.getHeaders(false),
           body: JSON.stringify({ username: username, password: password })
         });
-        if (res.ok) {
-          var data = await res.json();
+        
+        var data = await res.json().catch(function () { return {}; });
+
+        if (res.ok && data.token) {
           this.setToken(data.token);
           var userObj = {
             email: data.user_email || username,
@@ -91,12 +93,17 @@
           };
           localStorage.setItem('codix_user', JSON.stringify(userObj));
           return { success: true, user: userObj };
+        } else if (res.status >= 400 && res.status < 500) {
+          return {
+            success: false,
+            message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Invalid username or password'
+          };
         }
       } catch (err) {
-        console.warn('Backend login endpoint unavailable, using local mock auth:', err);
+        console.warn('Backend login endpoint unreachable, using local fallback:', err);
       }
 
-      // Offline / Local fallback for testing
+      // Offline / Local mock auth for preview
       var mockUser = {
         email: username.includes('@') ? username : username + '@example.com',
         name: username.split('@')[0]
@@ -172,10 +179,18 @@
           body: JSON.stringify(orderPayload)
         });
 
-        if (res.ok) {
-          var serverOrder = await res.json();
-          this.saveLocalOrder(serverOrder);
-          return serverOrder;
+        var resData = await res.json().catch(function () { return {}; });
+
+        if (res.ok && resData.success) {
+          this.saveLocalOrder(resData);
+          return resData;
+        } else if (res.status === 409 || resData.code === 'stock_conflict') {
+          return {
+            success: false,
+            code: 'stock_conflict',
+            message: resData.message || 'Stock conflict',
+            conflicts: resData.conflicts || []
+          };
         }
       } catch (err) {
         console.warn('Backend order endpoint unavailable, generating local verified order:', err);
@@ -190,7 +205,7 @@
         total: orderPayload.total || '0.00',
         currency: orderPayload.currency || 'GBP',
         status: orderPayload.payment_method === 'paystack' ? 'pending' : 'on-hold',
-        payment_method: orderPayload.payment_method,
+        payment_method: orderPayload.payment_method === 'paystack' ? 'Paystack Debit/Credit Card' : 'Direct Bank Transfer',
         billing: orderPayload.billing,
         items: orderPayload.items,
         date_created: new Date().toISOString()
@@ -245,31 +260,50 @@
      * Launch Paystack Inline Modal
      */
     payWithPaystack: function (config, onSuccess, onClose) {
+      var self = this;
       if (typeof PaystackPop === 'undefined') {
-        console.error('PaystackPop library is not loaded');
-        alert('Payment gateway is loading. Please try again in a moment.');
+        var script = document.createElement('script');
+        script.src = 'https://js.paystack.co/v1/inline.js';
+        script.onload = function () {
+          self._openPaystackPopup(config, onSuccess, onClose);
+        };
+        script.onerror = function () {
+          alert('Could not load Paystack gateway. Please check your network connection.');
+          if (onClose) onClose();
+        };
+        document.head.appendChild(script);
         return;
       }
 
-      var handler = PaystackPop.setup({
-        key: PAYSTACK_PUBLIC_KEY,
-        email: config.email,
-        amount: Math.round(parseFloat(config.amount) * 100),
-        currency: config.currency === 'NGN' ? 'NGN' : 'NGN',
-        ref: 'CW_' + config.orderId + '_' + Math.floor(Math.random() * 1000000),
-        metadata: {
-          order_id: config.orderId,
-          customer_name: config.name || ''
-        },
-        callback: function (response) {
-          if (onSuccess) onSuccess(response);
-        },
-        onClose: function () {
-          if (onClose) onClose();
-        }
-      });
+      this._openPaystackPopup(config, onSuccess, onClose);
+    },
 
-      handler.openIframe();
+    _openPaystackPopup: function (config, onSuccess, onClose) {
+      try {
+        var handler = PaystackPop.setup({
+          key: PAYSTACK_PUBLIC_KEY,
+          email: config.email,
+          amount: Math.round(parseFloat(config.amount) * 100),
+          currency: config.currency === 'NGN' ? 'NGN' : 'NGN',
+          ref: 'CW_' + config.orderId + '_' + Math.floor(Math.random() * 1000000),
+          metadata: {
+            order_id: config.orderId,
+            customer_name: config.name || ''
+          },
+          callback: function (response) {
+            if (onSuccess) onSuccess(response);
+          },
+          onClose: function () {
+            if (onClose) onClose();
+          }
+        });
+
+        handler.openIframe();
+      } catch (e) {
+        console.error('Paystack error:', e);
+        alert('An error occurred opening the payment window. Falling back to pending order.');
+        if (onClose) onClose();
+      }
     },
 
     /**
@@ -292,7 +326,7 @@
       // Update local order status
       try {
         var lastOrder = JSON.parse(localStorage.getItem('codix_last_order') || '{}');
-        if (lastOrder.order_id === orderId) {
+        if (String(lastOrder.order_id) === String(orderId)) {
           lastOrder.status = 'processing';
           lastOrder.payment_reference = reference;
           localStorage.setItem('codix_last_order', JSON.stringify(lastOrder));

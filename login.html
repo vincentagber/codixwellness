@@ -665,6 +665,9 @@
     </div>
   </footer>
 
+  <script src="js/currency.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/framer.js"></script>
   <script>
     function openCartDrawer() {
       const el = document.getElementById('cart-drawer-overlay');
@@ -676,7 +679,7 @@
       if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
     }
   </script>
-<script>
+  <script>
     function toggleMegaMenu(e) {
       if (e) {
         e.stopPropagation();
@@ -735,7 +738,7 @@
         if (result.success) {
           window.location.href = 'index.html';
         } else {
-          alert('Login failed. Please verify your credentials.');
+          alert(result.message || 'Login failed. Please verify your credentials.');
           if (btn) {
             btn.disabled = false;
             btn.textContent = 'Sign in';
@@ -750,8 +753,5 @@
       }
     }
   </script>
-  <script src="js/framer.js"></script>
-  <script src="js/currency.js"></script>
-  <script src="js/api.js"></script>
 </body>
 </html>
