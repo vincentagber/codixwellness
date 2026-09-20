@@ -1425,14 +1425,18 @@
     });
 
     function updateCartItemQty(idx, delta) {
+      const cart = getLocalCart();
+      if (!cart[idx]) return;
       cart[idx].qty += delta;
       if (cart[idx].qty <= 0) cart.splice(idx, 1);
-      updateCartUI();
+      saveLocalCart(cart);
     }
 
     function removeCartItem(idx) {
+      const cart = getLocalCart();
+      if (!cart[idx]) return;
       cart.splice(idx, 1);
-      updateCartUI();
+      saveLocalCart(cart);
     }
 
     function updateWishlistUI() {

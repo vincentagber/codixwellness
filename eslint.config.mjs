@@ -11,15 +11,23 @@ export default [
       sourceType: "script",
       globals: {
         ...globals.browser,
+        ...globals.node,
+        CodixAPI: "readonly",
+        CodixCurrency: "readonly",
+        PaystackPop: "readonly",
+        tailwind: "readonly",
         PRODUCTS: "readonly",
+        PRODUCT_DATABASE: "readonly",
+        SEARCH_SUGGESTIONS: "readonly",
         SAMPLE_SEARCH_PRODUCTS: "readonly",
       },
     },
     rules: {
       ...js.configs.recommended.rules,
-      // Data globals are shared across non-module <script> files.
+      // Shared non-module script globals & friendly rules
       "no-unused-vars": "off",
       "no-redeclare": ["error", { builtinGlobals: false }],
+      "no-empty": ["error", { allowEmptyCatch: true }],
     },
   },
   {

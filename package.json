@@ -11,7 +11,7 @@
     "build": "npm run lint && npm run build:css",
     "preview": "browser-sync start --server . --no-notify",
     "lint": "npm run lint:js && npm run lint:html",
-    "lint:js": "eslint js/main.js js/products.js",
+    "lint:js": "eslint js/*.js",
     "lint:html": "html-validate \"*.html\"",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
