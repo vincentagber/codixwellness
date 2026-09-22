@@ -214,7 +214,7 @@
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
       <!-- Left: Free Shipping message -->
       <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
-        <span>Free shipping all orders on over $60.</span>
+        <span>Free shipping all orders on over £60.</span>
       </div>
 
       <!-- Right: Language, Currency, Account -->
@@ -240,25 +240,9 @@
           </div>
         </div>
 
-        <!-- Currency Selector -->
-        <div class="relative">
-          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
-            aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">£ GBP</span>
-            <i class="fa-solid fa-chevron-down text-[9px]"></i>
-          </button>
-          <div id="curr-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="$ USD">$ USD</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="€ EUR">€ EUR</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="£ GBP">£ GBP</button>
-          </div>
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
         </div>
 
         <!-- My Account Trigger -->
@@ -341,7 +325,9 @@
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <!-- HIDDEN: Blog link hidden until content is ready
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+            -->
           </ul>
         </div>
 
@@ -564,7 +550,9 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+              <!-- HIDDEN: Blog link hidden until content is ready
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+              -->
             </ul>
           </div>
 

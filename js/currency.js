@@ -1,51 +1,37 @@
 /**
  * Codix Wellness — Global Currency Engine
- * Default: GBP (£)
- * Supported: GBP (£), USD ($), EUR (€)
+ * Locked to GBP (£) for the UK site.
  */
 const CodixCurrency = {
   RATES: {
-    '£ GBP': { code: 'GBP', symbol: '£', rate: 1.00, label: '£ GBP' },
-    '$ USD': { code: 'USD', symbol: '$', rate: 1.28, label: '$ USD' },
-    '€ EUR': { code: 'EUR', symbol: '€', rate: 1.17, label: '€ EUR' }
+    '£ GBP': { code: 'GBP', symbol: '£', rate: 1.00, label: '£ GBP' }
   },
 
   DEFAULT: '£ GBP',
 
   getCurrent() {
-    const saved = localStorage.getItem('codix_currency');
-    return this.RATES[saved] || this.RATES[this.DEFAULT];
+    return this.RATES[this.DEFAULT];
   },
 
   format(amountInGBP, decimals = 2) {
-    const curr = this.getCurrent();
     const num = Number(amountInGBP) || 0;
-    const converted = num * curr.rate;
-    return curr.symbol + converted.toFixed(decimals);
+    return '£' + num.toFixed(decimals);
   },
 
   convert(amountInGBP) {
-    const curr = this.getCurrent();
     const num = Number(amountInGBP) || 0;
-    return +(num * curr.rate).toFixed(2);
+    return +(num).toFixed(2);
   },
 
-  setCurrency(currVal) {
-    let matched = this.RATES[currVal];
-    if (!matched) {
-      if (currVal.includes('USD') || currVal.includes('$')) matched = this.RATES['$ USD'];
-      else if (currVal.includes('EUR') || currVal.includes('€')) matched = this.RATES['€ EUR'];
-      else matched = this.RATES['£ GBP'];
-    }
-
-    localStorage.setItem('codix_currency', matched.label);
+  setCurrency(/* ignored */) {
+    // GBP is the only supported currency — no-op.
+    localStorage.setItem('codix_currency', this.DEFAULT);
     this.updateUI();
-    window.dispatchEvent(new CustomEvent('codixCurrencyChanged', { detail: matched }));
   },
 
   updateUI() {
     const curr = this.getCurrent();
-    
+
     // Update all currency labels in headers across all pages
     document.querySelectorAll('#curr-label, #curr-text, .current-currency-label').forEach(el => {
       el.textContent = curr.label;
@@ -69,19 +55,9 @@ const CodixCurrency = {
   },
 
   init() {
-    if (!localStorage.getItem('codix_currency')) {
-      localStorage.setItem('codix_currency', this.DEFAULT);
-    }
-
+    // Force GBP — clear any stale multi-currency preference
+    localStorage.setItem('codix_currency', this.DEFAULT);
     this.updateUI();
-
-    // Attach click listeners to all currency options
-    document.querySelectorAll('.curr-opt, .curr-option').forEach(opt => {
-      opt.addEventListener('click', (e) => {
-        const val = opt.dataset.val || opt.dataset.value || opt.textContent.trim();
-        this.setCurrency(val);
-      });
-    });
   }
 };
 

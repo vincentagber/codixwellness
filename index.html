@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codix Wellness — Premium Health Supplements, Vitamins &amp; Wellness</title>
   <meta name="description"
-    content="Shop premium wellness supplements, vitamins, and herbal products at Codix Wellness. Free shipping on orders over $60. 100% money-back guarantee.">
+    content="Shop premium wellness supplements, vitamins, and herbal products at Codix Wellness. Free shipping on orders over £60. 100% money-back guarantee.">
   <meta name="keywords"
     content="supplements, vitamins, wellness, health, herbal, gummies, immunity, joint health, collagen, codix">
 
@@ -322,7 +322,7 @@
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
       <!-- Left: Free Shipping message -->
       <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
-        <span>Free shipping all orders on over $60.</span>
+        <span>Free shipping all orders on over £60.</span>
       </div>
 
       <!-- Right: Language, Currency, Account -->
@@ -348,25 +348,9 @@
           </div>
         </div>
 
-        <!-- Currency Selector -->
-        <div class="relative">
-          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
-            aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">£ GBP</span>
-            <i class="fa-solid fa-chevron-down text-[9px]"></i>
-          </button>
-          <div id="curr-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="$ USD">$ USD</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="€ EUR">€ EUR</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="£ GBP">£ GBP</button>
-          </div>
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
         </div>
 
         <!-- My Account Trigger -->
@@ -504,7 +488,9 @@
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <!-- HIDDEN: Blog link hidden until content is ready
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+            -->
           </ul>
         </div>
 
@@ -779,9 +765,11 @@
 
           <!-- Category Tabs Switcher (Boxed Pill Bar Container) -->
           <div class="inline-flex items-center justify-center p-1 sm:p-1.5 bg-[#EEF8EE] rounded-full max-w-full w-full sm:w-auto shadow-xs border border-[#D7F4D8] gap-1 sm:gap-2 overflow-hidden mx-auto" role="tablist" aria-label="Filter Popular Categories">
-            <button class="cat-tab-btn active" data-category="Supplements" role="tab" aria-selected="true">Supplements</button>
-            <button class="cat-tab-btn" data-category="Medicines" role="tab" aria-selected="false">Medicines</button>
-            <button class="cat-tab-btn" data-category="Herbs" role="tab" aria-selected="false">Herbs</button>
+            <button class="cat-tab-btn active" data-category="All" role="tab" aria-selected="true">All</button>
+            <button class="cat-tab-btn" data-category="Immunity" role="tab" aria-selected="false">Immunity</button>
+            <button class="cat-tab-btn" data-category="General Wellness" role="tab" aria-selected="false">General Wellness</button>
+            <button class="cat-tab-btn" data-category="Joint & Bone" role="tab" aria-selected="false">Joint &amp; Bone</button>
+            <button class="cat-tab-btn" data-category="Weight Management" role="tab" aria-selected="false">Weight Management</button>
           </div>
         </div>
 
@@ -1118,8 +1106,9 @@
 
     <!-- ======================================================== -->
     <!-- 13. OUR LATEST BLOG POST SECTION (Exact Figma Match)     -->
+    <!-- HIDDEN: Blog section hidden until content is developed   -->
     <!-- ======================================================== -->
-    <section id="blog" class="py-16" aria-label="Blog and News">
+    <section id="blog" class="py-16" aria-label="Blog and News" style="display:none;">
       <div class="container-codix">
         <!-- Header with Subtitle and Horizontal Accent Lines -->
         <div class="text-center mb-10">
@@ -1275,7 +1264,9 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+              <!-- HIDDEN: Blog link hidden until content is ready
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+              -->
             </ul>
           </div>
 
@@ -1750,8 +1741,10 @@
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
           <a href="index.html#support" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
+          <!-- HIDDEN: Blog link hidden until content is ready
           <a href="index.html#blog" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
+          -->
         </nav>
       </div>
 
@@ -1790,31 +1783,16 @@
 
     // --- Product Database matching Official Codix Catalog ---
     const PRODUCT_DATABASE = {
-      // Popular Categories List
+      // Popular Categories — All 8 UK Launch Products
       popular: [
-        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
-        { id: 'p2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
-        { id: 'p3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£4.58', rawPrice: 4.58, reviews: 143, rating: 5, img: 'images/f-grid-13.png' },
-        { id: 'p4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
-        { id: 'p5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
-      ],
-
-      // Medicine Category Products
-      medicines: [
-        { id: 'm1', name: 'Flexicod – Joint Health Support', cat: 'Medicines, Joint Support', badge: 'New', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
-        { id: 'm2', name: 'SelCEA – Hepato & Liver Balance', cat: 'Medicines, Liver Care', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 88, rating: 5, img: 'images/f-grid-8.png' },
-        { id: 'm3', name: 'Codix Fat Burner – Metabolism Support', cat: 'Medicines, Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
-        { id: 'm4', name: 'Codferol Vitamin D3 Solution', cat: 'Medicines, Bone & Health', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 64, rating: 5, img: 'images/f-grid-1.png' },
-        { id: 'm5', name: 'Vitamin C + D Immunity Tablets', cat: 'Medicines, Immune Relief', badge: 'New', price: '£4.58', rawPrice: 4.58, reviews: 45, rating: 5, img: 'images/f-grid-13.png' },
-      ],
-
-      // Herbs Category Products
-      herbs: [
-        { id: 'h1', name: 'Codix MacaRoot Pure Botanical', cat: 'Herbs, Energy & Vitality', badge: 'New', price: '£10.42', rawPrice: 10.42, reviews: 89, rating: 5, img: 'images/f-grid-8.png' },
-        { id: 'h2', name: 'Codix Everose Evening Primrose Oil', cat: 'Herbs, Women\'s Wellness', badge: 'New', price: '£13.33', rawPrice: 13.33, reviews: 58, rating: 5, img: 'images/f-grid-12.png' },
-        { id: 'h3', name: 'Winwell Botanical Multivitamin', cat: 'Herbs, General Health', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 143, rating: 5, img: 'images/f-grid-2.png' },
-        { id: 'h4', name: 'Codix Fat Burner Pure Extract', cat: 'Herbs, Weight & Metabolism', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 76, rating: 5, img: 'images/f-grid-5.png' },
-        { id: 'h5', name: 'SelCEA Herbal Liver Balance', cat: 'Herbs, Liver Support', badge: 'New', price: '£6.88', rawPrice: 6.88, reviews: 52, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Immunity', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'p2', name: 'Winwell Daily Multivitamin', cat: 'General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/f-grid-3.png' },
+        { id: 'p3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Immunity', badge: 'Sale', price: '£4.58', rawPrice: 4.58, reviews: 143, rating: 5, img: 'images/f-grid-13.png' },
+        { id: 'p4', name: 'Flexicod – Joint Health Support', cat: 'Joint & Bone', badge: 'Sale', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
+        { id: 'p5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
+        { id: 'p6', name: 'SelCEA – Hepato & Liver Support', cat: 'General Wellness', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 76, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'p7', name: 'Codix MacaRoot Pure Botanical', cat: 'General Wellness', badge: 'New', price: '£10.42', rawPrice: 10.42, reviews: 89, rating: 5, img: 'images/f-grid-7.png' },
+        { id: 'p8', name: 'Codix Everose Evening Primrose Oil', cat: 'General Wellness', badge: 'New', price: '£13.33', rawPrice: 13.33, reviews: 58, rating: 5, img: 'images/f-grid-12.png' },
       ],
 
       // 15 Featured Products Grid matching Official Codix Catalog
@@ -1831,14 +1809,15 @@
         { id: 'f7', name: 'Codix MacaRoot Pure Botanical', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: '£10.42', rawPrice: 10.42, reviews: 134, rating: 5, img: 'images/f-grid-8.png' },
         { id: 'f8', name: 'Codix Everose Evening Primrose Oil', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£13.33', rawPrice: 13.33, reviews: 89, rating: 5, img: 'images/f-grid-12.png' },
         { id: 'f9', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£14.50', rawPrice: 14.50, reviews: 112, rating: 5, img: 'images/f-grid-6.png' },
-        { id: 'f10', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 95, rating: 5, img: 'images/f-grid-2.png' },
+        // HIDDEN: Gummy products hidden pending UK representation discussions
+        // { id: 'f10', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 95, rating: 5, img: 'images/f-grid-2.png' },
 
-        // Row 3
-        { id: 'f11', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£9.00', rawPrice: 9.00, reviews: 132, rating: 5, img: 'images/f-grid-11.png' },
-        { id: 'f12', name: 'Your Gummy – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£9.50', rawPrice: 9.50, reviews: 168, rating: 5, img: 'images/f-grid-12.png' },
-        { id: 'f13', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£8.00', rawPrice: 8.00, reviews: 59, rating: 5, img: 'images/f-grid-3.png' },
-        { id: 'f14', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 74, rating: 5, img: 'images/f-grid-7.png' },
-        { id: 'f15', name: 'Your Gummy – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 1, rating: 5, img: 'images/f-grid-15.png' },
+        // Row 3 (Gummy products – hidden)
+        // { id: 'f11', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£9.00', rawPrice: 9.00, reviews: 132, rating: 5, img: 'images/f-grid-11.png' },
+        // { id: 'f12', name: 'Your Gummy – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£9.50', rawPrice: 9.50, reviews: 168, rating: 5, img: 'images/f-grid-12.png' },
+        // { id: 'f13', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£8.00', rawPrice: 8.00, reviews: 59, rating: 5, img: 'images/f-grid-3.png' },
+        // { id: 'f14', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 74, rating: 5, img: 'images/f-grid-7.png' },
+        // { id: 'f15', name: 'Your Gummy – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 1, rating: 5, img: 'images/f-grid-15.png' },
       ],
 
       // Best Selling list
@@ -1854,20 +1833,20 @@
     // --- Search Index ---
     const SEARCH_SUGGESTIONS = [
       'Codiferral Vitamin D3',
-      'YOUR GUMMIE Collagen Plus',
+      // 'YOUR GUMMIE Collagen Plus', // HIDDEN: Gummy product
       'Selcoa Liver Support',
       'Codix Everose',
       'Flexicod Joint Health',
       'Codix Fatburner',
-      'Your Gummy Fish Oil',
+      // 'Your Gummy Fish Oil', // HIDDEN: Gummy product
       'Codix Vitamin C+D',
       'Day 2 Day Collagen Mag',
       'Defence Vitamin C & Zinc',
       'Codix Maca Root',
-      'Your Gummy 5-HTP',
-      'Your Gummy Men\'s Multi',
-      'Your Gummy Women\'s Multi',
-      'Your Gummy Hair Skin Nails',
+      // 'Your Gummy 5-HTP', // HIDDEN: Gummy product
+      // 'Your Gummy Men\'s Multi', // HIDDEN: Gummy product
+      // 'Your Gummy Women\'s Multi', // HIDDEN: Gummy product
+      // 'Your Gummy Hair Skin Nails', // HIDDEN: Gummy product
       'Elderberry Immune Tablets'
     ];
 
@@ -2500,12 +2479,11 @@
           btn.setAttribute('aria-selected', 'true');
 
           const cat = btn.dataset.category;
-          if (cat === 'Supplements') {
+          if (cat === 'All') {
             renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
-          } else if (cat === 'Medicines') {
-            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.medicines);
-          } else if (cat === 'Herbs') {
-            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.herbs);
+          } else {
+            const filtered = PRODUCT_DATABASE.popular.filter(p => p.cat === cat);
+            renderProductGrid('popular-products-grid', filtered);
           }
         });
       });

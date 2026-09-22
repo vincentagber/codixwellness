@@ -224,7 +224,7 @@
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
       <!-- Left: Free Shipping message -->
       <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
-        <span>Free shipping all orders on over $60.</span>
+        <span>Free shipping all orders on over £60.</span>
       </div>
 
       <!-- Right: Language, Currency, Account -->
@@ -250,25 +250,9 @@
           </div>
         </div>
 
-        <!-- Currency Selector -->
-        <div class="relative">
-          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
-            aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">£ GBP</span>
-            <i class="fa-solid fa-chevron-down text-[9px]"></i>
-          </button>
-          <div id="curr-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="$ USD">$ USD</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="€ EUR">€ EUR</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="£ GBP">£ GBP</button>
-          </div>
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
         </div>
 
         <!-- My Account Trigger -->
@@ -386,7 +370,9 @@
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <!-- HIDDEN: Blog link hidden until content is ready
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+            -->
           </ul>
         </div>
 
@@ -480,7 +466,7 @@
     <!-- ======================================================== -->
     <section class="bg-white px-4 pt-6 sm:px-6" aria-label="About Us Showcase">
       <div class="relative mx-auto overflow-hidden shadow-card flex flex-col items-center justify-center text-center px-6"
-        style="width: 100%; max-width: 1321.61px; height: 447.64px; border-radius: 10.66px; background: #3A2F99 url('images/about-hero-scientist.jpg') no-repeat center 25%; background-size: cover; opacity: 1;">
+        style="width: 100%; max-width: 1321.61px; height: 447.64px; border-radius: 10.66px; background: #3A2F99 url('images/about-hero-pharmacy.jpg') no-repeat center 25%; background-size: cover; opacity: 1;">
         <!-- Soft gradient overlay matching Figma purple depth -->
         <div class="absolute inset-0 bg-[#3A2F99]/75 z-0"></div>
 
@@ -592,8 +578,9 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 6. OUR LEADERSHIP TEAM SECTION (Exact Figma 3-Card Grid) -->
+    <!-- 6. OUR LEADERSHIP TEAM SECTION — HIDDEN PER CLIENT REQUEST -->
     <!-- ======================================================== -->
+    <!--
     <section class="py-16 px-4 sm:px-6 bg-white" aria-label="Our Leadership Team">
       <div class="container-codix">
         <div class="text-center mb-12">
@@ -602,52 +589,12 @@
             Our Leadership Team
           </h2>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <!-- Member 1 -->
-          <div class="flex flex-col items-center text-center group">
-            <div class="rounded-3xl overflow-hidden shadow-md aspect-square w-full max-w-[280px] bg-slate-100 mb-4">
-              <img src="images/about-team-exact.jpg" alt="John Doe - Chief Executive Officer"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-            </div>
-            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-[#211C68] group-hover:text-codix-green transition" style="color: #211C68 !important;">
-              JOHN DOE
-            </h3>
-            <p class="text-xs sm:text-sm font-semibold text-[#3A2F99] mt-0.5">
-              Chief Executive Officer
-            </p>
-          </div>
-
-          <!-- Member 2 -->
-          <div class="flex flex-col items-center text-center group">
-            <div class="rounded-3xl overflow-hidden shadow-md aspect-square w-full max-w-[280px] bg-slate-100 mb-4">
-              <img src="images/about-team-exact.jpg" alt="John Doe - Chief Medical Officer"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-            </div>
-            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-[#211C68] group-hover:text-codix-green transition" style="color: #211C68 !important;">
-              JOHN DOE
-            </h3>
-            <p class="text-xs sm:text-sm font-semibold text-[#3A2F99] mt-0.5">
-              Chief Medical Officer
-            </p>
-          </div>
-
-          <!-- Member 3 -->
-          <div class="flex flex-col items-center text-center group">
-            <div class="rounded-3xl overflow-hidden shadow-md aspect-square w-full max-w-[280px] bg-slate-100 mb-4">
-              <img src="images/about-team-exact.jpg" alt="John Doe - Head of Formulation & Science"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-            </div>
-            <h3 class="text-base sm:text-lg font-bold uppercase tracking-wider text-[#211C68] group-hover:text-codix-green transition" style="color: #211C68 !important;">
-              JOHN DOE
-            </h3>
-            <p class="text-xs sm:text-sm font-semibold text-[#3A2F99] mt-0.5">
-              Head of Formulation &amp; Science
-            </p>
-          </div>
+          Member 1 / Member 2 / Member 3 cards were here
         </div>
       </div>
     </section>
+    -->
 
     <!-- ======================================================== -->
     <!-- 7. CLIENTS REVIEWS SECTION (Exact Homepage Match)        -->
@@ -809,8 +756,9 @@
 
     <!-- ======================================================== -->
     <!-- 8. OUR LATEST BLOG POST SECTION                         -->
+    <!-- HIDDEN: Blog section hidden until content is developed  -->
     <!-- ======================================================== -->
-    <section id="blog" class="px-4 py-16 sm:px-6" aria-label="Blog and News">
+    <section id="blog" class="px-4 py-16 sm:px-6" aria-label="Blog and News" style="display:none;">
       <div class="container-codix max-w-[1323px] mx-auto">
         <div class="text-center mb-10">
           <span class="text-[11px] font-extrabold uppercase tracking-[0.2em] text-slate-900 block mb-1">NEWS &amp; ARTICLE</span>
@@ -956,7 +904,9 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+              <!-- HIDDEN: Blog link hidden until content is ready
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+              -->
             </ul>
           </div>
 
@@ -1176,8 +1126,10 @@
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
           <a href="index.html#support" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
+          <!-- HIDDEN: Blog link hidden until content is ready
           <a href="index.html#blog" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
+          -->
         </nav>
       </div>
 

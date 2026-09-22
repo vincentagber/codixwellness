@@ -270,7 +270,7 @@
     <div class="container-codix flex items-center justify-between relative z-10 w-full">
       <!-- Left: Free Shipping message -->
       <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
-        <span>Free shipping all orders on over $60.</span>
+        <span>Free shipping all orders on over £60.</span>
       </div>
 
       <!-- Right: Language, Currency, Account -->
@@ -296,25 +296,9 @@
           </div>
         </div>
 
-        <!-- Currency Selector -->
-        <div class="relative">
-          <button id="curr-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1"
-            aria-label="Select Currency" aria-expanded="false">
-            <span id="curr-label">£ GBP</span>
-            <i class="fa-solid fa-chevron-down text-[9px]"></i>
-          </button>
-          <div id="curr-dropdown"
-            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-dropdown border border-slate-100 py-1.5 z-[9999]">
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="$ USD">$ USD</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="€ EUR">€ EUR</button>
-            <button
-              class="curr-opt w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium"
-              data-val="£ GBP">£ GBP</button>
-          </div>
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
         </div>
 
         <!-- My Account Trigger -->
@@ -434,7 +418,9 @@
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+            <!-- HIDDEN: Blog link hidden until content is ready
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
+            -->
           </ul>
         </div>
 
@@ -688,7 +674,7 @@
                   <i id="acc-rewards-icon" class="fa-solid fa-plus text-xs text-slate-700 transition-transform"></i>
                 </button>
                 <div id="acc-rewards" class="hidden pt-3 text-xs text-slate-600 leading-relaxed">
-                  Earn reward points on every purchase. Free standard shipping over $60 and hassle-free 30-day money-back guarantee.
+                  Earn reward points on every purchase. Free standard shipping over £60 and hassle-free 30-day money-back guarantee.
                 </div>
               </div>
             </div>
@@ -820,90 +806,114 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 7. WHY MEMBERS LOVE YOUR GUMMIE (4 Exact Reviews Cards)   -->
+    <!-- 7. AUTHENTIC CUSTOMER REVIEWS (5 Reviews, Responsive Grid) -->
     <!-- ======================================================== -->
     <section class="py-16 sm:py-20" style="background-color: #F6F7F2;" aria-label="Customer Reviews">
       <div class="container-codix">
         <div class="text-center max-w-3xl mx-auto mb-12">
           <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight" style="color: #263E1F; font-family: 'Lato', sans-serif;">
-            Why Y’OUR GUMMIE members love Y’our Gummie Kids Muliti™
+            What Our Customers Are Saying
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Review 1 -->
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Review 1: Mrs. Ngozi -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
             <div>
-              <div class="w-full aspect-[4/3] rounded-xl bg-[#E4E7E9] overflow-hidden flex items-center justify-center mb-4">
-                <img src="images/review-bottle-card.png" alt="Y'our Gummie Kids Multi" class="w-full h-full object-cover">
-              </div>
               <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
-              <p class="text-[11px] sm:text-xs text-slate-700 leading-snug font-normal">
-                I've never felt more refreshed and energized throughout the day. Bublo is so convenient and tastes amazing!
+              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
+                &ldquo;After taking Winwell for a whole month, I started feeling like I was going to resume my menstrual cycle, even after menopause.&rdquo;
               </p>
             </div>
-            <div class="mt-4 pt-3 flex items-center gap-1.5 text-xs font-bold text-slate-900 tracking-wider">
-              <span>JILLIAN E.</span>
-              <i class="fa-solid fa-circle-check text-slate-900 text-[11px]"></i>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+              <img src="images/avatar-eric.jpg" alt="Mrs. Ngozi" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
+              <div>
+                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. NGOZI</span>
+                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
             </div>
           </div>
 
-          <!-- Review 2 -->
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
+          <!-- Review 2: Mrs. Chinyere -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
             <div>
-              <div class="w-full aspect-[4/3] rounded-xl bg-[#E4E7E9] overflow-hidden flex items-center justify-center mb-4">
-                <img src="images/review-bottle-card.png" alt="Y'our Gummie Kids Multi" class="w-full h-full object-cover">
-              </div>
               <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
-              <p class="text-[11px] sm:text-xs text-slate-700 leading-snug font-normal">
-                I've never felt more refreshed and energized throughout the day. Bublo is so convenient and tastes amazing!
+              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
+                &ldquo;I took Winwell and I noticed that my irregular cycle became regular.&rdquo;
               </p>
             </div>
-            <div class="mt-4 pt-3 flex items-center gap-1.5 text-xs font-bold text-slate-900 tracking-wider">
-              <span>JILLIAN E.</span>
-              <i class="fa-solid fa-circle-check text-slate-900 text-[11px]"></i>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+              <img src="images/avatar-simons.jpg" alt="Mrs. Chinyere" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
+              <div>
+                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. CHINYERE</span>
+                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
             </div>
           </div>
 
-          <!-- Review 3 -->
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
+          <!-- Review 3: Dr. A -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
             <div>
-              <div class="w-full aspect-[4/3] rounded-xl bg-[#E4E7E9] overflow-hidden flex items-center justify-center mb-4">
-                <img src="images/review-bottle-card.png" alt="Y'our Gummie Kids Multi" class="w-full h-full object-cover">
-              </div>
               <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
-              <p class="text-[11px] sm:text-xs text-slate-700 leading-snug font-normal">
-                I've never felt more refreshed and energized throughout the day. Bublo is so convenient and tastes amazing!
+              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
+                &ldquo;Winwell is good, I have noticed how soft and smooth my skin has become since I started using it.&rdquo;
               </p>
             </div>
-            <div class="mt-4 pt-3 flex items-center gap-1.5 text-xs font-bold text-slate-900 tracking-wider">
-              <span>JILLIAN E.</span>
-              <i class="fa-solid fa-circle-check text-slate-900 text-[11px]"></i>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+              <img src="images/avatar-kaleb.jpg" alt="Dr. A" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
+              <div>
+                <span class="text-xs font-bold text-slate-900 tracking-wider block">DR. A</span>
+                <span class="text-[10px] text-slate-400 font-medium">Medical Practitioner</span>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
             </div>
           </div>
 
-          <!-- Review 4 -->
-          <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
+          <!-- Review 4: Mrs. Catherine -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
             <div>
-              <div class="w-full aspect-[4/3] rounded-xl bg-[#E4E7E9] overflow-hidden flex items-center justify-center mb-4">
-                <img src="images/review-bottle-card.png" alt="Y'our Gummie Kids Multi" class="w-full h-full object-cover">
-              </div>
               <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
-              <p class="text-[11px] sm:text-xs text-slate-700 leading-snug font-normal">
-                I've never felt more refreshed and energized throughout the day. Bublo is so convenient and tastes amazing!
+              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
+                &ldquo;After being diagnosed with prediabetes, with lifestyle modifications and Winwell supplements, I was able to reverse to a healthy blood sugar level.&rdquo;
               </p>
             </div>
-            <div class="mt-4 pt-3 flex items-center gap-1.5 text-xs font-bold text-slate-900 tracking-wider">
-              <span>JILLIAN E.</span>
-              <i class="fa-solid fa-circle-check text-slate-900 text-[11px]"></i>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+              <img src="images/avatar-eric.jpg" alt="Mrs. Catherine" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
+              <div>
+                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. CATHERINE</span>
+                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
+            </div>
+          </div>
+
+          <!-- Review 5: Dr. Phillip Guda -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
+            <div>
+              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
+                &ldquo;My type-2 diabetic patient who collapsed 10 days after visiting me, returned for emergency examination and I noticed he had all the drugs I prescribed except Winwell. I ensured he got it this time and few days after, he called to say he was feeling much better.&rdquo;
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+              <img src="images/avatar-simons.jpg" alt="Dr. Phillip Guda" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
+              <div>
+                <span class="text-xs font-bold text-slate-900 tracking-wider block">DR. PHILLIP GUDA</span>
+                <span class="text-[10px] text-slate-400 font-medium">Medical Doctor</span>
+              </div>
+              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
             </div>
           </div>
         </div>
@@ -919,8 +929,9 @@
 
     <!-- ======================================================== -->
     <!-- 8. BLOG POSTS SECTION                                    -->
+    <!-- HIDDEN: Blog section hidden until content is developed   -->
     <!-- ======================================================== -->
-    <section class="py-16 bg-white" aria-label="Blog Articles">
+    <section class="py-16 bg-white" aria-label="Blog Articles" style="display:none;">
       <div class="container-codix">
         <div class="text-center mb-10">
           <span class="text-[10px] font-black tracking-widest text-slate-400 uppercase block mb-1">OUR EXPERT
@@ -1068,7 +1079,9 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+              <!-- HIDDEN: Blog link hidden until content is ready
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
+              -->
             </ul>
           </div>
 
@@ -1258,8 +1271,10 @@
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
           <a href="index.html#support" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
+          <!-- HIDDEN: Blog link hidden until content is ready
           <a href="index.html#blog" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
+          -->
         </nav>
       </div>
 
