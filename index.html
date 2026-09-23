@@ -488,9 +488,7 @@
             <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
             <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
             <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
-            <!-- HIDDEN: Blog link hidden until content is ready
             <li><a href="index.html#blog" class="hover:text-codix-green transition py-2">Blog</a></li>
-            -->
           </ul>
         </div>
 
@@ -582,7 +580,7 @@
     <!-- ======================================================== -->
     <!-- 4. HERO SECTION WITH CAROUSEL -->
     <!-- ======================================================== -->
-    <section class="bg-white pt-4 lg:pt-6" aria-label="Hero Showcase">
+    <section class="bg-white pt-4 lg:pt-6" aria-label="Hero Showcase" data-framer="none">
       <div class="container-codix">
         <div id="hero-carousel-container" class="relative mx-auto overflow-hidden shadow-card w-full h-[250px] sm:h-[360px] lg:h-[447.64px]"
           style="border-radius: 10.66px;">
@@ -1105,10 +1103,9 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 13. OUR LATEST BLOG POST SECTION (Exact Figma Match)     -->
-    <!-- HIDDEN: Blog section hidden until content is developed   -->
+    <!-- 13. OUR LATEST BLOG POST SECTION                         -->
     <!-- ======================================================== -->
-    <section id="blog" class="py-16" aria-label="Blog and News" style="display:none;">
+    <section id="blog" class="py-16" aria-label="Blog and News">
       <div class="container-codix">
         <!-- Header with Subtitle and Horizontal Accent Lines -->
         <div class="text-center mb-10">
@@ -1122,64 +1119,70 @@
           </div>
         </div>
 
-        <!-- 3 Blog Posts Grid -->
+        <!-- Blog Posts Grid -->
         <div class="grid gap-8 md:grid-cols-3">
-          <!-- Blog 1: Immune System -->
-          <article class="bg-transparent flex flex-col group cursor-pointer">
+          <!-- Blog 1: Vitamin D in the UK — LIVE ARTICLE -->
+          <article class="bg-transparent flex flex-col group cursor-pointer" onclick="window.location.href='blog-vitamin-d.html'">
             <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
-              <img src="images/blog-capsules-exact.png" alt="Natural herbal capsules and immune supplements"
+              <img src="images/blog-vitamin-d-uk.jpg" alt="Vitamin D supplements on an autumn windowsill in the UK"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy">
             </div>
             <div class="pt-4">
-              <h3
-                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
-                5 Natural Ways to Strengthen Your Immune System
+              <span class="text-[10px] font-bold uppercase tracking-widest text-codix-green mb-2 block">Vitamins &amp; Supplements</span>
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+                Vitamin D in the UK: What You Should Know During Autumn and Winter
               </h3>
               <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
-                Discover simple lifestyle habits and key supplements that can naturally boost your immunity ...
+                As daylight hours shorten, many people in the UK may not produce enough Vitamin D from sunlight. Find out what the NHS recommends and how to support your intake this season.
+              </p>
+              <span class="inline-flex items-center gap-1.5 mt-4 text-xs font-bold text-codix-green group-hover:underline">
+                Read article <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </span>
+            </div>
+          </article>
+
+          <!-- Blog 2: Coming Soon -->
+          <article class="bg-transparent flex flex-col">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center">
+              <div class="text-center px-6">
+                <i class="fa-regular fa-clock text-3xl text-emerald-400 mb-2"></i>
+                <p class="text-sm font-semibold text-slate-500">More articles coming soon</p>
+              </div>
+            </div>
+            <div class="pt-4">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block">Coming Soon</span>
+              <h3 class="text-base sm:text-lg font-bold text-slate-400 leading-snug">
+                New article being prepared
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-400 mt-2.5 leading-relaxed font-normal">
+                We are working on more expert health and wellness articles for you. Check back soon.
               </p>
             </div>
           </article>
 
-          <!-- Blog 2: Skincare Advice -->
-          <article class="bg-transparent flex flex-col group cursor-pointer">
-            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
-              <img src="images/blog-skincare-exact.png" alt="Skincare advice for sensitive skin"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy">
+          <!-- Blog 3: Coming Soon -->
+          <article class="bg-transparent flex flex-col">
+            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center">
+              <div class="text-center px-6">
+                <i class="fa-regular fa-clock text-3xl text-purple-300 mb-2"></i>
+                <p class="text-sm font-semibold text-slate-500">More articles coming soon</p>
+              </div>
             </div>
             <div class="pt-4">
-              <h3
-                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
-                Skincare Advice for Sensitive Skin: Simple Tips for a Calmer
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 block">Coming Soon</span>
+              <h3 class="text-base sm:text-lg font-bold text-slate-400 leading-snug">
+                New article being prepared
               </h3>
-              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
-                Learn how to care for sensitive skin with gentle routines and dermatologist-recommended products.
-              </p>
-            </div>
-          </article>
-
-          <!-- Blog 3: Do You Really Need Supplements -->
-          <article class="bg-transparent flex flex-col group cursor-pointer">
-            <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
-              <img src="images/blog-supplements-exact.png" alt="Guidance on choosing dietary supplements"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy">
-            </div>
-            <div class="pt-4">
-              <h3
-                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
-                Do You Really Need Supplements? a Pratical Guide to Boosting
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
-                Find out when supplements are helpful and how to choose the right ones for your health needs
+              <p class="text-xs sm:text-sm text-slate-400 mt-2.5 leading-relaxed font-normal">
+                We are working on more expert health and wellness articles for you. Check back soon.
               </p>
             </div>
           </article>
         </div>
       </div>
     </section>
+
 
     <!-- ======================================================== -->
     <!-- 14. JOIN OUR NEWSLETTER SECTION (Height: 240px)          -->
@@ -1264,9 +1267,7 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
-              <!-- HIDDEN: Blog link hidden until content is ready
               <li><a href="index.html#blog" class="hover:text-white hover:underline transition">Blog &amp; News</a></li>
-              -->
             </ul>
           </div>
 
@@ -1741,10 +1742,8 @@
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
           <a href="index.html#support" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Support</a>
-          <!-- HIDDEN: Blog link hidden until content is ready
           <a href="index.html#blog" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Blog</a>
-          -->
         </nav>
       </div>
 
@@ -1785,36 +1784,36 @@
     const PRODUCT_DATABASE = {
       // Popular Categories — All 8 UK Launch Products
       popular: [
-        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Immunity', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
+        { id: 'p1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Immunity', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/product-codferol-d3.png' },
         { id: 'p2', name: 'Winwell Daily Multivitamin', cat: 'General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/f-grid-3.png' },
         { id: 'p3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Immunity', badge: 'Sale', price: '£4.58', rawPrice: 4.58, reviews: 143, rating: 5, img: 'images/f-grid-13.png' },
         { id: 'p4', name: 'Flexicod – Joint Health Support', cat: 'Joint & Bone', badge: 'Sale', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
         { id: 'p5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
-        { id: 'p6', name: 'SelCEA – Hepato & Liver Support', cat: 'General Wellness', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 76, rating: 5, img: 'images/f-grid-8.png' },
+        { id: 'p6', name: 'SelCEA – Hepato & Liver Support', cat: 'General Wellness', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 76, rating: 5, img: 'images/product-selcea.png' },
         { id: 'p7', name: 'Codix MacaRoot Pure Botanical', cat: 'General Wellness', badge: 'New', price: '£10.42', rawPrice: 10.42, reviews: 89, rating: 5, img: 'images/f-grid-7.png' },
-        { id: 'p8', name: 'Codix Everose Evening Primrose Oil', cat: 'General Wellness', badge: 'New', price: '£13.33', rawPrice: 13.33, reviews: 58, rating: 5, img: 'images/f-grid-12.png' },
+        { id: 'p8', name: 'Codix Everose Evening Primrose Oil', cat: 'General Wellness', badge: 'New', price: '£13.33', rawPrice: 13.33, reviews: 58, rating: 5, img: 'images/product-everose.png' },
       ],
 
       // 15 Featured Products Grid matching Official Codix Catalog
       featured: [
         // Row 1
-        { id: 'f1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
-        { id: 'f2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
+        { id: 'f1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/product-codferol-d3.png' },
+        { id: 'f2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/product-winwell.jpg' },
         { id: 'f3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£4.58', rawPrice: 4.58, reviews: 143, rating: 5, img: 'images/f-grid-13.png' },
         { id: 'f4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
         { id: 'f5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
 
         // Row 2
-        { id: 'f6', name: 'SelCEA – Hepato & Liver Support', cat: 'Supplements, Liver Care', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 76, rating: 5, img: 'images/f-grid-8.png' },
-        { id: 'f7', name: 'Codix MacaRoot Pure Botanical', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: '£10.42', rawPrice: 10.42, reviews: 134, rating: 5, img: 'images/f-grid-8.png' },
-        { id: 'f8', name: 'Codix Everose Evening Primrose Oil', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£13.33', rawPrice: 13.33, reviews: 89, rating: 5, img: 'images/f-grid-12.png' },
+        { id: 'f6', name: 'SelCEA – Hepato & Liver Support', cat: 'Supplements, Liver Care', badge: 'Sale', price: '£6.88', rawPrice: 6.88, reviews: 76, rating: 5, img: 'images/product-selcea.png' },
+        { id: 'f7', name: 'Codix MacaRoot Pure Botanical', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: '£10.42', rawPrice: 10.42, reviews: 134, rating: 5, img: 'images/f-grid-7.png' },
+        { id: 'f8', name: 'Codix Everose Evening Primrose Oil', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£13.33', rawPrice: 13.33, reviews: 89, rating: 5, img: 'images/product-everose.png' },
         { id: 'f9', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£14.50', rawPrice: 14.50, reviews: 112, rating: 5, img: 'images/f-grid-6.png' },
         // HIDDEN: Gummy products hidden pending UK representation discussions
-        // { id: 'f10', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 95, rating: 5, img: 'images/f-grid-2.png' },
+        // { id: 'f10', name: 'Your Gummy – Kids Multi Gummie', cat: 'Supplements, Kids Vitamins', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 95, rating: 5, img: 'images/product-winwell.jpg' },
 
         // Row 3 (Gummy products – hidden)
         // { id: 'f11', name: 'Your Gummy – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: '£9.00', rawPrice: 9.00, reviews: 132, rating: 5, img: 'images/f-grid-11.png' },
-        // { id: 'f12', name: 'Your Gummy – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£9.50', rawPrice: 9.50, reviews: 168, rating: 5, img: 'images/f-grid-12.png' },
+        // { id: 'f12', name: 'Your Gummy – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: '£9.50', rawPrice: 9.50, reviews: 168, rating: 5, img: 'images/product-everose.png' },
         // { id: 'f13', name: 'Your Gummy Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£8.00', rawPrice: 8.00, reviews: 59, rating: 5, img: 'images/f-grid-3.png' },
         // { id: 'f14', name: 'Your Gummy – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 74, rating: 5, img: 'images/f-grid-7.png' },
         // { id: 'f15', name: 'Your Gummy – Elderberry', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£8.50', rawPrice: 8.50, reviews: 1, rating: 5, img: 'images/f-grid-15.png' },
@@ -1822,8 +1821,8 @@
 
       // Best Selling list
       bestselling: [
-        { id: 'b1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/f-grid-1.png' },
-        { id: 'b2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/f-grid-2.png' },
+        { id: 'b1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: '£9.17', rawPrice: 9.17, reviews: 1, rating: 5, img: 'images/product-codferol-d3.png' },
+        { id: 'b2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: '£7.08', rawPrice: 7.08, reviews: 103, rating: 5, img: 'images/product-winwell.jpg' },
         { id: 'b3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: '£4.58', rawPrice: 4.58, reviews: 143, rating: 5, img: 'images/f-grid-13.png' },
         { id: 'b4', name: 'Flexicod – Joint Health Support', cat: 'Supplements, Joint Support', badge: 'Sale', price: '£8.33', rawPrice: 8.33, reviews: 102, rating: 5, img: 'images/f-grid-4.png' },
         { id: 'b5', name: 'Codix Fat Burner – Metabolism Support', cat: 'Supplements, Weight Management', badge: 'Sale', price: '£7.50', rawPrice: 7.50, reviews: 97, rating: 5, img: 'images/f-grid-5.png' },
@@ -1976,7 +1975,7 @@
             <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-4 flex items-center gap-4 relative shadow-sm">
               <!-- Product Thumbnail Box -->
               <div class="w-20 h-20 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
-                <img src="${item.img || 'images/f-grid-2.png'}" alt="${item.name.replace(/<[^>]*>?/gm, '')}" class="max-h-full max-w-full object-contain">
+                <img src="${item.img || 'images/product-winwell.jpg'}" alt="${item.name.replace(/<[^>]*>?/gm, '')}" class="max-h-full max-w-full object-contain">
               </div>
 
               <!-- Product Details & Controls -->
@@ -2100,7 +2099,7 @@
           <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-3.5 flex items-center justify-between gap-3 shadow-sm hover:border-slate-300 transition">
             <!-- Product Image -->
             <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 border border-slate-100 shrink-0">
-              <img src="${item.img || 'images/f-grid-1.png'}" alt="${item.name}" class="max-h-full max-w-full object-contain">
+              <img src="${item.img || 'images/product-codferol-d3.png'}" alt="${item.name}" class="max-h-full max-w-full object-contain">
             </div>
 
             <!-- Details -->

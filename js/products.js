@@ -13,7 +13,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 1,
       rating: 5,
-      image: "images/f-grid-1.png",
+      image: "images/product-codferol-d3.png",
     },
     {
       id: "p2",
@@ -23,7 +23,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 103,
       rating: 5,
-      image: "images/f-grid-2.png",
+      image: "images/product-winwell.jpg",
     },
     {
       id: "p3",
@@ -85,7 +85,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 1,
       rating: 5,
-      image: "images/f-grid-1.png",
+      image: "images/product-codferol-d3.png",
       category: "Supplements, Vitamins",
     },
     {
@@ -95,7 +95,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 103,
       rating: 5,
-      image: "images/f-grid-2.png",
+      image: "images/product-winwell.jpg",
       category: "Supplements, Kids Vitamins",
     },
     {
@@ -155,7 +155,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 89,
       rating: 5,
-      image: "images/f-grid-8.png",
+      image: "images/product-selcea.png",
       category: "Supplements, Energy & Vitality",
     },
     {
@@ -195,7 +195,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 168,
       rating: 5,
-      image: "images/f-grid-12.png",
+      image: "images/product-everose.png",
       category: "Supplements, Beauty & Skin Health",
     },
     {
