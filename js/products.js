@@ -155,7 +155,7 @@ const PRODUCTS = {
       price: "$16.00 – $35.00",
       reviews: 89,
       rating: 5,
-      image: "images/product-selcea.png",
+      image: "images/f-grid-8.png",
       category: "Supplements, Energy & Vitality",
     },
     {

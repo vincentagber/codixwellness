@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Gummie Kids Multi Gummies™ - Codix Wellness</title>
+  <title>Codix MacaRoot Pure Botanical - Codix Wellness</title>
   <meta name="description"
-    content="Discover Your Gummie Kids Multi Gummies™ by Codix Wellness. Clinically validated multivitamin gummies packed with 12 essential vitamins and minerals for optimal immune support and healthy growth.">
+    content="Discover Codix MacaRoot Pure Botanical by Codix Wellness. Pure 100% botanical Andean Lepidium meyenii root extract to support natural stamina, libido, hormonal balance, and vitality.">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -96,7 +96,8 @@
     .top-bar-bg {
       background-color: #57B952;
       position: relative;
-      overflow: visible !important; z-index: 100;
+      overflow: visible !important;
+      z-index: 100;
     }
 
     .top-bar-bg::before {
@@ -112,6 +113,15 @@
     .newsletter-bg {
       background: url('images/newsletter-bg.jpg') no-repeat center center;
       background-size: cover;
+    }
+
+    .reviews-gradient-bg {
+      background: #181440 url('images/testimonial-bg.jpg') center/cover no-repeat;
+      min-height: 532px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
     }
 
     .footer-green-bg {
@@ -130,7 +140,7 @@
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
-    
+
     }
 
     .modal-overlay:not(.open) {
@@ -170,6 +180,7 @@
     }
 
     @media (min-width: 1024px) {
+
       .mobile-menu-overlay,
       #mobile-menu-overlay {
         display: none !important;
@@ -190,13 +201,8 @@
       border-color: #57B952 !important;
       box-shadow: 0 0 0 2px rgba(87, 185, 82, 0.3);
     }
-  
-    
 
-  
-    
 
-  
     /* Mega Menu Clean Styling & Active State */
     .mega-menu-btn {
       background-color: #D7F4D8;
@@ -230,6 +236,7 @@
         opacity: 0;
         transform: translateY(8px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -256,7 +263,6 @@
       color: #57B952 !important;
       font-weight: 600;
     }
-
   </style>
 </head>
 
@@ -326,7 +332,8 @@
         <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
           <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain"
             onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex'">
-          <div id="fallback-logo" class="hidden items-center text-lg sm:text-xl font-black tracking-tight" style="display:none">
+          <div id="fallback-logo" class="hidden items-center text-lg sm:text-xl font-black tracking-tight"
+            style="display:none">
             <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
           </div>
         </a>
@@ -375,7 +382,8 @@
           </div>
         </a>
 
-        <button type="button" onclick="openCartDrawer()" class="flex items-center gap-2 cursor-pointer group select-none bg-transparent border-0 p-0 text-left"
+        <button type="button" onclick="openCartDrawer()"
+          class="flex items-center gap-2 cursor-pointer group select-none bg-transparent border-0 p-0 text-left"
           aria-label="Shopping Cart">
           <span
             class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
@@ -392,13 +400,12 @@
       </div>
     </div>
 
-            
+
     <!-- ======================================================== -->
     <!-- 3. NAVIGATION BAR & MEGA MENU                            -->
     <!-- ======================================================== -->
     <nav class="block bg-white relative border-t border-b border-[#E5E7EB]"
-      style="width: 100%; min-height: 52px; padding: 6px 0;"
-      aria-label="Main Navigation">
+      style="width: 100%; min-height: 52px; padding: 6px 0;" aria-label="Main Navigation">
       <div class="container-codix relative flex items-center justify-between gap-6" style="min-height: 44px;">
         <!-- Left Group: Product Categories + Nav Links -->
         <div class="flex items-center gap-6 sm:gap-8 shrink-0">
@@ -407,7 +414,8 @@
             <button id="mega-menu-btn" onclick="toggleMegaMenu(event)"
               class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer"
               aria-haspopup="true" aria-expanded="false">
-              <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
+              <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0"
+                aria-hidden="true">
               <span>Product Categories</span>
             </button>
           </div>
@@ -426,9 +434,12 @@
 
         <!-- Right Quick Icons -->
         <div class="flex items-center gap-4 text-[15px]" style="color: #211C68;">
-          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Compare Products" aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></a>
-          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
-          <a href="cart.html" class="hover:text-codix-green transition p-1" title="Shopping Cart" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Compare Products"
+            aria-label="Compare"><i class="fa-solid fa-arrows-rotate"></i></a>
+          <a href="shop.html" class="hover:text-codix-green transition p-1" title="Wishlist" aria-label="Wishlist"><i
+              class="fa-regular fa-heart"></i></a>
+          <a href="cart.html" class="hover:text-codix-green transition p-1" title="Shopping Cart" aria-label="Cart"><i
+              class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Full-Width Mega Menu Dropdown Outside Header Flow -->
@@ -444,42 +455,45 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
             <!-- Col 1: Immunity -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Immunity</h4>
+              <a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Immunity</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
-                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a>
+                </li>
                 <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
-                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Iron</a></li>
-                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Elderberry</a></li>
               </ul>
             </div>
 
             <!-- Col 2: General Wellness -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">General Wellness</h4>
+              <a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">General Wellness</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
-                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell multivitamin</a></li>
-                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Kids Multi</a></li>
-                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Women Multi</a></li>
-                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Men Multi</a></li>
-                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Fish Oil</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell
+                    Multivitamin</a></li>
               </ul>
             </div>
 
             <!-- Col 3: Beauty & Skin Health -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Beauty &amp; Skin Health</h4>
+              <a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Beauty &amp; Skin Health</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
-                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Hair, skin &amp; Nails</a></li>
-                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen plus biotin</a></li>
-                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Beauty plus</a></li>
-                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Mag plus</a></li>
-                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Evening primrose Oil</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Mag Plus</a>
+                </li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Evening Primrose
+                    Oil</a></li>
               </ul>
             </div>
 
             <!-- Col 4: Joint, Bone & Muscle Health -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Joint, Bone &amp; Muscle Health</h4>
+              <a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Joint, Bone &amp; Muscle Health</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
                 <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod</a></li>
                 <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Codferol</a></li>
@@ -488,18 +502,22 @@
 
             <!-- Col 5: Weight Management & Metabolism -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Weight Management &amp; Metabolism</h4>
+              <a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Weight Management &amp; Metabolism</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
                 <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Fat Burner</a></li>
-                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Apple cider vinegar</a></li>
               </ul>
             </div>
 
             <!-- Col 6: Sexual Health -->
             <div>
-              <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Sexual Health</h4>
+              <a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Sexual Health</h4>
+              </a>
               <ul class="space-y-2.5 text-[13px] text-slate-600">
-                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Maca root</a></li>
+                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Maca
+                    Root</a></li>
               </ul>
             </div>
           </div>
@@ -520,7 +538,7 @@
           <span>/</span>
           <a href="shop.html" class="hover:text-codix-green transition">Shop</a>
           <span>/</span>
-          <span id="breadcrumb-product-name" class="text-slate-800 font-bold">Your Gummie Kids Multi Gummies™</span>
+          <span id="breadcrumb-product-name" class="text-slate-800 font-bold">Codix MacaRoot Pure Botanical</span>
         </nav>
 
         <!-- Product Gallery + Information Split Grid -->
@@ -529,40 +547,38 @@
           <div class="lg:col-span-6 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
             <!-- Vertical Thumbnail Gallery -->
             <div class="flex sm:flex-col gap-3 order-2 sm:order-1 shrink-0">
-              <button onclick="switchProductMainImage('images/product-benefit-bottle-exact.png', this)"
-                class="thumb-btn active w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 border-transparent bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
-                <img src="images/product-benefit-bottle-exact.png" alt="Thumbnail 1" class="w-full h-full object-cover rounded-xl">
+              <button onclick="switchProductMainImage('images/f-grid-8.png', this)"
+                class="thumb-btn active w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 border-emerald-500 bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
+                <img src="images/f-grid-8.png" alt="MacaRoot Thumbnail 1"
+                  class="w-full h-full object-contain rounded-xl">
               </button>
-              <button onclick="switchProductMainImage('images/product-kidsmulti.jpg', this)"
+              <button onclick="switchProductMainImage('images/product-macaroot.png', this)"
                 class="thumb-btn w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 border-transparent bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
-                <img src="images/product-kidsmulti.jpg" alt="Thumbnail 2" class="w-full h-full object-contain">
-              </button>
-              <button onclick="switchProductMainImage('images/product-gummie.jpg', this)"
-                class="thumb-btn w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 border-transparent bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
-                <img src="images/product-gummie.jpg" alt="Thumbnail 3" class="w-full h-full object-contain">
+                <img src="images/product-macaroot.png" alt="MacaRoot Thumbnail 2" class="w-full h-full object-contain">
               </button>
             </div>
 
             <!-- Main Showcase Image Card (Exact Attached Bottle Asset: 533x644px) -->
             <div class="flex-1 w-full order-1 sm:order-2 flex justify-center">
               <div
-                class="relative overflow-hidden flex items-center justify-center shadow-lg w-full max-w-[533px] h-[320px] sm:h-[480px] lg:h-[644px] rounded-[10.59px]">
-                <img id="main-product-img" src="images/product-benefit-bottle-exact.png"
-                  alt="Your Gummie Kids Multi Gummies™"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 rounded-[10.59px]">
+                class="relative overflow-hidden flex items-center justify-center shadow-lg w-full max-w-[533px] h-[320px] sm:h-[480px] lg:h-[644px] rounded-[10.59px] bg-slate-50 p-6">
+                <img id="main-product-img" src="images/f-grid-8.png"
+                  alt="Codix MacaRoot Pure Botanical"
+                  class="w-full h-full object-contain hover:scale-105 transition-transform duration-500 rounded-[10.59px]">
               </div>
             </div>
           </div>
 
           <!-- RIGHT: Product Details & Purchase Form (Cols 7-12) with Exact Figma Dimensions -->
-          <div class="lg:col-span-6 flex flex-col justify-start w-full max-w-[603px] min-h-0 lg:min-h-[1014px] pl-0 lg:pl-[40px] pr-0 lg:pr-[24px]">
+          <div
+            class="lg:col-span-6 flex flex-col justify-start w-full max-w-[603px] min-h-0 lg:min-h-[1014px] pl-0 lg:pl-[40px] pr-0 lg:pr-[24px]">
             <!-- Product Title -->
             <h1 id="product-title" class="text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-slate-900"
               style="color: #222222 !important; font-family: 'Lato', sans-serif; font-weight: 300;">
-              Y’our Gummie<br>Kids Multi Gummies™
+              Codix MacaRoot<br>Pure Botanical
             </h1>
             <!-- Subtitle -->
-            <p class="text-xs sm:text-sm text-slate-700 font-medium mt-3">100% Plant-Based Ingredients</p>
+            <p id="product-subtitle" class="text-xs sm:text-sm text-slate-700 font-medium mt-3">100% Pure Botanical – Supports Libido &amp; Reproductive Health</p>
 
             <!-- Rating Stars -->
             <div class="flex items-center gap-2 mt-3 text-[#F59E0B] text-sm">
@@ -570,24 +586,24 @@
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
                   class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
-              <span class="text-xs font-bold text-slate-800">200 Reviews</span>
+              <span id="product-reviews-count" class="text-xs font-bold text-slate-800">89 Reviews</span>
             </div>
 
             <!-- Narrative Description -->
             <div class="mt-6 space-y-2.5">
-              <p class="text-xs sm:text-[13px] font-bold text-slate-900 leading-snug">
-                Tutti-Frutti Flavoured. Growing Up Strong with Kids' Multivitamin Gummies
+              <p id="product-headline" class="text-xs sm:text-[13px] font-bold text-slate-900 leading-snug">
+                Traditional Andean Superfood for Natural Stamina, Libido &amp; Daily Vitality
               </p>
-              <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
-                In the whirlwind of childhood, growth happens fast and so do their needs. Their diets shift, and activities evolve. That’s where KIDS MULTI GUMMIES step in. With 13 crucial vitamins and minerals, these gummies support a strong immune system. Because ensuring your child gets the nutrients they need should be as easy as it is delicious!
+              <p id="product-narrative" class="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
+                Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.
               </p>
             </div>
 
             <!-- Bullets -->
-            <ul class="mt-4 space-y-1.5 text-xs sm:text-[13px] text-slate-700 list-disc list-inside">
-              <li>Contains 10 clinically-backed electrolytes and nutrients</li>
-              <li>Suitable for adults of all activity levels</li>
-              <li>Three essential hydration benefits in one capsule</li>
+            <ul id="product-bullets" class="mt-4 space-y-1.5 text-xs sm:text-[13px] text-slate-700 list-disc list-inside">
+              <li>Pure 100% Lepidium meyenii Andean root extract</li>
+              <li>Supports libido, hormonal balance &amp; reproductive wellness</li>
+              <li>Rich in adaptogens, amino acids, and essential micronutrients</li>
             </ul>
 
             <!-- Purchase Options Box (One-Time vs Subscribe & Save) -->
@@ -595,10 +611,12 @@
               <!-- Option 1: One-Time Purchase -->
               <label class="flex items-center justify-between cursor-pointer py-1">
                 <span class="flex items-center gap-3">
-                  <input type="radio" name="purchase_plan" value="onetime" onchange="updatePriceOption(this.value)" class="w-4 h-4 text-slate-800 focus:ring-slate-800">
+                  <input type="radio" name="purchase_plan" value="onetime" onchange="updatePriceOption(this.value)"
+                    class="w-4 h-4 text-slate-800 focus:ring-slate-800">
                   <span class="text-xs sm:text-sm font-bold text-slate-800">One-Time Purchase</span>
                 </span>
-                <span id="price-onetime" data-price-gbp="9.17" class="text-xs sm:text-sm font-bold text-slate-900">£9.17</span>
+                <span id="price-onetime" data-price-gbp="10.42"
+                  class="text-xs sm:text-sm font-bold text-slate-900">£10.42</span>
               </label>
 
               <hr class="border-slate-100">
@@ -607,13 +625,16 @@
               <label class="flex flex-col cursor-pointer py-1">
                 <span class="flex items-center justify-between">
                   <span class="flex items-center gap-3">
-                    <input type="radio" name="purchase_plan" value="subscription" checked onchange="updatePriceOption(this.value)" class="w-4 h-4 text-slate-800 focus:ring-slate-800">
+                    <input type="radio" name="purchase_plan" value="subscription" checked
+                      onchange="updatePriceOption(this.value)" class="w-4 h-4 text-slate-800 focus:ring-slate-800">
                     <span class="text-xs sm:text-sm font-bold text-slate-800">Subscribe &amp; Save (35%)</span>
                   </span>
-                  <span id="price-subscription" data-price-gbp="7.08" class="text-xs sm:text-sm font-bold text-slate-900">£7.08</span>
+                  <span id="price-subscription" data-price-gbp="6.77"
+                    class="text-xs sm:text-sm font-bold text-slate-900">£6.77</span>
                 </span>
                 <span class="mt-3 block">
-                  <span class="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 flex items-center justify-between text-xs text-slate-700">
+                  <span
+                    class="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 flex items-center justify-between text-xs text-slate-700">
                     <span>Delivery <strong class="font-bold text-slate-900">every 1 month</strong></span>
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                   </span>
@@ -624,10 +645,13 @@
             <!-- Quantity & Add to Cart Row -->
             <div class="mt-6 flex items-center gap-4">
               <!-- Quantity Controller -->
-              <div class="flex items-center justify-between border border-slate-300 rounded-full bg-white px-4 py-2.5 w-[110px] shrink-0">
-                <button onclick="changeQty(-1)" class="text-slate-400 hover:text-slate-900 font-bold cursor-pointer text-xs">-</button>
+              <div
+                class="flex items-center justify-between border border-slate-300 rounded-full bg-white px-4 py-2.5 w-[110px] shrink-0">
+                <button onclick="changeQty(-1)"
+                  class="text-slate-400 hover:text-slate-900 font-bold cursor-pointer text-xs">-</button>
                 <span id="product-qty" class="text-xs font-bold text-slate-900">1</span>
-                <button onclick="changeQty(1)" class="text-slate-400 hover:text-slate-900 font-bold cursor-pointer text-xs">+</button>
+                <button onclick="changeQty(1)"
+                  class="text-slate-400 hover:text-slate-900 font-bold cursor-pointer text-xs">+</button>
               </div>
 
               <!-- Add to Cart Button -->
@@ -658,23 +682,26 @@
             <div class="mt-8 border-t border-slate-200 divide-y divide-slate-200">
               <!-- Accordion 1: Product details -->
               <div class="py-4">
-                <button onclick="toggleAccordion('acc-details')" class="w-full flex items-center justify-between text-left text-xs sm:text-sm font-medium text-slate-800 cursor-pointer">
+                <button onclick="toggleAccordion('acc-details')"
+                  class="w-full flex items-center justify-between text-left text-xs sm:text-sm font-medium text-slate-800 cursor-pointer">
                   <span>Product details</span>
                   <i id="acc-details-icon" class="fa-solid fa-plus text-xs text-slate-700 transition-transform"></i>
                 </button>
                 <div id="acc-details" class="hidden pt-3 text-xs text-slate-600 leading-relaxed">
-                  Engineered with 100% plant-based ingredients and 13 essential daily vitamins and minerals to support growth, healthy immune resilience, and daily vitality.
+                  Engineered with 100% pure botanical Maca root extract (Lepidium meyenii). Standardized herbal potency formulated to support natural energy production, reproductive vigor, and adaptogenic stress response.
                 </div>
               </div>
 
               <!-- Accordion 2: Rewards, delivery & returns -->
               <div class="py-4">
-                <button onclick="toggleAccordion('acc-rewards')" class="w-full flex items-center justify-between text-left text-xs sm:text-sm font-medium text-slate-800 cursor-pointer">
+                <button onclick="toggleAccordion('acc-rewards')"
+                  class="w-full flex items-center justify-between text-left text-xs sm:text-sm font-medium text-slate-800 cursor-pointer">
                   <span>Rewards, delivery &amp; returns</span>
                   <i id="acc-rewards-icon" class="fa-solid fa-plus text-xs text-slate-700 transition-transform"></i>
                 </button>
                 <div id="acc-rewards" class="hidden pt-3 text-xs text-slate-600 leading-relaxed">
-                  Earn reward points on every purchase. Free standard shipping over £60 and hassle-free 30-day money-back guarantee.
+                  Earn reward points on every purchase. Free standard shipping over £60 and hassle-free 30-day
+                  money-back guarantee.
                 </div>
               </div>
             </div>
@@ -691,9 +718,8 @@
       <div class="mx-auto flex items-center justify-center px-4"
         style="width: 100%; max-width: 1330px; min-height: 160px; opacity: 1;">
         <img src="images/product-trust-badges-exact.png"
-          alt="Product Certifications: Gluten Free, Pectin, Non-GMO, No Chemical Preservatives, Sweetened with Stevia, Halal"
-          class="w-full max-w-[1330px] h-auto max-h-[160px] object-contain mx-auto"
-          style="opacity: 1;">
+          alt="Product Certifications: 100% Botanical, Gluten Free, Non-GMO, No Chemical Preservatives, Vegetarian, Halal"
+          class="w-full max-w-[1330px] h-auto max-h-[160px] object-contain mx-auto" style="opacity: 1;">
       </div>
     </section>
 
@@ -704,14 +730,15 @@
       <div class="container-codix">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <!-- Left: Narrative & 5 Benefits List (Cols 1-7) with Exact Figma Dimensions -->
-          <div class="lg:col-span-7 flex flex-col justify-center w-full pl-0 sm:pl-6 lg:pl-[48px] pr-0 sm:pr-8 lg:pr-[80px]"
+          <div
+            class="lg:col-span-7 flex flex-col justify-center w-full pl-0 sm:pl-6 lg:pl-[48px] pr-0 sm:pr-8 lg:pr-[80px]"
             style="width: 100%; max-width: 642px; min-height: 634px; opacity: 1;">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight tracking-tight"
               style="font-family: 'Lato', sans-serif; font-weight: 300; color: #FFFFFF !important;">
-              Five Core Benefits for<br>Optimal Hydration
+              Five Core Benefits for<br>Stamina &amp; Vitality
             </h2>
             <p class="text-xs sm:text-[13px] text-slate-200 mt-4 leading-relaxed font-normal">
-              Our team developed Fortify HydraBooster™ around five key areas that are essential for improved hydration and overall wellness.
+              Our medical experts formulated Codix MacaRoot Pure Botanical around five key biological areas essential for natural vigor, reproductive health, and endocrine balance.
             </p>
 
             <div class="mt-6 space-y-4">
@@ -719,9 +746,9 @@
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
                 <div>
-                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Enhanced Hydration</h3>
+                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Libido &amp; Reproductive Wellness</h3>
                   <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">
-                    Absorbs faster than water alone, ensuring your body stays hydrated longer.
+                    Traditionally revered to enhance sexual desire, reproductive wellness, and intimate vitality for both men and women.
                   </p>
                 </div>
               </div>
@@ -730,9 +757,9 @@
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
                 <div>
-                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Energy Boost</h3>
+                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Natural Energy &amp; Stamina</h3>
                   <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">
-                    Electrolytes and essential nutrients help restore energy levels and fight fatigue.
+                    Potent adaptogens help restore natural energy reserves and combat daily physical and mental fatigue without caffeine crashes.
                   </p>
                 </div>
               </div>
@@ -741,9 +768,9 @@
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
                 <div>
-                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Mental Focus</h3>
+                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Hormonal Balance</h3>
                   <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">
-                    Proper hydration supports improved cognitive function and mental clarity.
+                    Nourishes the endocrine system to promote optimal hormonal equilibrium across all stages of adult life.
                   </p>
                 </div>
               </div>
@@ -752,9 +779,9 @@
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
                 <div>
-                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Muscle Recovery</h3>
+                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Mood &amp; Stress Resilience</h3>
                   <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">
-                    Optimized electrolyte balance helps reduce muscle cramping and supports quicker recovery.
+                    Adaptogenic bio-compounds assist your body in adapting to daily physical, mental, and emotional stressors.
                   </p>
                 </div>
               </div>
@@ -763,9 +790,9 @@
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
                 <div>
-                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">Immune Support</h3>
+                  <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">100% Pure Botanical Purity</h3>
                   <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">
-                    Fortify's blend of nutrients promotes a stronger immune system and overall health.
+                    Pure concentrated botanical extract encapsulated in vegetarian capsules with zero fillers, binders, or artificial additives.
                   </p>
                 </div>
               </div>
@@ -774,10 +801,10 @@
 
           <!-- Right: Product Feature Bottle (Cols 8-12) with Exact Figma Dimensions -->
           <div class="lg:col-span-5 flex justify-center items-center">
-            <div class="relative overflow-hidden shadow-2xl flex items-center justify-center w-full"
+            <div class="relative overflow-hidden shadow-2xl flex items-center justify-center w-full bg-white/5 p-6 rounded-[10.59px]"
               style="width: 100%; max-width: 644px; aspect-ratio: 1/1; max-height: 644px; border-radius: 10.59px; opacity: 1;">
-              <img src="images/product-benefit-bottle-exact.png" alt="Your Gummie Kids Multi Bottle Showcase"
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              <img src="images/f-grid-8.png" alt="Codix MacaRoot Pure Botanical Bottle Showcase"
+                class="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
                 style="border-radius: 10.59px; opacity: 1;">
             </div>
           </div>
@@ -796,133 +823,163 @@
           Formulated and Endorsed by Leading Health Experts
         </h2>
         <p class="text-sm sm:text-base lg:text-[17px] text-slate-700 font-light leading-relaxed max-w-2xl mx-auto mt-7">
-          &ldquo;Fortify HydraBooster™ is one of the most effective hydration supplements on the market. I highly recommend it to anyone looking for a comprehensive daily hydration solution.&rdquo;
+          &ldquo;Codix MacaRoot Pure Botanical delivers clean, adaptogenic vitality and proven reproductive wellness support. Its pure botanical profile makes it one of the most reliable daily botanical supplements available.&rdquo;
         </p>
 
         <p class="text-xs sm:text-sm font-semibold mt-6 tracking-wide" style="color: #233F1F;">
-          &mdash; Dr. Emily Johnson, PhD in Nutrition and Wellness
+          &mdash; Dr. Phillip Guda, Medical Doctor
         </p>
       </div>
     </section>
 
     <!-- ======================================================== -->
-    <!-- 7. AUTHENTIC CUSTOMER REVIEWS (5 Reviews, Responsive Grid) -->
+    <!-- 7. CLIENTS REVIEWS SECTION (3 on Laptop, 1 on Mobile)     -->
     <!-- ======================================================== -->
-    <section class="py-16 sm:py-20" style="background-color: #F6F7F2;" aria-label="Customer Reviews">
-      <div class="container-codix">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight" style="color: #263E1F; font-family: 'Lato', sans-serif;">
-            What Our Customers Are Saying
-          </h2>
-        </div>
+    <section id="support" class="reviews-gradient-bg py-16 text-white overflow-hidden" aria-label="Customer Testimonials">
+      <div class="container-codix relative z-10">
+        <h2 class="text-center text-2xl sm:text-3xl font-black tracking-tight mb-10 text-white"
+          style="color: #FFFFFF !important;">Clients Reviews</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Review 1: Mrs. Ngozi -->
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
-            <div>
-              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
-                &ldquo;After taking Winwell for a whole month, I started feeling like I was going to resume my menstrual cycle, even after menopause.&rdquo;
-              </p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-              <img src="images/avatar-eric.jpg" alt="Mrs. Ngozi" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
-              <div>
-                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. NGOZI</span>
-                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
-              </div>
-              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
-            </div>
-          </div>
-
-          <!-- Review 2: Mrs. Chinyere -->
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
-            <div>
-              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
-                &ldquo;I took Winwell and I noticed that my irregular cycle became regular.&rdquo;
-              </p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-              <img src="images/avatar-simons.jpg" alt="Mrs. Chinyere" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
-              <div>
-                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. CHINYERE</span>
-                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
-              </div>
-              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
-            </div>
-          </div>
-
-          <!-- Review 3: Dr. A -->
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
-            <div>
-              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
-                &ldquo;Winwell is good, I have noticed how soft and smooth my skin has become since I started using it.&rdquo;
-              </p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-              <img src="images/avatar-kaleb.jpg" alt="Dr. A" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
-              <div>
-                <span class="text-xs font-bold text-slate-900 tracking-wider block">DR. A</span>
-                <span class="text-[10px] text-slate-400 font-medium">Medical Practitioner</span>
-              </div>
-              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
-            </div>
-          </div>
-
-          <!-- Review 4: Mrs. Catherine -->
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
-            <div>
-              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
-                &ldquo;After being diagnosed with prediabetes, with lifestyle modifications and Winwell supplements, I was able to reverse to a healthy blood sugar level.&rdquo;
-              </p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-              <img src="images/avatar-eric.jpg" alt="Mrs. Catherine" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
-              <div>
-                <span class="text-xs font-bold text-slate-900 tracking-wider block">MRS. CATHERINE</span>
-                <span class="text-[10px] text-slate-400 font-medium">Verified Customer</span>
-              </div>
-              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
-            </div>
-          </div>
-
-          <!-- Review 5: Dr. Phillip Guda -->
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 flex flex-col justify-between">
-            <div>
-              <div class="flex gap-1 text-[#F59E0B] text-xs mb-3">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-              <p class="text-[12px] sm:text-[13px] text-slate-700 leading-relaxed font-normal italic">
-                &ldquo;My type-2 diabetic patient who collapsed 10 days after visiting me, returned for emergency examination and I noticed he had all the drugs I prescribed except Winwell. I ensured he got it this time and few days after, he called to say he was feeling much better.&rdquo;
-              </p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
-              <img src="images/avatar-simons.jpg" alt="Dr. Phillip Guda" class="w-9 h-9 rounded-full object-cover ring-2 ring-emerald-100" loading="lazy">
-              <div>
-                <span class="text-xs font-bold text-slate-900 tracking-wider block">DR. PHILLIP GUDA</span>
-                <span class="text-[10px] text-slate-400 font-medium">Medical Doctor</span>
-              </div>
-              <i class="fa-solid fa-circle-check text-emerald-500 text-[11px] ml-auto"></i>
-            </div>
-          </div>
-        </div>
-
-        <!-- Read All Reviews Button -->
-        <div class="mt-12 flex justify-center">
-          <button class="px-8 py-2.5 rounded-lg border border-slate-700/60 bg-transparent hover:bg-white text-slate-800 text-xs font-semibold tracking-wide transition shadow-2xs cursor-pointer">
-            Read all Reviews
+        <!-- Wrapper with arrows on left/right edges for ALL screen sizes -->
+        <div class="relative w-full max-w-[1320px] mx-auto flex items-center justify-center px-8 sm:px-12 lg:px-14">
+          <!-- Left Arrow (Visible on Mobile & Desktop) -->
+          <button id="testimonial-prev-btn" onclick="prevTestimonial()"
+            class="absolute left-0 sm:left-1 lg:left-2 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center transition text-black z-20 shadow-lg active:scale-95 cursor-pointer border border-slate-100"
+            aria-label="Previous Testimonial">
+            <i class="fa-solid fa-chevron-left text-sm sm:text-base text-black"></i>
           </button>
+
+          <!-- Testimonials Viewport -->
+          <div class="w-full overflow-hidden py-4">
+            <div id="testimonial-track" class="flex transition-transform duration-500 ease-in-out">
+              <!-- Review 1: Mrs. Ngozi -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full min-h-[260px] sm:min-h-[328px] rounded-[14px]">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed font-normal italic">
+                      “After taking Winwell for a whole month, I started feeling like I was going to resume my menstrual cycle, even after menopause.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-ngozi.jpg" alt="Mrs. Ngozi"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Mrs. Ngozi</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Review 2: Mrs. Chinyere -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full min-h-[260px] sm:min-h-[328px] rounded-[14px]">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed font-normal italic">
+                      “I took Winwell and I noticed that my irregular cycle became regular.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-chinyere.jpg" alt="Mrs. Chinyere"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Mrs. Chinyere</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Review 3: Dr. A -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full min-h-[260px] sm:min-h-[328px] rounded-[14px]">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed font-normal italic">
+                      “Winwell is good, I have noticed how soft and smooth my skin has become since I started using it.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-dr-a.jpg" alt="Dr. A"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Dr. A</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Medical Practitioner</span>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Review 4: Mrs. Catherine -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full min-h-[260px] sm:min-h-[328px] rounded-[14px]">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed font-normal italic">
+                      “After being diagnosed with prediabetes, with lifestyle modifications and Winwell supplements, I was able to reverse to a healthy blood sugar level.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-catherine.jpg" alt="Mrs. Catherine"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Mrs. Catherine</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Verified Customer</span>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Review 5: Dr. Phillip Guda -->
+              <div class="w-full md:w-1/3 shrink-0 px-3">
+                <article
+                  class="testimonial-card bg-white text-slate-800 p-6 sm:p-8 text-center shadow-xl flex flex-col justify-between w-full h-full min-h-[260px] sm:min-h-[328px] rounded-[14px]">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 text-base mb-4 sm:mb-5">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs sm:text-[13.5px] text-slate-700 leading-relaxed font-normal italic">
+                      “My type-2 diabetic patient who collapsed 10 days after visiting me, returned for emergency examination and I noticed he had all the drugs I prescribed except Winwell. I ensured he got it this time and few days after, he called to say he was feeling much better.”
+                    </p>
+                  </div>
+                  <div class="mt-4 sm:mt-6 flex flex-col items-center">
+                    <img src="images/avatar-dr-phillip.jpg" alt="Dr. Phillip Guda"
+                      class="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-emerald-100 mb-1" loading="lazy">
+                    <span class="font-bold text-sm sm:text-[15px] text-slate-800">Dr. Phillip Guda</span>
+                    <span class="text-[11px] text-slate-400 font-medium">Medical Doctor</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Arrow (Visible on Mobile & Desktop) -->
+          <button id="testimonial-next-btn" onclick="nextTestimonial()"
+            class="absolute right-0 sm:right-1 lg:right-2 top-1/2 -translate-y-1/2 w-10 sm:w-11 h-10 sm:h-11 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center transition text-black z-20 shadow-lg active:scale-95 cursor-pointer border border-slate-100"
+            aria-label="Next Testimonial">
+            <i class="fa-solid fa-chevron-right text-sm sm:text-base text-black"></i>
+          </button>
+        </div>
+
+        <!-- Pagination Indicators -->
+        <div id="testimonial-dots" class="flex items-center justify-center gap-2 mt-6">
+          <button onclick="showTestimonial(0)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white w-6 cursor-pointer"
+            aria-label="Review Page 1"></button>
+          <button onclick="showTestimonial(1)"
+            class="testimonial-dot h-2.5 rounded-full transition-all duration-300 bg-white/40 w-2.5 cursor-pointer"
+            aria-label="Review Page 2"></button>
         </div>
       </div>
     </section>
@@ -949,10 +1006,12 @@
           <article class="bg-transparent flex flex-col group cursor-pointer">
             <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
               <img src="images/blog-capsules-exact.png" alt="Natural herbal capsules and immune supplements"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="pt-4">
-              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
                 5 Natural Ways to Strengthen Your Immune System
               </h3>
               <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
@@ -965,14 +1024,17 @@
           <article class="bg-transparent flex flex-col group cursor-pointer">
             <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
               <img src="images/blog-skincare-exact.png" alt="Woman practicing daily clean skincare routine"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="pt-4">
-              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
                 Skincare Advice for Sensitive Skin: Simple Tips for a Calmer
               </h3>
               <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
-                Learn how to protect and soothe sensitive skin with science-backed habits and gentle natural ingredients ...
+                Learn how to protect and soothe sensitive skin with science-backed habits and gentle natural ingredients
+                ...
               </p>
             </div>
           </article>
@@ -981,14 +1043,17 @@
           <article class="bg-transparent flex flex-col group cursor-pointer">
             <div class="rounded-3xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100">
               <img src="images/blog-supplements-exact.png" alt="Woman taking daily multivitamins"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="pt-4">
-              <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
+              <h3
+                class="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-codix-green transition">
                 Do You Really Need Supplements? A Practical Guide to Choosing
               </h3>
               <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed font-normal">
-                Find out which supplements are truly beneficial for your lifestyle and how to choose high-purity options ...
+                Find out which supplements are truly beneficial for your lifestyle and how to choose high-purity options
+                ...
               </p>
             </div>
           </article>
@@ -999,56 +1064,68 @@
     <!-- ======================================================== -->
     <!-- 9. JOIN OUR NEWSLETTER SECTION (Height: 240px)          -->
     <!-- ======================================================== -->
-      <!-- ======================================================== -->
-  <!-- NEWSLETTER SECTION                                       -->
-  <!-- ======================================================== -->
-  <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
-    style="width: 100%; min-height: 240px;" aria-label="Newsletter Subscription">
-    <div class="container-codix text-center max-w-xl mx-auto py-10 sm:py-12">
-      <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
-      <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
-        Join over half a million vitamin lovers and get our latest deals, articles, and resources!
-      </p>
-      <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to our newsletter!');"
-        class="mt-6 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
-        <input type="email" required placeholder="Email address"
-          class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-3 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
-        <button type="submit"
-          class="w-full sm:w-auto bg-[#F2971F] hover:bg-[#DE8413] text-white text-xs font-bold px-7 py-3 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
-          <i class="fa-regular fa-paper-plane text-[11px]"></i>
-          <span>Subscribe</span>
-        </button>
-      </form>
-    </div>
-  </section>
+    <!-- ======================================================== -->
+    <!-- NEWSLETTER SECTION                                       -->
+    <!-- ======================================================== -->
+    <section class="newsletter-bg px-4 sm:px-6 relative flex items-center justify-center"
+      style="width: 100%; min-height: 240px;" aria-label="Newsletter Subscription">
+      <div class="container-codix text-center max-w-xl mx-auto py-10 sm:py-12">
+        <h2 class="text-2xl sm:text-3xl font-black text-codix-navy tracking-tight">Join our newsletter</h2>
+        <p class="text-xs sm:text-sm text-slate-700 mt-2 font-medium">
+          Join over half a million vitamin lovers and get our latest deals, articles, and resources!
+        </p>
+        <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to our newsletter!');"
+          class="mt-6 flex flex-col sm:flex-row items-center gap-2 max-w-md mx-auto">
+          <input type="email" required placeholder="Email address"
+            class="w-full sm:flex-1 bg-white rounded-full border border-slate-200 px-5 py-3 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-codix-green/40 shadow-sm">
+          <button type="submit"
+            class="w-full sm:w-auto bg-[#F2971F] hover:bg-[#DE8413] text-white text-xs font-bold px-7 py-3 rounded-full transition shadow-md shrink-0 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
+            <i class="fa-regular fa-paper-plane text-[11px]"></i>
+            <span>Subscribe</span>
+          </button>
+        </form>
+      </div>
+    </section>
 
-  <!-- ======================================================== -->
-  <!-- BRAND LOGOS STRIP (6 Partner Brands)                  -->
-  <!-- ======================================================== -->
-  <section class="brand-strip-bg px-3 sm:px-6 py-6 flex items-center justify-center"
-    style="width: 100%; background-color: #382898;"
-    aria-label="Partner Brands">
-    <div class="grid grid-cols-3 sm:grid-cols-6 items-center justify-items-center gap-4 sm:gap-8 w-full max-w-[1216px] mx-auto">
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+    <!-- ======================================================== -->
+    <!-- BRAND LOGOS STRIP (6 Partner Brands)                  -->
+    <!-- ======================================================== -->
+    <section class="brand-strip-bg px-3 sm:px-6 py-6 flex items-center justify-center"
+      style="width: 100%; background-color: #382898;" aria-label="Partner Brands">
+      <div
+        class="grid grid-cols-3 sm:grid-cols-6 items-center justify-items-center gap-4 sm:gap-8 w-full max-w-[1216px] mx-auto">
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-allisa-clean.png" alt="Allisa"
+            class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-amere-clean.png" alt="Amere"
+            class="max-h-[26px] sm:max-h-[30px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-unter-clean.png" alt="Unter"
+            class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-jurosa-clean.png" alt="JUROSA"
+            class="max-h-[32px] sm:max-h-[36px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-bticn-clean.png" alt="bticn"
+            class="max-h-[28px] sm:max-h-[32px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
+        <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+          <img src="images/brand-optimize-clean.png" alt="Optimize"
+            class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all"
+            loading="lazy">
+        </div>
       </div>
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-amere-clean.png" alt="Amere" class="max-h-[26px] sm:max-h-[30px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
-      </div>
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
-      </div>
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[32px] sm:max-h-[36px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
-      </div>
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[28px] sm:max-h-[32px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
-      </div>
-      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
-        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
-      </div>
-    </div>
-  </section>
+    </section>
 
   </main>
 
@@ -1059,7 +1136,8 @@
     <div class="container-codix pt-12 pb-8">
       <!-- Footer Logo Box (White/mint background card) -->
       <div>
-        <a href="index.html" class="inline-flex items-center justify-center bg-[#CBE9C9] rounded-[2px] px-4 py-2 transition hover:opacity-90 shadow-xs"
+        <a href="index.html"
+          class="inline-flex items-center justify-center bg-[#CBE9C9] rounded-[2px] px-4 py-2 transition hover:opacity-90 shadow-xs"
           style="width: 192px; height: 55px;" aria-label="Codix Wellness Homepage">
           <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain">
         </a>
@@ -1092,7 +1170,8 @@
               <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
               <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
               <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
-              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a>
+              </li>
             </ul>
           </div>
 
@@ -1101,11 +1180,16 @@
             <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Shop</h4>
             <ul class="space-y-3.5 text-sm text-white/95 font-normal">
               <li><a href="shop.html?cat=Immunity" class="hover:text-white hover:underline transition">Immunity</a></li>
-              <li><a href="shop.html?cat=General%20Wellness" class="hover:text-white hover:underline transition">General Wellness</a></li>
-              <li><a href="shop.html?cat=Beauty" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
-              <li><a href="shop.html?cat=Joints" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a></li>
-              <li><a href="shop.html?cat=Weight" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a></li>
-              <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+              <li><a href="shop.html?cat=General%20Wellness" class="hover:text-white hover:underline transition">General
+                  Wellness</a></li>
+              <li><a href="shop.html?cat=Beauty" class="hover:text-white hover:underline transition">Beauty &amp; Skin
+                  Health</a></li>
+              <li><a href="shop.html?cat=Joints" class="hover:text-white hover:underline transition">Joint, Bone &amp;
+                  Muscle Health</a></li>
+              <li><a href="shop.html?cat=Weight" class="hover:text-white hover:underline transition">Weight Management
+                  &amp; Metabolism</a></li>
+              <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-white hover:underline transition">Sexual
+                  Health</a></li>
             </ul>
           </div>
         </div>
@@ -1173,10 +1257,12 @@
 
         <!-- Right: 4 Payment Icons -->
         <div class="flex items-center gap-2">
-          <img src="images/pay-amex.png" alt="American Express" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-amex.png" alt="American Express"
+            class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
           <img src="images/pay-visa.png" alt="Visa" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
           <img src="images/pay-paypal.png" alt="PayPal" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
-          <img src="images/pay-mastercard.png" alt="Mastercard" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-mastercard.png" alt="Mastercard"
+            class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
         </div>
       </div>
     </div>
@@ -1186,7 +1272,8 @@
   <!-- 12. CART SLIDE-OVER DRAWER                               -->
   <!-- ======================================================== -->
   <div id="cart-drawer-overlay" class="modal-overlay" onclick="closeCartDrawer(event)">
-    <div class="cart-drawer-panel fixed top-0 right-0 w-full max-w-[390px] sm:max-w-[420px] h-full bg-white shadow-drawer p-6 flex flex-col justify-between overflow-y-auto z-50">
+    <div
+      class="cart-drawer-panel fixed top-0 right-0 w-full max-w-[390px] sm:max-w-[420px] h-full bg-white shadow-drawer p-6 flex flex-col justify-between overflow-y-auto z-50">
       <div>
         <div class="flex items-center justify-between pb-4 border-b border-slate-100">
           <div class="flex items-center gap-2">
@@ -1198,7 +1285,8 @@
           </button>
         </div>
 
-        <div id="cart-items-list" class="mt-4 space-y-4 divide-y divide-slate-100 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
+        <div id="cart-items-list"
+          class="mt-4 space-y-4 divide-y divide-slate-100 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
           <!-- Cart items populated via JS -->
         </div>
       </div>
@@ -1226,9 +1314,11 @@
   <!-- ======================================================== -->
   <!-- 13. WISHLIST MODAL                                       -->
   <!-- ======================================================== -->
-  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4" onclick="closeModalOnBackdrop(event, 'wishlist-modal')">
+  <div id="wishlist-modal" class="modal-overlay flex items-center justify-center p-4"
+    onclick="closeModalOnBackdrop(event, 'wishlist-modal')">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
-      <button onclick="closeModal('wishlist-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 cursor-pointer">
+      <button onclick="closeModal('wishlist-modal')"
+        class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 cursor-pointer">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
       <div class="flex items-center gap-2 mb-4">
@@ -1251,14 +1341,18 @@
           <a href="index.html" onclick="closeMobileMenu()" class="flex items-center gap-2">
             <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto">
           </a>
-          <button onclick="closeMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition" aria-label="Close Menu">
+          <button onclick="closeMobileMenu()"
+            class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition"
+            aria-label="Close Menu">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
 
-        <form action="shop.html" method="GET" class="mt-4 flex items-center bg-[#EDF8EE] rounded-full px-3.5 py-2 border border-[#D2EDD5]">
+        <form action="shop.html" method="GET"
+          class="mt-4 flex items-center bg-[#EDF8EE] rounded-full px-3.5 py-2 border border-[#D2EDD5]">
           <i class="fa-solid fa-magnifying-glass text-codix-green text-xs mr-2"></i>
-          <input name="q" type="text" placeholder="Search vitamins, medicines..." class="bg-transparent text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none w-full">
+          <input name="q" type="text" placeholder="Search vitamins, medicines..."
+            class="bg-transparent text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none w-full">
           <button type="submit" class="text-[11px] font-bold text-codix-green pl-1">Go</button>
         </form>
 
@@ -1266,7 +1360,8 @@
           <a href="index.html" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Home</a>
           <a href="about.html" onclick="closeMobileMenu()"
-            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">About Us</a>
+            class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">About
+            Us</a>
           <a href="shop.html" onclick="closeMobileMenu()"
             class="block py-2 px-3 text-xs font-bold text-codix-navy hover:bg-emerald-50 rounded-xl transition">Shop</a>
           <a href="index.html#support" onclick="closeMobileMenu()"
@@ -1296,7 +1391,7 @@
   </div>
 
   <!-- JavaScript Logic -->
-  
+
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
@@ -1316,8 +1411,8 @@
     // Product Page State
     let currentQty = 1;
     let selectedPlan = 'subscription';
-    let basePrice = 9.17;
-    let subPrice = 7.08;
+    let basePrice = 10.42;
+    let subPrice = 6.77;
 
     const DEFAULT_CART = [];
 
@@ -1374,7 +1469,9 @@
       const activePrice = selectedPlan === 'subscription' ? subPrice : basePrice;
       const planName = selectedPlan === 'subscription' ? 'Subscription (35% Off)' : 'One-Time Purchase';
       const cart = getLocalCart();
-      const existing = cart.find(item => item.name.includes('Kids Multi'));
+      const currentTitle = document.getElementById('product-title')?.innerText?.replace(/\n/g, ' ') || 'Codix MacaRoot Pure Botanical';
+      const currentImg = document.getElementById('main-product-img')?.src || 'images/f-grid-8.png';
+      const existing = cart.find(item => item.name === currentTitle);
       if (existing) {
         existing.qty += currentQty;
         existing.price = activePrice;
@@ -1382,11 +1479,11 @@
       } else {
         cart.push({
           id: Date.now(),
-          name: 'Y’our Gummie Kids Multi Gummies™',
+          name: currentTitle,
           plan: planName,
           price: activePrice,
           qty: currentQty,
-          image: 'images/product-benefit-bottle-exact.png'
+          image: currentImg
         });
       }
       saveLocalCart(cart);
@@ -1437,6 +1534,175 @@
     document.addEventListener('DOMContentLoaded', () => {
       updatePriceDisplays();
       updateCartUI();
+      updateWishlistUI();
+
+      // Check URL parameters for dynamic product loading
+      const urlParams = new URLSearchParams(window.location.search);
+      const pid = urlParams.get('id');
+
+      const PRODUCT_PROFILES = {
+        's5': {
+          name: 'Codix MacaRoot Pure Botanical',
+          title: 'Codix MacaRoot<br>Pure Botanical',
+          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
+          img: 'images/f-grid-8.png',
+          basePrice: 10.42,
+          subPrice: 6.77,
+          reviews: 89,
+          headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
+          narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
+          bullets: [
+            'Pure 100% Lepidium meyenii Andean root extract',
+            'Supports libido, hormonal balance & reproductive wellness',
+            'Rich in adaptogens, amino acids, and essential micronutrients'
+          ]
+        },
+        's7': {
+          name: 'Codix MacaRoot Pure Botanical',
+          title: 'Codix MacaRoot<br>Pure Botanical',
+          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
+          img: 'images/f-grid-8.png',
+          basePrice: 10.42,
+          subPrice: 6.77,
+          reviews: 89,
+          headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
+          narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
+          bullets: [
+            'Pure 100% Lepidium meyenii Andean root extract',
+            'Supports libido, hormonal balance & reproductive wellness',
+            'Rich in adaptogens, amino acids, and essential micronutrients'
+          ]
+        },
+        'macaroot': {
+          name: 'Codix MacaRoot Pure Botanical',
+          title: 'Codix MacaRoot<br>Pure Botanical',
+          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
+          img: 'images/f-grid-8.png',
+          basePrice: 10.42,
+          subPrice: 6.77,
+          reviews: 89,
+          headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
+          narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
+          bullets: [
+            'Pure 100% Lepidium meyenii Andean root extract',
+            'Supports libido, hormonal balance & reproductive wellness',
+            'Rich in adaptogens, amino acids, and essential micronutrients'
+          ]
+        },
+        'everose': {
+          name: 'Codix Everose Evening Primrose',
+          title: 'Codix Everose<br>Evening Primrose',
+          subtitle: 'Cold-Pressed GLA & Vitamin E – Women\'s Health Support',
+          img: 'images/product-everose.png',
+          basePrice: 13.33,
+          subPrice: 8.66,
+          reviews: 58,
+          headline: 'Pure Cold-Pressed Evening Primrose Oil for Hormonal Balance & Radiant Skin',
+          narrative: 'Codix Everose Evening Primrose Oil is meticulously cold-pressed to preserve natural Gamma-Linolenic Acid (GLA) levels. Specially formulated to nurture female hormonal balance throughout monthly cycles and menopause.',
+          bullets: [
+            'High concentration of natural Gamma-Linolenic Acid (GLA)',
+            'Supports monthly cycle balance & menopause ease',
+            'Nourishes dry skin from within for a supple, radiant glow'
+          ]
+        },
+        'selcea': {
+          name: 'SelCEA – Hepato & Liver Support',
+          title: 'SelCEA<br>Hepato & Liver Support',
+          subtitle: 'Targeted Antioxidant & Detoxification Micronutrients',
+          img: 'images/product-selcea.png',
+          basePrice: 6.88,
+          subPrice: 4.47,
+          reviews: 76,
+          headline: 'Advanced Hepatic Protection & Cellular Detoxification Formula',
+          narrative: 'SelCEA combines essential Selenium, Vitamin C, Vitamin E, and Vitamin A to provide complete cellular antioxidant defence and support natural liver metabolic pathways.',
+          bullets: [
+            'Comprehensive hepatic cellular protection',
+            'Neutralizes free radicals and oxidative stress',
+            'Enhances energy metabolism and systemic vitality'
+          ]
+        }
+      };
+
+      if (pid && PRODUCT_PROFILES[pid]) {
+        const prod = PRODUCT_PROFILES[pid];
+        const breadcrumbEl = document.getElementById('breadcrumb-product-name');
+        if (breadcrumbEl) breadcrumbEl.textContent = prod.name;
+        const titleEl = document.getElementById('product-title');
+        if (titleEl) titleEl.innerHTML = prod.title;
+        const subtitleEl = document.getElementById('product-subtitle');
+        if (subtitleEl) subtitleEl.textContent = prod.subtitle;
+        const mainImgEl = document.getElementById('main-product-img');
+        if (mainImgEl) mainImgEl.src = prod.img;
+        basePrice = prod.basePrice;
+        subPrice = prod.subPrice;
+        const revEl = document.getElementById('product-reviews-count');
+        if (revEl) revEl.textContent = `${prod.reviews} Reviews`;
+        const headEl = document.getElementById('product-headline');
+        if (headEl) headEl.textContent = prod.headline;
+        const narEl = document.getElementById('product-narrative');
+        if (narEl) narEl.textContent = prod.narrative;
+        const bullEl = document.getElementById('product-bullets');
+        if (bullEl) {
+          bullEl.innerHTML = prod.bullets.map(b => `<li>${b}</li>`).join('');
+        }
+        updatePriceDisplays();
+        updatePriceOption('subscription');
+      } else {
+        basePrice = 10.42;
+        subPrice = 6.77;
+        updatePriceDisplays();
+        updatePriceOption('subscription');
+      }
+      showTestimonial(0);
+    });
+
+    // --- Testimonials Carousel Engine (3 on Laptop/Desktop, 1 on Mobile) ---
+    let currentTestimonialIdx = 0;
+
+    function showTestimonial(index) {
+      const track = document.getElementById('testimonial-track');
+      const dots = document.querySelectorAll('.testimonial-dot');
+      if (!track) return;
+
+      const isMobile = window.innerWidth < 768;
+      const totalSlides = track.children.length;
+      const maxIndex = isMobile ? totalSlides - 1 : Math.max(0, totalSlides - 3);
+
+      if (index > maxIndex) {
+        currentTestimonialIdx = 0;
+      } else if (index < 0) {
+        currentTestimonialIdx = maxIndex;
+      } else {
+        currentTestimonialIdx = index;
+      }
+
+      const percentStep = isMobile ? 100 : (100 / 3);
+      track.style.transform = `translateX(-${currentTestimonialIdx * percentStep}%)`;
+
+      dots.forEach((dot, idx) => {
+        const isActive = isMobile
+          ? idx === (currentTestimonialIdx % (dots.length || 1))
+          : (currentTestimonialIdx < (maxIndex / 2) ? idx === 0 : idx === 1);
+        if (isActive) {
+          dot.classList.add('bg-white', 'w-6');
+          dot.classList.remove('bg-white/40', 'w-2.5');
+        } else {
+          dot.classList.remove('bg-white', 'w-6');
+          dot.classList.add('bg-white/40', 'w-2.5');
+        }
+      });
+    }
+
+    function nextTestimonial() {
+      showTestimonial(currentTestimonialIdx + 1);
+    }
+
+    function prevTestimonial() {
+      showTestimonial(currentTestimonialIdx - 1);
+    }
+
+    window.addEventListener('resize', () => {
+      showTestimonial(currentTestimonialIdx);
     });
 
     function updateCartItemQty(idx, delta) {
@@ -1467,7 +1733,7 @@
             <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-contain rounded-lg bg-white p-1">
             <div>
               <h4 class="text-xs font-bold text-slate-800">${item.name}</h4>
-              <span class="text-xs font-extrabold text-codix-green">$${item.price.toFixed(2)}</span>
+              <span class="text-xs font-extrabold text-codix-green">${(typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(item.price) : '£' + item.price.toFixed(2)}</span>
             </div>
           </div>
           <button onclick="wishlist.splice(${idx}, 1); updateWishlistUI();" class="text-slate-400 hover:text-red-500 text-sm"><i class="fa-solid fa-trash-can"></i></button>
@@ -1498,37 +1764,8 @@
     function closeModalOnBackdrop(e, id) {
       if (e.target.id === id) closeModal(id);
     }
-
-    // Initialize UI on DOM load
-    document.addEventListener('DOMContentLoaded', () => {
-      updateCartUI();
-      updateWishlistUI();
-
-      // Check URL parameters for dynamic product loading
-      const urlParams = new URLSearchParams(window.location.search);
-      const pid = urlParams.get('id');
-      if (pid === 'everose') {
-        document.getElementById('breadcrumb-product-name').textContent = 'Codix Everose Evening Primrose';
-        document.getElementById('product-title').textContent = 'Codix Everose Evening Primrose';
-        document.getElementById('main-product-img').src = 'images/product-everose.jpg';
-        basePrice = 38.99;
-        subPrice = 33.14;
-        document.getElementById('price-onetime').textContent = '$38.99';
-        document.getElementById('price-subscription').textContent = '$33.14';
-        updatePriceOption('subscription');
-      } else if (pid === 'selcea') {
-        document.getElementById('breadcrumb-product-name').textContent = 'Selcea Marine Collagen Lift';
-        document.getElementById('product-title').textContent = 'Selcea Marine Collagen Lift';
-        document.getElementById('main-product-img').src = 'images/product-selcea.jpg';
-        basePrice = 56.72;
-        subPrice = 48.21;
-        document.getElementById('price-onetime').textContent = '$56.72';
-        document.getElementById('price-subscription').textContent = '$48.21';
-        updatePriceOption('subscription');
-      }
-    });
   </script>
-<script>
+  <script>
     function toggleMegaMenu(e) {
       if (e) {
         e.stopPropagation();
