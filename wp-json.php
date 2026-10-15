@@ -199,6 +199,13 @@ if (strpos($route, '/codix/v1/verify-stripe') === 0) {
     exit;
 }
 
+if (strpos($route, '/codix/v1/stripe-webhook') === 0) {
+    $res = codix_wc_stripe_webhook($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
 if (strpos($route, '/codix/v1/payment-config') === 0) {
     $res = codix_wc_get_payment_config();
     http_response_code($res->status);
@@ -232,6 +239,7 @@ echo json_encode([
         'POST /wp-json/codix/v1/verify-stock',
         'POST /wp-json/codix/v1/create-order',
         'POST /wp-json/codix/v1/verify-stripe',
+        'POST /wp-json/codix/v1/stripe-webhook',
         'GET  /wp-json/codix/v1/payment-config',
         'GET  /wp-json/codix/v1/track-order'
     ]

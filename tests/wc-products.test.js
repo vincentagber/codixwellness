@@ -297,12 +297,21 @@ test('Checkout Page (checkout.html): Contains WooCommerce Stripe payment element
   assert.ok(html.includes('id="pay-stripe"'), 'Must have pay-stripe radio');
   assert.ok(html.includes('id="stripe-details-box"'), 'Must have stripe-details-box');
   assert.ok(html.includes('src="https://js.stripe.com/v3/"'), 'Must load Stripe.js v3');
-  assert.ok(html.includes('Credit / Debit Card (Stripe)'), 'Must display Stripe payment option title');
+  assert.ok(html.includes('Stripe (Debit/Credit Card, Apple Pay)') || html.includes('Credit / Debit Card (Stripe)'), 'Must display Stripe payment option title');
   assert.ok(html.includes('Barclays Bank UK PLC'), 'Must have Barclays UK bank transfer');
 
   // Must NOT have old Paystack text
   assert.ok(!html.includes('Paystack (Debit/Credit Card, Bank, USSD)'), 'Must not have Paystack radio label');
   assert.ok(!html.includes('https://js.paystack.co/v1/inline.js'), 'Must not load Paystack inline JS');
   assert.ok(!html.includes('Zenith Bank PLC'), 'Must not have Zenith Bank');
+});
+
+test('PHP Bridge: POST /wp-json/codix/v1/stripe-webhook receives and acknowledges Stripe events', () => {
+  const stdout = execSync('REQUEST_URI="/wp-json/codix/v1/stripe-webhook" php -r \'$_SERVER["REQUEST_URI"]="/wp-json/codix/v1/stripe-webhook"; $_SERVER["REQUEST_METHOD"]="POST"; require "wp-json.php";\'', {
+    cwd: ROOT_DIR,
+    encoding: 'utf8'
+  });
+  const data = JSON.parse(stdout);
+  assert.equal(data.received, true);
 });
 

@@ -672,7 +672,7 @@
               <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-stripe').click()">
                 <div class="flex items-center gap-2.5">
                   <input type="radio" id="pay-stripe" name="payment_method" value="stripe" checked class="custom-checkbox" onchange="togglePaymentFields()">
-                  <label for="pay-stripe" class="text-xs font-bold text-slate-900 cursor-pointer">Credit / Debit Card (Stripe)</label>
+                  <label for="pay-stripe" class="text-xs font-bold text-slate-900 cursor-pointer">Stripe (Debit/Credit Card, Apple Pay)</label>
                 </div>
                 <div class="flex items-center gap-1.5 flex-wrap justify-end">
                   <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
@@ -685,13 +685,8 @@
 
               <!-- Stripe Notice & Card Fields -->
               <div id="stripe-details-box" class="p-4 bg-[#FDFDFD] border-b border-slate-200 text-xs text-slate-600 space-y-3">
-                <div class="flex items-center gap-2 text-emerald-800 bg-emerald-50 px-3 py-2 rounded-lg border border-emerald-200">
-                  <i class="fa-solid fa-shield-halved text-emerald-600 text-sm shrink-0"></i>
-                  <span class="text-[11px] font-semibold leading-tight">Guaranteed 256-bit SSL encrypted checkout directly via WooCommerce Stripe.</span>
-                </div>
-                
-                <p class="leading-relaxed text-[11px] text-slate-500">
-                  Pay securely with your Visa, Mastercard, American Express, Apple Pay, or Google Pay. Your payment is synchronized directly with our live WooCommerce store.
+                <p class="leading-relaxed text-xs text-slate-600">
+                  You will complete your purchase securely with Stripe using Visa, Mastercard, American Express, or Apple Pay. All transactions are secure and encrypted.
                 </p>
 
                 <!-- Embedded Stripe Card Input Simulation / Direct Entry -->
@@ -1381,10 +1376,17 @@
       const submitBtn = document.getElementById('submit-order-btn');
       const btnText = document.getElementById('submit-btn-text');
 
+      // Prevent duplicate submissions while an order is in-flight
+      if (window._isSubmittingOrder) {
+        return;
+      }
+
       if (checkoutItems.length === 0) {
         alert('Your cart is empty.');
         return;
       }
+
+      window._isSubmittingOrder = true;
 
       // Collect customer information
       const email = document.getElementById('customer-email')?.value || '';
@@ -1401,8 +1403,10 @@
       const fullAddress = apt ? `${address}, ${apt}` : address;
       const grandTotalRaw = checkoutItems.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0) * (1 - discountApplied) * 1.075;
       const currencyCode = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.getCurrent().code : 'GBP';
+      const idempotencyKey = 'cw_idem_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
 
       const orderPayload = {
+        idempotency_key: idempotencyKey,
         payment_method: paymentMethod,
         currency: currencyCode,
         total: grandTotalRaw.toFixed(2),
@@ -1426,18 +1430,29 @@
       };
 
       // Loading state
-      if (submitBtn) submitBtn.disabled = true;
-      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying inventory &amp; synchronizing with WooCommerce Stripe...';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+      }
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying inventory &amp; connecting to WooCommerce Stripe...';
 
       try {
         const orderResult = await CodixAPI.createOrder(orderPayload);
 
         if (!orderResult.success && orderResult.code === 'stock_conflict') {
-          const conflictMsg = orderResult.conflicts.map(c => `• ${c.name}: ${c.reason}`).join('\n');
+          const conflictMsg = orderResult.conflicts ? orderResult.conflicts.map(c => `• ${c.name}: ${c.reason}`).join('\n') : orderResult.message;
           alert(`Inventory Alert:\n${conflictMsg}\n\nPlease adjust your cart quantity to proceed.`);
-          if (submitBtn) submitBtn.disabled = false;
+          window._isSubmittingOrder = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+          }
           if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Stripe';
           return;
+        }
+
+        if (!orderResult.success) {
+          throw new Error(orderResult.message || 'Order creation failed on WooCommerce backend');
         }
 
         const orderId = orderResult.order_id;
@@ -1460,9 +1475,13 @@
           window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&method=bacs`;
         }
       } catch (err) {
-        alert('An unexpected error occurred during order processing. Please try again.');
-        console.error(err);
-        if (submitBtn) submitBtn.disabled = false;
+        window._isSubmittingOrder = false;
+        alert(err.message || 'An error occurred while connecting to WooCommerce Stripe. Please check your network and try again.');
+        console.error('Order submission error:', err);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+        }
         if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Stripe';
       }
     }

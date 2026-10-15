@@ -58,6 +58,12 @@ add_action('rest_api_init', function () {
         'permission_callback' => '__return_true'
     ]);
 
+    register_rest_route('codix/v1', '/stripe-webhook', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_stripe_webhook',
+        'permission_callback' => '__return_true'
+    ]);
+
     register_rest_route('codix/v1', '/verify-paystack', [
         'methods'             => 'POST',
         'callback'            => 'codix_wc_verify_paystack',
@@ -778,6 +784,28 @@ function codix_wc_create_order(WP_REST_Request $request) {
         ], 409);
     }
 
+    $idempotency_key = sanitize_text_field($params['idempotency_key'] ?? '');
+    if (!empty($idempotency_key) && function_exists('wc_get_orders')) {
+        $existing = wc_get_orders([
+            'limit'      => 1,
+            'meta_key'   => '_codix_idempotency_key',
+            'meta_value' => $idempotency_key,
+        ]);
+        if (!empty($existing)) {
+            $existing_order = $existing[0];
+            return new WP_REST_Response([
+                'success'      => true,
+                'order_id'     => $existing_order->get_id(),
+                'order_key'    => $existing_order->get_order_key(),
+                'payment_url'  => $existing_order->get_checkout_payment_url(true),
+                'total'        => $existing_order->get_total(),
+                'currency'     => $existing_order->get_currency(),
+                'status'       => $existing_order->get_status(),
+                'idempotent'   => true
+            ], 200);
+        }
+    }
+
     if (!function_exists('wc_create_order')) {
         // Standalone simulated order
         $order_id = 'CW-' . rand(100000, 999999);
@@ -827,6 +855,10 @@ function codix_wc_create_order(WP_REST_Request $request) {
         $order->set_payment_method($payment_method);
         $order->set_payment_method_title($method_title);
         $order->set_currency($currency);
+
+        if (!empty($idempotency_key)) {
+            $order->update_meta_data('_codix_idempotency_key', $idempotency_key);
+        }
 
         $order->calculate_totals();
         $order->save();
@@ -1000,3 +1032,56 @@ function codix_wc_track_order(WP_REST_Request $request) {
         ]
     ], 200);
 }
+
+// 14. Real-time Stripe Webhook Receiver
+function codix_wc_stripe_webhook(WP_REST_Request $request) {
+    $payload = $request->get_json_params();
+    $raw_body = file_get_contents('php://input');
+    $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
+
+    $stripe_settings = function_exists('get_option') ? get_option('woocommerce_stripe_settings', []) : [];
+    $webhook_secret = defined('STRIPE_WEBHOOK_SECRET') ? STRIPE_WEBHOOK_SECRET : ($stripe_settings['webhook_secret'] ?? '');
+
+    // Verify webhook signature if secret is configured and Stripe SDK is present
+    if (!empty($webhook_secret) && class_exists('\Stripe\Webhook') && !empty($sig_header)) {
+        try {
+            $event = \Stripe\Webhook::constructEvent($raw_body, $sig_header, $webhook_secret);
+            $payload = json_decode(json_encode($event), true);
+        } catch (Exception $e) {
+            return new WP_REST_Response(['error' => 'Webhook signature verification failed: ' . $e->getMessage()], 400);
+        }
+    }
+
+    $event_type = $payload['type'] ?? '';
+    $data_obj = $payload['data']['object'] ?? [];
+    $order_id = intval($data_obj['metadata']['order_id'] ?? $data_obj['client_reference_id'] ?? 0);
+
+    if (!$order_id && !empty($data_obj['description']) && preg_match('#Order\s*#?(\d+)#i', $data_obj['description'], $matches)) {
+        $order_id = intval($matches[1]);
+    }
+
+    if ($order_id && function_exists('wc_get_order')) {
+        $order = wc_get_order($order_id);
+        if ($order) {
+            switch ($event_type) {
+                case 'payment_intent.succeeded':
+                case 'charge.succeeded':
+                    $payment_id = $data_obj['id'] ?? '';
+                    $order->payment_complete($payment_id);
+                    $order->add_order_note('Stripe Webhook: payment confirmed (Payment ID: ' . $payment_id . ')');
+                    break;
+                case 'payment_intent.payment_failed':
+                case 'charge.failed':
+                    $error_msg = $data_obj['last_payment_error']['message'] ?? 'Payment authorization failed.';
+                    $order->update_status('failed', 'Stripe Webhook: ' . $error_msg);
+                    break;
+                case 'charge.refunded':
+                    $order->update_status('refunded', 'Stripe Webhook: charge was refunded on Stripe.');
+                    break;
+            }
+        }
+    }
+
+    return new WP_REST_Response(['received' => true, 'event' => $event_type, 'order_id' => $order_id], 200);
+}
+
