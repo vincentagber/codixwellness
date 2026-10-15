@@ -29,13 +29,43 @@ RewriteCond %{QUERY_STRING} (^|&)rest_route= [NC]
 RewriteRule ^ wp-json.php [L,QSA]
 
 #########################################
-# CANONICAL STATIC PAGE URLS
+# CANONICAL STATIC PAGE URLS & HIDE .HTML
 #########################################
 
+# 1. External redirect: /index.html -> /
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*?)index\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# 2. External redirect: /page.html -> /page
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# 3. Canonicalize trailing slash: /page/ -> /page if page.html exists
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} ^(.*?)/+$
+RewriteCond %1.html -f
+RewriteRule ^(.+?)/+$ $1 [R=301,L]
+
+# 4. Map root request to index.html
 RewriteRule ^$ index.html [L]
-RewriteRule ^about/?$ about.html [R=301,L]
-RewriteRule ^contact/?$ contact.html [R=301,L]
-RewriteRule ^blog/?$ blog.html [R=301,L]
+
+# 5. Internal rewrite: map clean URL to .html file if it exists
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 6. Fallback internal rewrite for DocumentRoot
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
 RewriteRule ^wp-api/?$ wp-api.php [L,QSA]
 
 #########################################

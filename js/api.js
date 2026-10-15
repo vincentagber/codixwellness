@@ -1,7 +1,7 @@
 /**
  * Codix Wellness Headless API Client
  * Manages decoupled communication with WordPress/WooCommerce REST API,
- * real-time inventory verification, JWT authentication, and Paystack transactions.
+ * dynamic product querying, real-time inventory verification, JWT authentication, and Paystack transactions.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -12,10 +12,388 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var API_BASE = (typeof window !== 'undefined' && window.CODIX_API_BASE) || '/wp-json';
+  function getApiBase() {
+    if (typeof window !== 'undefined' && window.CODIX_API_BASE) {
+      return String(window.CODIX_API_BASE).replace(/\/+$/, '');
+    }
+    if (typeof window !== 'undefined' && window.location) {
+      var proto = window.location.protocol;
+      var host = window.location.host;
+      var pathname = window.location.pathname || '';
+
+      // If opened via local file protocol (file://) or without host, route to live WordPress REST API
+      if (proto === 'file:' || !host) {
+        return 'https://codixwellness.co.uk/wp-json';
+      }
+
+      // If running on localhost/127.0.0.1 in a subdirectory (e.g. MAMP /CodixWellness/)
+      if (host.indexOf('localhost') !== -1 || host.indexOf('127.0.0.1') !== -1) {
+        var folderMatch = pathname.match(/^(\/[^/]+)\/(?:shop|index|product|cart|checkout|about|blog|login|register)/i);
+        if (folderMatch && folderMatch[1] && !folderMatch[1].startsWith('/wp-')) {
+          return folderMatch[1] + '/wp-json';
+        }
+      }
+    }
+    return '/wp-json';
+  }
+
+  function apiEndpoint(path) {
+    var base = getApiBase();
+    return base + (path.charAt(0) === '/' ? path : '/' + path);
+  }
+
+  var API_BASE = '/wp-json';
   var PAYSTACK_PUBLIC_KEY = (typeof window !== 'undefined' && window.CODIX_PAYSTACK_KEY) || 'pk_test_sample_codix_wellness';
+  var PRODUCT_CACHE_KEY = 'codix_wc_products_cache';
+  var PRODUCT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+  // Default official Codix Wellness launch products for instant rendering & offline resilience
+  var DEFAULT_PRODUCTS = [
+    {
+      id: 's1',
+      name: 'Codferol Vitamin D3 Oral Solution',
+      slug: 'codferol-vitamin-d3-oral-solution',
+      cat: 'Supplements, Vitamins',
+      category: 'Immunity',
+      categories: ['Supplements', 'Vitamins', 'Immunity'],
+      badge: 'Sale',
+      price: 9.17,
+      rawPrice: 9.17,
+      regular_price: 9.17,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£9.17',
+      reviews: 1,
+      rating: 5,
+      img: 'images/product-codferol-d3.png',
+      size: '50ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: true,
+      short_description: 'High-strength liquid Vitamin D3 formulation for superior absorption.',
+      description: 'Codferol Vitamin D3 Oral Solution helps maintain normal bones, teeth, and immune function.'
+    },
+    {
+      id: 's2',
+      name: 'Winwell Daily Multivitamin',
+      slug: 'winwell-daily-multivitamin',
+      cat: 'Supplements, General Wellness',
+      category: 'General Wellness',
+      categories: ['Supplements', 'General Wellness'],
+      badge: 'Sale',
+      price: 7.08,
+      rawPrice: 7.08,
+      regular_price: 7.08,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£7.08',
+      reviews: 103,
+      rating: 5,
+      img: 'images/product-winwell.jpg',
+      size: '100ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: true,
+      short_description: 'Comprehensive daily multivitamin complex for vitality and wellness.',
+      description: 'Winwell Daily Multivitamin contains essential micronutrients to support energy and health.'
+    },
+    {
+      id: 's3',
+      name: 'Vitamin C + D Effervescent Tablets',
+      slug: 'vitamin-c-d-effervescent-tablets',
+      cat: 'Supplements, Immune Support',
+      category: 'Immunity',
+      categories: ['Supplements', 'Immune Support', 'Immunity'],
+      badge: 'Sale',
+      price: 4.58,
+      rawPrice: 4.58,
+      regular_price: 4.58,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£4.58',
+      reviews: 59,
+      rating: 5,
+      img: 'images/f-grid-13.png',
+      size: '30ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: true,
+      short_description: 'Refreshing fast-absorbing immune booster with Zinc and Vitamin D.',
+      description: 'Effervescent immune defense tablets designed for daily seasonal protection.'
+    },
+    {
+      id: 's4',
+      name: 'Flexicod – Joint Health Support',
+      slug: 'flexicod-joint-health-support',
+      cat: 'Supplements, Joint Support',
+      category: 'Joint & Bone',
+      categories: ['Supplements', 'Joint Support', 'Joint & Bone'],
+      badge: 'Sale',
+      price: 8.33,
+      rawPrice: 8.33,
+      regular_price: 8.33,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£8.33',
+      reviews: 102,
+      rating: 5,
+      img: 'images/f-grid-4.png',
+      size: '100ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: true,
+      short_description: 'Advanced joint flexibility, mobility, and cartilage comfort formula.',
+      description: 'Combines botanical extracts and collagen peptides to support comfortable joint movement.'
+    },
+    {
+      id: 's5',
+      name: 'Codix Fat Burner – Metabolism Support',
+      slug: 'codix-fat-burner-metabolism-support',
+      cat: 'Supplements, Weight Management',
+      category: 'Weight Management',
+      categories: ['Supplements', 'Weight Management'],
+      badge: 'Sale',
+      price: 7.50,
+      rawPrice: 7.50,
+      regular_price: 7.50,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£7.50',
+      reviews: 97,
+      rating: 5,
+      img: 'images/f-grid-5.png',
+      size: '50ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: true,
+      short_description: 'Thermogenic botanical metabolism enhancer with green tea extract.',
+      description: 'Supports active calorie burning and healthy metabolic rate naturally.'
+    },
+    {
+      id: 's6',
+      name: 'SelCEA – Hepato & Liver Support',
+      slug: 'selcea-hepato-liver-support',
+      cat: 'Supplements, Liver Care',
+      category: 'General Wellness',
+      categories: ['Supplements', 'Liver Care', 'General Wellness'],
+      badge: 'Sale',
+      price: 6.88,
+      rawPrice: 6.88,
+      regular_price: 6.88,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£6.88',
+      reviews: 88,
+      rating: 5,
+      img: 'images/product-selcea.png',
+      size: '100mg',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: false,
+      short_description: 'Pure botanical liver detoxification and cellular vitality complex.',
+      description: 'Targeted support for liver enzyme balance, lipid clearance, and metabolic energy.'
+    },
+    {
+      id: 's7',
+      name: 'Codix MacaRoot Pure Botanical',
+      slug: 'codix-macaroot-pure-botanical',
+      cat: 'Supplements, Energy & Vitality',
+      category: 'General Wellness',
+      categories: ['Supplements', 'Energy & Vitality', 'General Wellness', 'Sexual Health'],
+      badge: 'Sale',
+      price: 10.42,
+      rawPrice: 10.42,
+      regular_price: 10.42,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£10.42',
+      reviews: 89,
+      rating: 5,
+      img: 'images/f-grid-8.png',
+      size: '100mg',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: false,
+      short_description: '100% Pure Andean Lepidium meyenii root extract for stamina and libido.',
+      description: 'Pure botanical adaptogen for natural stamina, endocrine balance, and energy.'
+    },
+    {
+      id: 's8',
+      name: 'Codix Everose Evening Primrose Oil',
+      slug: 'codix-everose-evening-primrose-oil',
+      cat: 'Supplements, Women\'s Health',
+      category: 'General Wellness',
+      categories: ['Supplements', 'Women\'s Health', 'General Wellness', 'Beauty and Skin Health'],
+      badge: 'Sale',
+      price: 13.33,
+      rawPrice: 13.33,
+      regular_price: 13.33,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£13.33',
+      reviews: 58,
+      rating: 5,
+      img: 'images/product-everose.png',
+      size: '100ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: false,
+      short_description: 'Cold-pressed Evening Primrose Oil rich in essential Omega-6 GLA.',
+      description: 'Nourishes sensitive hormonal balance and promotes clear, glowing skin hydration.'
+    },
+    {
+      id: 's9',
+      name: 'Day 2 Day Collagen Mag Plus',
+      slug: 'day-2-day-collagen-mag-plus',
+      cat: 'Supplements, Beauty & Skin Health',
+      category: 'Beauty and Skin Health',
+      categories: ['Supplements', 'Beauty & Skin Health', 'Beauty and Skin Health'],
+      badge: 'Sale',
+      price: 14.50,
+      rawPrice: 14.50,
+      regular_price: 14.50,
+      sale_price: null,
+      on_sale: true,
+      priceStr: '£14.50',
+      reviews: 76,
+      rating: 5,
+      img: 'images/f-grid-6.png',
+      size: '150ml',
+      in_stock: true,
+      stock_quantity: 50,
+      featured: true,
+      bestselling: false,
+      short_description: 'Hydrolyzed Marine Collagen Peptides with Magnesium and Hyaluronic Acid.',
+      description: 'Replenishes dermal elasticity, smooths fine lines, and nourishes hair and nails.'
+    }
+  ];
+
+  /**
+   * Helper to infer local asset path for known products
+   */
+  function inferImage(name, slug) {
+    var text = String(name + ' ' + (slug || '')).toLowerCase();
+    if (text.includes('codferol') || text.includes('d3')) return 'images/product-codferol-d3.png';
+    if (text.includes('winwell') || text.includes('multivitamin')) return 'images/product-winwell.jpg';
+    if (text.includes('vitamin c') || text.includes('effervescent')) return 'images/f-grid-13.png';
+    if (text.includes('flexicod') || text.includes('joint')) return 'images/f-grid-4.png';
+    if (text.includes('fat burner') || text.includes('fatburner')) return 'images/f-grid-5.png';
+    if (text.includes('selcea') || text.includes('liver') || text.includes('hepato')) return 'images/product-selcea.png';
+    if (text.includes('maca')) return 'images/f-grid-8.png';
+    if (text.includes('everose') || text.includes('primrose')) return 'images/product-everose.png';
+    if (text.includes('collagen') || text.includes('day 2 day')) return 'images/f-grid-6.png';
+    return 'images/product-winwell.jpg';
+  }
+
+  /**
+   * Helper to infer size from name
+   */
+  function inferSize(name) {
+    var text = String(name || '').toLowerCase();
+    if (text.includes('oral solution') || text.includes('codferol') || text.includes('fat burner')) return '50ml';
+    if (text.includes('effervescent')) return '30ml';
+    if (text.includes('selcea') || text.includes('maca')) return '100mg';
+    if (text.includes('collagen')) return '150ml';
+    return '100ml';
+  }
+
+  /**
+   * Normalizes WooCommerce product data into standard Codix Wellness schema
+   */
+  function normalizeWcProduct(raw) {
+    if (!raw) return null;
+
+    var name = raw.name || raw.title || 'Product';
+    var slug = raw.slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    var price = parseFloat(raw.price || raw.regular_price || 0) || 0;
+    var regularPrice = parseFloat(raw.regular_price || raw.price || price) || price;
+    var salePrice = raw.sale_price !== null && raw.sale_price !== undefined && raw.sale_price !== '' ? parseFloat(raw.sale_price) : null;
+    var onSale = raw.on_sale === true || (salePrice !== null && salePrice < regularPrice) || (raw.badge && raw.badge.toLowerCase().includes('sale'));
+
+    // Extract categories
+    var categories = [];
+    if (Array.isArray(raw.categories)) {
+      categories = raw.categories.map(function (c) {
+        return typeof c === 'object' && c !== null ? (c.name || '') : String(c);
+      }).filter(Boolean);
+    } else if (raw.cat) {
+      categories = String(raw.cat).split(',').map(function (s) { return s.trim(); });
+    }
+    if (categories.length === 0) categories = ['Supplements'];
+
+    // Primary category
+    var primaryCat = raw.category || categories[0] || 'Supplements';
+
+    // Extract image
+    var img = '';
+    if (raw.img) {
+      img = raw.img;
+    } else if (raw.image) {
+      img = raw.image;
+    } else if (Array.isArray(raw.images) && raw.images.length > 0) {
+      img = raw.images[0].src || raw.images[0].url || '';
+    }
+    if (!img) img = inferImage(name, slug);
+
+    // Extract size
+    var size = raw.size || '';
+    if (!size && Array.isArray(raw.attributes)) {
+      var sizeAttr = raw.attributes.find(function (a) {
+        return a.name && (a.name.toLowerCase() === 'size' || a.name.toLowerCase() === 'volume');
+      });
+      if (sizeAttr && Array.isArray(sizeAttr.options) && sizeAttr.options.length > 0) {
+        size = sizeAttr.options[0];
+      }
+    }
+    if (!size) size = inferSize(name);
+
+    var rating = parseFloat(raw.rating || raw.average_rating || 5);
+    if (isNaN(rating) || rating <= 0) rating = 5;
+
+    var reviews = parseInt(raw.reviews || raw.rating_count || 0, 10);
+    if (isNaN(reviews)) reviews = 0;
+
+    var badge = raw.badge || (onSale ? 'Sale' : '');
+
+    return {
+      id: String(raw.id || slug),
+      name: name,
+      slug: slug,
+      cat: raw.cat || categories.join(', '),
+      category: primaryCat,
+      categories: categories,
+      badge: badge,
+      price: price,
+      rawPrice: price,
+      regular_price: regularPrice,
+      sale_price: salePrice,
+      on_sale: onSale,
+      priceStr: (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(price) : '£' + price.toFixed(2),
+      reviews: reviews,
+      rating: rating,
+      img: img,
+      image: img,
+      size: size,
+      in_stock: raw.in_stock !== false && raw.stock_status !== 'outofstock',
+      stock_quantity: raw.stock_quantity !== undefined ? raw.stock_quantity : 50,
+      featured: Boolean(raw.featured),
+      bestselling: Boolean(raw.bestselling || reviews >= 80),
+      short_description: raw.short_description ? String(raw.short_description).replace(/<[^>]*>?/gm, '') : '',
+      description: raw.description ? String(raw.description).replace(/<[^>]*>?/gm, '') : ''
+    };
+  }
 
   var CodixAPI = {
+    DEFAULT_PRODUCTS: DEFAULT_PRODUCTS,
+
     /**
      * Get stored JWT token
      */
@@ -73,16 +451,277 @@
     },
 
     /**
+     * Cache management for WooCommerce products
+     */
+    getCachedProducts: function () {
+      try {
+        var raw = localStorage.getItem(PRODUCT_CACHE_KEY);
+        if (!raw) return null;
+        var data = JSON.parse(raw);
+        if (data && data.timestamp && (Date.now() - data.timestamp < PRODUCT_CACHE_TTL)) {
+          return data.products;
+        }
+      } catch (e) {}
+      return null;
+    },
+
+    setCachedProducts: function (products) {
+      try {
+        localStorage.setItem(PRODUCT_CACHE_KEY, JSON.stringify({
+          timestamp: Date.now(),
+          products: products
+        }));
+      } catch (e) {}
+    },
+
+    clearProductCache: function () {
+      try {
+        localStorage.removeItem(PRODUCT_CACHE_KEY);
+      } catch (e) {}
+    },
+
+    /**
+     * Fetch products dynamically from WooCommerce REST API
+     * Supports category filtering, search, sorting, price range, and pagination.
+     * Implements stale-while-revalidate and resilient offline fallback.
+     */
+    getProducts: async function (options) {
+      options = options || {};
+      var self = this;
+
+      // Check cache if not forcing refresh
+      var cached = !options.forceRefresh ? this.getCachedProducts() : null;
+
+      // Build REST query parameters
+      var queryParams = [];
+      if (options.category && options.category !== 'all') {
+        queryParams.push('category=' + encodeURIComponent(options.category));
+      }
+      if (options.search) {
+        queryParams.push('search=' + encodeURIComponent(options.search));
+      }
+      if (options.featured) {
+        queryParams.push('featured=1');
+      }
+      if (options.bestselling) {
+        queryParams.push('bestselling=1');
+      }
+      if (options.orderby) {
+        queryParams.push('orderby=' + encodeURIComponent(options.orderby));
+      }
+      if (options.min_price !== undefined && options.min_price !== null) {
+        queryParams.push('min_price=' + encodeURIComponent(options.min_price));
+      }
+      if (options.max_price !== undefined && options.max_price !== null) {
+        queryParams.push('max_price=' + encodeURIComponent(options.max_price));
+      }
+      if (options.per_page) {
+        queryParams.push('per_page=' + encodeURIComponent(options.per_page));
+      }
+      if (options.page) {
+        queryParams.push('page=' + encodeURIComponent(options.page));
+      }
+
+      var queryString = queryParams.length ? '?' + queryParams.join('&') : '';
+      var base = getApiBase();
+      var endpoints = [
+        apiEndpoint('/codix/v1/products' + queryString),
+        apiEndpoint('/wc/v3/products' + queryString)
+      ];
+      // If running locally (file:// or localhost) and base is not production, also try production backend as fallback
+      if (base !== 'https://codixwellness.co.uk/wp-json' && typeof window !== 'undefined' && window.location && (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+        endpoints.push('https://codixwellness.co.uk/wp-json/codix/v1/products' + queryString);
+      }
+
+      var fetchedProducts = null;
+
+      for (var i = 0; i < endpoints.length; i++) {
+        try {
+          var res = await fetch(endpoints[i], {
+            headers: this.getHeaders(false),
+            cache: 'no-cache'
+          });
+
+          if (res.ok) {
+            var data = await res.json();
+            var rawList = Array.isArray(data) ? data : (data.products || []);
+            if (rawList && rawList.length > 0) {
+              fetchedProducts = rawList.map(normalizeWcProduct).filter(Boolean);
+              break;
+            }
+          }
+        } catch (err) {
+          // Continue to next endpoint or fallback
+        }
+      }
+
+      // If fresh products were retrieved, update the cache
+      if (fetchedProducts && fetchedProducts.length > 0) {
+        this.setCachedProducts(fetchedProducts);
+
+        // Notify app that live WooCommerce products have updated
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('codixProductsLoaded', {
+            detail: { products: fetchedProducts, source: 'woocommerce' }
+          }));
+        }
+
+        return {
+          success: true,
+          products: fetchedProducts,
+          total: fetchedProducts.length,
+          source: 'woocommerce'
+        };
+      }
+
+      // Fallback 1: Local cache
+      if (cached && cached.length > 0) {
+        return {
+          success: true,
+          products: this.filterProductsLocally(cached, options),
+          total: cached.length,
+          source: 'cache'
+        };
+      }
+
+      // Fallback 2: Default official catalog
+      var fallback = DEFAULT_PRODUCTS.map(normalizeWcProduct);
+      return {
+        success: true,
+        products: this.filterProductsLocally(fallback, options),
+        total: fallback.length,
+        source: 'catalog',
+        isFallback: true
+      };
+    },
+
+    /**
+     * Local product filtering helper for offline & cached data
+     */
+    filterProductsLocally: function (products, options) {
+      if (!Array.isArray(products)) return [];
+      var filtered = products.slice();
+
+      if (options.category && options.category.toLowerCase() !== 'all') {
+        var catLower = options.category.toLowerCase();
+        filtered = filtered.filter(function (p) {
+          var haystack = (p.cat + ' ' + p.categories.join(' ')).toLowerCase();
+          if (catLower === 'immunity') return haystack.includes('immun') || haystack.includes('vitamin');
+          if (catLower === 'general wellness') return haystack.includes('general') || haystack.includes('wellness');
+          if (catLower === 'joint & bone' || catLower.includes('joint')) return haystack.includes('joint') || haystack.includes('bone');
+          if (catLower === 'weight management' || catLower.includes('weight')) return haystack.includes('weight') || haystack.includes('metabolism');
+          if (catLower === 'sexual health') return haystack.includes('sexual') || haystack.includes('energy') || haystack.includes('maca');
+          if (catLower === 'beauty and skin health') return haystack.includes('beauty') || haystack.includes('skin') || haystack.includes('collagen');
+          return haystack.includes(catLower);
+        });
+      }
+
+      if (options.search) {
+        var s = options.search.toLowerCase();
+        filtered = filtered.filter(function (p) {
+          return p.name.toLowerCase().includes(s) || p.cat.toLowerCase().includes(s);
+        });
+      }
+
+      if (options.featured) {
+        filtered = filtered.filter(function (p) { return p.featured; });
+      }
+
+      if (options.bestselling) {
+        filtered = filtered.filter(function (p) { return p.bestselling || p.reviews >= 80; });
+      }
+
+      if (options.min_price !== undefined && options.min_price !== null) {
+        filtered = filtered.filter(function (p) { return p.price >= options.min_price; });
+      }
+
+      if (options.max_price !== undefined && options.max_price !== null) {
+        filtered = filtered.filter(function (p) { return p.price <= options.max_price; });
+      }
+
+      if (options.size && options.size.length > 0) {
+        var sizes = Array.isArray(options.size) ? options.size : [options.size];
+        filtered = filtered.filter(function (p) { return sizes.includes(p.size); });
+      }
+
+      if (options.orderby) {
+        if (options.orderby === 'price-low' || options.orderby === 'price') {
+          filtered.sort(function (a, b) { return a.price - b.price; });
+        } else if (options.orderby === 'price-high') {
+          filtered.sort(function (a, b) { return b.price - a.price; });
+        } else if (options.orderby === 'popularity' || options.orderby === 'rating') {
+          filtered.sort(function (a, b) { return b.reviews - a.reviews; });
+        }
+      }
+
+      return filtered;
+    },
+
+    /**
+     * Retrieve single product by ID or Slug
+     */
+    getProduct: async function (idOrSlug) {
+      if (!idOrSlug) return null;
+
+      // Try local cache or defaults first for instant retrieval
+      var cached = this.getCachedProducts() || DEFAULT_PRODUCTS;
+      var found = cached.find(function (p) {
+        return String(p.id) === String(idOrSlug) || p.slug === idOrSlug;
+      });
+
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/products/' + encodeURIComponent(idOrSlug)), {
+          headers: this.getHeaders(false)
+        });
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.success && data.product) {
+            return normalizeWcProduct(data.product);
+          }
+        }
+      } catch (e) {}
+
+      return found ? normalizeWcProduct(found) : null;
+    },
+
+    /**
+     * Retrieve WooCommerce product categories
+     */
+    getCategories: async function () {
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/categories'), {
+          headers: this.getHeaders(false)
+        });
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.success && Array.isArray(data.categories)) {
+            return data.categories;
+          }
+        }
+      } catch (e) {}
+
+      return [
+        { id: 1, name: 'All Categories', slug: 'all', count: 9 },
+        { id: 2, name: 'Joint, Bone & Muscle Health', slug: 'joint-bone', count: 2 },
+        { id: 3, name: 'Weight Management & Metabolism', slug: 'weight-management', count: 1 },
+        { id: 4, name: 'Beauty and Skin Health', slug: 'beauty-skin', count: 2 },
+        { id: 5, name: 'Immunity', slug: 'immunity', count: 2 },
+        { id: 6, name: 'Sexual Health', slug: 'sexual-health', count: 1 },
+        { id: 7, name: 'General Wellness', slug: 'general-wellness', count: 4 }
+      ];
+    },
+
+    /**
      * Authenticate user with WordPress / JWT
      */
     login: async function (username, password) {
       try {
-        var res = await fetch(API_BASE + '/jwt-auth/v1/token', {
+        var res = await fetch(apiEndpoint('/jwt-auth/v1/token'), {
           method: 'POST',
           headers: this.getHeaders(false),
           body: JSON.stringify({ username: username, password: password })
         });
-        
+
         var data = await res.json().catch(function () { return {}; });
 
         if (res.ok && data.token) {
@@ -115,7 +754,7 @@
 
     /**
      * Real-time Inventory Verification
-     * Verifies cart stock against backend; falls back to local database when offline.
+     * Verifies cart stock against backend; falls back to local stock engine when offline.
      */
     verifyInventory: async function (cartItems) {
       if (!cartItems || cartItems.length === 0) {
@@ -123,7 +762,7 @@
       }
 
       try {
-        var res = await fetch(API_BASE + '/codix/v1/verify-stock', {
+        var res = await fetch(apiEndpoint('/codix/v1/verify-stock'), {
           method: 'POST',
           headers: this.getHeaders(false),
           body: JSON.stringify({ items: cartItems })
@@ -173,7 +812,7 @@
 
       // Step 2: Attempt Server Order Creation
       try {
-        var res = await fetch(API_BASE + '/codix/v1/create-order', {
+        var res = await fetch(apiEndpoint('/codix/v1/create-order'), {
           method: 'POST',
           headers: this.getHeaders(true),
           body: JSON.stringify(orderPayload)
@@ -232,7 +871,7 @@
      */
     getOrder: async function (orderId) {
       try {
-        var res = await fetch(API_BASE + '/codix/v1/track-order?order_id=' + encodeURIComponent(orderId), {
+        var res = await fetch(apiEndpoint('/codix/v1/track-order?order_id=' + encodeURIComponent(orderId)), {
           headers: this.getHeaders(false)
         });
         if (res.ok) {
@@ -311,7 +950,7 @@
      */
     verifyPaystack: async function (orderId, reference) {
       try {
-        var res = await fetch(API_BASE + '/codix/v1/verify-paystack', {
+        var res = await fetch(apiEndpoint('/codix/v1/verify-paystack'), {
           method: 'POST',
           headers: this.getHeaders(false),
           body: JSON.stringify({ order_id: orderId, reference: reference })

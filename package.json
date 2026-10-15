@@ -13,6 +13,7 @@
     "lint": "npm run lint:js && npm run lint:html",
     "lint:js": "eslint js/*.js",
     "lint:html": "html-validate \"*.html\"",
+    "test": "node --test tests/*.test.js",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

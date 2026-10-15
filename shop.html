@@ -409,7 +409,7 @@
           </span>
           <span class="hidden md:flex flex-col leading-tight">
             <span id="cart-header-total"
-              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">$77.96</span>
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">£0.00</span>
             <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
           </span>
         </button>
@@ -730,16 +730,16 @@
               </h3>
               <div class="relative w-full py-2 flex items-center">
                 <div class="w-full h-1.5 bg-[#EEF4F8] rounded-full relative">
-                  <div id="price-slider-fill" class="absolute left-0 h-1.5 bg-[#3A2F99] rounded-full" style="width: 70%;"></div>
+                  <div id="price-slider-fill" class="absolute left-0 h-1.5 bg-[#3A2F99] rounded-full" style="width: 100%;"></div>
                   <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#3A2F99] rounded-full shadow-sm"></div>
-                  <div id="price-slider-thumb" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#3A2F99] rounded-full shadow-sm" style="left: 70%;"></div>
+                  <div id="price-slider-thumb" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#3A2F99] rounded-full shadow-sm" style="left: 100%;"></div>
                 </div>
                 <input id="price-range" type="range" min="5" max="50" value="50" oninput="updatePriceFilter(this.value)"
                   class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
               </div>
 
               <div class="text-sm font-semibold text-black">
-                <span>Range: </span><span id="price-range-display" class="text-[#3A2F99] font-semibold">$5.00 - $50.00</span>
+                <span>Range: </span><span id="price-range-display" class="text-[#3A2F99] font-semibold">£5.00 - £50.00</span>
               </div>
             </div>
 
@@ -747,6 +747,7 @@
 
           <!-- Right Products Grid Area -->
           <div class="flex-1 w-full">
+            <div id="wc-shop-status-notice"></div>
             <!-- Products Grid -->
             <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <!-- Populated by JavaScript -->
@@ -760,7 +761,6 @@
           </div>
         </div>
       </div>
-    </div>
   </section>
 
     <!-- ======================================================== -->
@@ -1246,17 +1246,17 @@
       <div class="flex flex-col gap-3 pb-8">
         <div class="rounded-2xl border border-slate-200 bg-[#FAFAFA] p-5 space-y-4">
           <div class="flex justify-between items-center text-xs font-bold text-slate-800">
-            <span>Subtotal</span><span id="drawer-cart-subtotal" class="font-extrabold">$77.96</span>
+            <span>Subtotal</span><span id="drawer-cart-subtotal" class="font-extrabold">£0.00</span>
           </div>
           <div class="flex justify-between items-center text-xs font-bold text-slate-800">
-            <span>Total</span><span id="drawer-cart-total" class="font-extrabold">$77.96</span>
+            <span>Total</span><span id="drawer-cart-total" class="font-extrabold">£0.00</span>
           </div>
           <button onclick="triggerCheckout()"
             class="w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-full transition shadow-sm flex items-center justify-center text-xs uppercase tracking-wider active:scale-95 cursor-pointer">
             CHECKOUT
           </button>
         </div>
-        <p class="text-xs text-slate-700 font-medium text-center">Shipping is FREE in the US</p>
+        <p class="text-xs text-slate-700 font-medium text-center">Shipping is FREE in the UK</p>
       </div>
     </div>
   </div>
@@ -1301,7 +1301,7 @@
   <script src="js/framer.js"></script>
   <script>
     // --- Shop Database matching Official Codix Catalog ---
-    const ALL_SHOP_PRODUCTS = [
+    let ALL_SHOP_PRODUCTS = [
       { id: 's1', name: 'Codferol Vitamin D3 Oral Solution', cat: 'Supplements, Vitamins', badge: 'Sale', price: 9.17, priceStr: '£9.17', reviews: 1, rating: 5, img: 'images/product-codferol-d3.png', size: '50ml' },
       { id: 's2', name: 'Winwell Daily Multivitamin', cat: 'Supplements, General Wellness', badge: 'Sale', price: 7.08, priceStr: '£7.08', reviews: 103, rating: 5, img: 'images/product-winwell.jpg', size: '100ml' },
       { id: 's3', name: 'Vitamin C + D Effervescent Tablets', cat: 'Supplements, Immune Support', badge: 'Sale', price: 4.58, priceStr: '£4.58', reviews: 59, rating: 5, img: 'images/f-grid-13.png', size: '30ml' },
@@ -1311,14 +1311,110 @@
       { id: 's7', name: 'Codix MacaRoot Pure Botanical', cat: 'Supplements, Energy & Vitality', badge: 'Sale', price: 10.42, priceStr: '£10.42', reviews: 89, rating: 5, img: 'images/f-grid-8.png', size: '100mg' },
       { id: 's8', name: 'Codix Everose Evening Primrose Oil', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 13.33, priceStr: '£13.33', reviews: 58, rating: 5, img: 'images/product-everose.png', size: '100ml' },
       { id: 's9', name: 'Day 2 Day Collagen Mag Plus', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 14.50, priceStr: '£14.50', reviews: 76, rating: 5, img: 'images/f-grid-6.png', size: '150ml' }
-      // HIDDEN: Gummy products hidden pending UK representation discussions
-      // { id: 's10', name: 'Your Gummie – Defence Vitamin C & Zinc', cat: 'Supplements, Immune Support', badge: 'Sale', price: 8.50, priceStr: '£8.50', reviews: 134, rating: 5, img: 'images/f-grid-7.png', size: '75ml' },
-      // { id: 's11', name: 'Your Gummie – 5-HTP Complex', cat: 'Supplements, Immune Support', badge: 'Sale', price: 9.00, priceStr: '£9.00', reviews: 112, rating: 5, img: 'images/f-grid-9.png', size: '250mg' },
-      // { id: 's12', name: 'Your Gummie – Men\'s Multi', cat: 'Supplements, Men\'s Health', badge: 'Sale', price: 8.50, priceStr: '£8.50', reviews: 95, rating: 5, img: 'images/f-grid-10.png', size: '100ml' },
-      // { id: 's13', name: 'Your Gummie – Women\'s Multi', cat: 'Supplements, Women\'s Health', badge: 'Sale', price: 9.00, priceStr: '£9.00', reviews: 132, rating: 5, img: 'images/f-grid-11.png', size: '100ml' },
-      // { id: 's14', name: 'Your Gummie – Hair, Skin & Nails', cat: 'Supplements, Beauty & Skin Health', badge: 'Sale', price: 9.50, priceStr: '£9.50', reviews: 168, rating: 5, img: 'images/product-everose.png', size: '100ml' },
-      // { id: 's15', name: 'Your Gummie Apple Cider Vinegar', cat: 'Supplements, Weight Management', badge: 'Sale', price: 8.00, priceStr: '£8.00', reviews: 143, rating: 5, img: 'images/f-grid-3.png', size: '75ml' }
     ];
+
+    function renderShopSkeletonGrid(count) {
+      const grid = document.getElementById('shop-grid');
+      if (!grid) return;
+      let skeletons = '';
+      for (let i = 0; i < (count || 9); i++) {
+        skeletons += `
+          <div class="product-card bg-transparent flex flex-col w-full h-fit self-start animate-pulse" aria-hidden="true">
+            <div class="rounded-lg bg-slate-200/80 w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;"></div>
+            <div class="pt-2 flex flex-col gap-2">
+              <div class="h-3 bg-slate-200 rounded w-1/3"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div class="h-4 bg-slate-200 rounded w-1/4"></div>
+              <div class="h-9 bg-slate-100 rounded-full w-full mt-2"></div>
+            </div>
+          </div>
+        `;
+      }
+      grid.innerHTML = skeletons;
+    }
+
+    async function loadShopProducts(forceRefresh = false) {
+      const noticeContainer = document.getElementById('wc-shop-status-notice');
+      if (noticeContainer) noticeContainer.innerHTML = '';
+
+      if ((!ALL_SHOP_PRODUCTS || ALL_SHOP_PRODUCTS.length === 0) && !forceRefresh) {
+        renderShopSkeletonGrid(9);
+      }
+
+      try {
+        if (typeof CodixAPI !== 'undefined' && CodixAPI.getProducts) {
+          const res = await CodixAPI.getProducts({ forceRefresh: forceRefresh });
+          if (res && res.products && res.products.length > 0) {
+            ALL_SHOP_PRODUCTS = res.products;
+            renderShopGrid();
+
+            if (res.isFallback && noticeContainer) {
+              noticeContainer.innerHTML = `
+                <div class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between text-xs text-amber-800">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-down text-amber-600"></i>
+                    <span>WooCommerce live backend unavailable. Displaying cached verified catalog.</span>
+                  </div>
+                  <button type="button" onclick="loadShopProducts(true)" class="px-3 py-1 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-700 transition">Retry</button>
+                </div>
+              `;
+            }
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Error loading shop products from WooCommerce REST API:', err);
+        if (noticeContainer) {
+          noticeContainer.innerHTML = `
+            <div class="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between text-xs text-rose-800">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                <span>Could not reach WooCommerce store. Displaying offline product catalog.</span>
+              </div>
+              <button type="button" onclick="loadShopProducts(true)" class="px-3 py-1 bg-rose-600 text-white rounded-lg font-bold hover:bg-rose-700 transition">Retry</button>
+            </div>
+          `;
+        }
+      }
+
+      renderShopGrid();
+    }
+
+    function resetShopFilters() {
+      currentCategory = 'all';
+      currentSearch = '';
+      currentMaxPrice = 50;
+      selectedSizes = [];
+      currentPage = 1;
+      const searchInput = document.getElementById('shop-sidebar-search');
+      if (searchInput) searchInput.value = '';
+      const headerSearch = document.getElementById('shop-header-search');
+      if (headerSearch) headerSearch.value = '';
+      const priceRangeInput = document.getElementById('price-range') || document.getElementById('price-range-slider');
+      if (priceRangeInput) priceRangeInput.value = 50;
+      const priceDisplay = document.getElementById('price-range-display');
+      if (priceDisplay) priceDisplay.textContent = '£5.00 - £50.00';
+      const fillEl = document.getElementById('price-slider-fill');
+      if (fillEl) fillEl.style.width = '100%';
+      const thumbEl = document.getElementById('price-slider-thumb');
+      if (thumbEl) thumbEl.style.left = '100%';
+      const allRadio = document.querySelector('input[name="shop-category"][value="all"]');
+      if (allRadio) {
+        allRadio.checked = true;
+        document.querySelectorAll('#category-radio-group .dot').forEach(dot => {
+          dot.classList.remove('bg-[#3A2F99]');
+          dot.classList.add('bg-transparent');
+        });
+        const dot = allRadio.closest('label')?.querySelector('.dot');
+        if (dot) {
+          dot.classList.remove('bg-transparent');
+          dot.classList.add('bg-[#3A2F99]');
+        }
+      }
+      document.querySelectorAll('#size-checkbox-group input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+      renderShopGrid();
+    }
 
     let currentCategory = 'all';
     let currentSearch = '';
@@ -1432,7 +1528,14 @@
       const grid = document.getElementById('shop-grid');
       if (grid) {
         if (paginated.length === 0) {
-          grid.innerHTML = '<div class="col-span-full py-16 text-center text-slate-400 font-medium">No products match your selected filters.</div>';
+          grid.innerHTML = `
+            <div class="col-span-full py-16 text-center text-slate-400 font-medium">
+              <p class="text-base text-slate-600 mb-3">No products match your selected filters.</p>
+              <button type="button" onclick="resetShopFilters()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#EEF8F0] text-[#201850] text-xs font-bold hover:bg-[#DCF3E1] transition cursor-pointer">
+                <i class="fa-solid fa-rotate-left text-xs"></i> Reset Filters
+              </button>
+            </div>
+          `;
         } else {
           grid.innerHTML = paginated.map(p => renderShopProductCard(p)).join('');
         }
@@ -1523,7 +1626,8 @@
     function sortShopProducts(criteria) {
       if (criteria === 'price-low') ALL_SHOP_PRODUCTS.sort((a, b) => a.price - b.price);
       else if (criteria === 'price-high') ALL_SHOP_PRODUCTS.sort((a, b) => b.price - a.price);
-      else if (criteria === 'popularity' || criteria === 'rating') ALL_SHOP_PRODUCTS.sort((a, b) => b.reviews - a.reviews);
+      else if (criteria === 'popularity') ALL_SHOP_PRODUCTS.sort((a, b) => b.reviews - a.reviews);
+      else if (criteria === 'rating') ALL_SHOP_PRODUCTS.sort((a, b) => b.rating - a.rating);
       renderShopGrid();
     }
 
@@ -1753,6 +1857,17 @@
       updateCartUI();
       updateWishlistUI();
       showTestimonial(0);
+
+      // Dynamically load fresh products from WooCommerce REST API
+      loadShopProducts();
+
+      // Listen for background product updates
+      window.addEventListener('codixProductsLoaded', (e) => {
+        if (e.detail && e.detail.products) {
+          ALL_SHOP_PRODUCTS = e.detail.products;
+          renderShopGrid();
+        }
+      });
 
       // Re-render shop and update cart when currency changes
       window.addEventListener('codixCurrencyChanged', () => {

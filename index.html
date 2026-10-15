@@ -1879,16 +1879,18 @@
       return `
         <article class="product-card bg-transparent flex flex-col group transition duration-300 w-full h-fit self-start" data-id="${product.id}">
           <!-- Product Image Box (Lavender/Light Gray #F2F2FA, radius 8px) -->
-          <div class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-sm transition-shadow duration-300 w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;">
+          <a href="product.html?id=${product.id}" class="relative rounded-lg bg-[#F2F2FA] flex items-center justify-center overflow-hidden p-3 group-hover:shadow-sm transition-shadow duration-300 w-full block" style="aspect-ratio: 242 / 220; border-radius: 8px;">
             ${badgeHTML}
             <img src="${product.img}" alt="${product.name}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">
-          </div>
+          </a>
 
           <!-- Product Details -->
           <div class="pt-2 flex flex-col w-full">
             <div>
               <p class="text-[12px] font-medium text-[#7E8B9B] tracking-tight leading-tight truncate">${product.cat}</p>
-              <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
+              <a href="product.html?id=${product.id}" class="hover:text-codix-green transition block">
+                <h3 class="mt-0.5 text-[14px] font-bold text-[#201850] leading-snug truncate" title="${product.name}">${product.name}</h3>
+              </a>
               <div class="mt-1 flex items-center gap-1.5">
                 <div class="flex items-center gap-0.5">${starsHTML}</div>
                 <span class="text-[11px] font-medium text-[#7E8B9B]">${reviewText}</span>
@@ -1906,12 +1908,115 @@
       `;
     }
 
-      // --- Render Products into Grid ---
-      function renderProductGrid(elementId, products) {
-        const grid = document.getElementById(elementId);
-        if (!grid) return;
-        grid.innerHTML = products.map(p => generateProductCard(p)).join('');
+    // --- Render Products into Grid ---
+    function renderProductGrid(elementId, products) {
+      const grid = document.getElementById(elementId);
+      if (!grid) return;
+      if (!products || products.length === 0) {
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400 font-medium">No products available in this category.</div>';
+        return;
       }
+      grid.innerHTML = products.map(p => generateProductCard(p)).join('');
+    }
+
+    // --- Render Loading Skeletons ---
+    function renderSkeletonGrid(elementId, count) {
+      const grid = document.getElementById(elementId);
+      if (!grid) return;
+      let skeletons = '';
+      for (let i = 0; i < (count || 5); i++) {
+        skeletons += `
+          <div class="product-card bg-transparent flex flex-col w-full h-fit self-start animate-pulse" aria-hidden="true">
+            <div class="rounded-lg bg-slate-200/80 w-full" style="aspect-ratio: 242 / 220; border-radius: 8px;"></div>
+            <div class="pt-2 flex flex-col gap-2">
+              <div class="h-3 bg-slate-200 rounded w-1/3"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div class="h-4 bg-slate-200 rounded w-1/4"></div>
+              <div class="h-9 bg-slate-100 rounded-full w-full mt-2"></div>
+            </div>
+          </div>
+        `;
+      }
+      grid.innerHTML = skeletons;
+    }
+
+    // --- Dynamic WooCommerce Store State for Homepage ---
+    let liveProducts = [];
+
+    function matchHomeCategory(p, cat) {
+      if (!cat || cat === 'All' || cat.toLowerCase() === 'all') return true;
+      const normCat = cat.toLowerCase().trim();
+      const haystack = (p.cat + ' ' + (p.categories || []).join(' ') + ' ' + p.name).toLowerCase();
+      if (normCat === 'immunity') return haystack.includes('immun') || haystack.includes('vitamin');
+      if (normCat === 'general wellness') return haystack.includes('general') || haystack.includes('wellness') || haystack.includes('winwell') || haystack.includes('everose') || haystack.includes('selcea') || haystack.includes('maca');
+      if (normCat === 'joint & bone' || normCat.includes('joint')) return haystack.includes('joint') || haystack.includes('bone') || haystack.includes('flexicod');
+      if (normCat === 'weight management' || normCat.includes('weight')) return haystack.includes('weight') || haystack.includes('metabolism') || haystack.includes('fat burner');
+      if (normCat === 'sexual health') return haystack.includes('sexual') || haystack.includes('maca') || haystack.includes('energy');
+      return haystack.includes(normCat);
+    }
+
+    function refreshHomeGrids() {
+      if (!liveProducts || liveProducts.length === 0) return;
+
+      // 1. Popular Categories
+      const activeCatBtn = document.querySelector('.cat-tab-btn.active');
+      const activeCat = activeCatBtn ? activeCatBtn.dataset.category : 'All';
+      const popularFiltered = liveProducts.filter(p => matchHomeCategory(p, activeCat));
+      renderProductGrid('popular-products-grid', popularFiltered.length > 0 ? popularFiltered : liveProducts);
+
+      // 2. Featured Products (take featured flag or first 10)
+      let featured = liveProducts.filter(p => p.featured);
+      if (featured.length < 5) featured = liveProducts.slice(0, 10);
+      renderProductGrid('featured-products-grid', featured);
+
+      // 3. Best Selling Products
+      let bestselling = liveProducts.filter(p => p.bestselling || p.reviews >= 80);
+      if (bestselling.length === 0) bestselling = liveProducts.slice(0, 5);
+      renderProductGrid('bestselling-products-grid', bestselling);
+    }
+
+    async function loadWooCommerceProducts() {
+      if (!liveProducts || liveProducts.length === 0) {
+        // Show non-blocking skeletons only if not yet populated
+        if (typeof CodixAPI !== 'undefined' && CodixAPI.getCachedProducts) {
+          const cached = CodixAPI.getCachedProducts();
+          if (cached && cached.length > 0) {
+            liveProducts = cached;
+            refreshHomeGrids();
+          } else {
+            renderSkeletonGrid('popular-products-grid', 5);
+            renderSkeletonGrid('featured-products-grid', 5);
+            renderSkeletonGrid('bestselling-products-grid', 5);
+          }
+        }
+      }
+
+      try {
+        if (typeof CodixAPI !== 'undefined' && CodixAPI.getProducts) {
+          const res = await CodixAPI.getProducts();
+          if (res && res.products && res.products.length > 0) {
+            liveProducts = res.products;
+            refreshHomeGrids();
+
+            // Populate live search suggestions
+            liveProducts.forEach(p => {
+              if (p.name && !SEARCH_SUGGESTIONS.includes(p.name)) {
+                SEARCH_SUGGESTIONS.unshift(p.name);
+              }
+            });
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch products from WooCommerce REST API, falling back to local database:', e);
+      }
+
+      if (!liveProducts || liveProducts.length === 0) {
+        liveProducts = PRODUCT_DATABASE.popular.slice();
+        refreshHomeGrids();
+      }
+    }
 
       // --- Toast Notifications ---
       function showToast(message, icon = 'fa-circle-check', isGreen = true) {
@@ -2442,30 +2547,25 @@
 
       // Re-render product cards and cart when currency changes
       window.addEventListener('codixCurrencyChanged', () => {
-        const activeCatBtn = document.querySelector('.cat-tab-btn.active');
-        const cat = activeCatBtn ? activeCatBtn.dataset.category : 'Supplements';
-        if (cat === 'Medicines') renderProductGrid('popular-products-grid', PRODUCT_DATABASE.medicines);
-        else if (cat === 'Herbs') renderProductGrid('popular-products-grid', PRODUCT_DATABASE.herbs);
-        else renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
-
-        renderProductGrid('featured-products-grid', PRODUCT_DATABASE.featured);
-
-        const activeBsBtn = document.querySelector('.bs-tab-btn.active');
-        const bsCat = activeBsBtn ? activeBsBtn.dataset.category : 'Supplements';
-        if (bsCat === 'Medicines') renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.medicines);
-        else if (bsCat === 'Herbs') renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.herbs);
-        else renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.bestselling);
-
+        refreshHomeGrids();
         updateCartUI();
       });
     }
 
     // --- DOM Loaded Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Render initial product grids
-      renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
-      renderProductGrid('featured-products-grid', PRODUCT_DATABASE.featured);
-      renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.bestselling);
+      // 1. Initial product grids render & asynchronous WooCommerce sync
+      liveProducts = PRODUCT_DATABASE.popular.slice();
+      refreshHomeGrids();
+      loadWooCommerceProducts();
+
+      // Listen for background product updates
+      window.addEventListener('codixProductsLoaded', (e) => {
+        if (e.detail && e.detail.products) {
+          liveProducts = e.detail.products;
+          refreshHomeGrids();
+        }
+      });
 
       // 2. Initialize Category Tabs for "Popular Categories"
       document.querySelectorAll('.cat-tab-btn').forEach(btn => {
@@ -2478,12 +2578,8 @@
           btn.setAttribute('aria-selected', 'true');
 
           const cat = btn.dataset.category;
-          if (cat === 'All') {
-            renderProductGrid('popular-products-grid', PRODUCT_DATABASE.popular);
-          } else {
-            const filtered = PRODUCT_DATABASE.popular.filter(p => p.cat === cat);
-            renderProductGrid('popular-products-grid', filtered);
-          }
+          const filtered = liveProducts.filter(p => matchHomeCategory(p, cat));
+          renderProductGrid('popular-products-grid', filtered.length > 0 ? filtered : liveProducts);
         });
       });
 
@@ -2498,13 +2594,9 @@
           btn.setAttribute('aria-selected', 'true');
 
           const cat = btn.dataset.category;
-          if (cat === 'Supplements') {
-            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.bestselling);
-          } else if (cat === 'Medicines') {
-            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.medicines);
-          } else if (cat === 'Herbs') {
-            renderProductGrid('bestselling-products-grid', PRODUCT_DATABASE.herbs);
-          }
+          let filtered = liveProducts.filter(p => matchHomeCategory(p, cat));
+          if (filtered.length === 0) filtered = liveProducts.slice(0, 5);
+          renderProductGrid('bestselling-products-grid', filtered);
         });
       });
 
