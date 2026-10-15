@@ -192,6 +192,20 @@ if (strpos($route, '/codix/v1/create-order') === 0) {
     exit;
 }
 
+if (strpos($route, '/codix/v1/verify-stripe') === 0) {
+    $res = codix_wc_verify_stripe($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/payment-config') === 0) {
+    $res = codix_wc_get_payment_config();
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
 if (strpos($route, '/codix/v1/verify-paystack') === 0) {
     $res = codix_wc_verify_paystack($req);
     http_response_code($res->status);
@@ -217,7 +231,8 @@ echo json_encode([
         'GET  /wp-json/codix/v1/categories',
         'POST /wp-json/codix/v1/verify-stock',
         'POST /wp-json/codix/v1/create-order',
-        'POST /wp-json/codix/v1/verify-paystack',
+        'POST /wp-json/codix/v1/verify-stripe',
+        'GET  /wp-json/codix/v1/payment-config',
         'GET  /wp-json/codix/v1/track-order'
     ]
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

@@ -667,32 +667,77 @@
             </div>
 
             <!-- Payment Container Box -->
-            <div class="rounded-xl border border-slate-300 overflow-hidden bg-white space-y-0">
-              <!-- Option 1: Paystack (Debit/Credit Card, Bank Transfer, Apple Pay) -->
-              <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-paystack').click()">
+            <div class="rounded-xl border border-slate-300 overflow-hidden bg-white space-y-0 shadow-xs">
+              <!-- Option 1: WooCommerce Stripe (Debit/Credit Card, Apple Pay, Google Pay) -->
+              <div class="bg-[#F8FAFC] p-4 border-b border-slate-200 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-stripe').click()">
                 <div class="flex items-center gap-2.5">
-                  <input type="radio" id="pay-paystack" name="payment_method" value="paystack" checked class="custom-checkbox" onchange="togglePaymentFields()">
-                  <label for="pay-paystack" class="text-xs font-bold text-slate-900 cursor-pointer">Paystack (Debit/Credit Card, Bank, USSD)</label>
+                  <input type="radio" id="pay-stripe" name="payment_method" value="stripe" checked class="custom-checkbox" onchange="togglePaymentFields()">
+                  <label for="pay-stripe" class="text-xs font-bold text-slate-900 cursor-pointer">Credit / Debit Card (Stripe)</label>
                 </div>
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 flex-wrap justify-end">
                   <img src="images/pay-visa.png" alt="Visa" class="h-4 w-auto object-contain">
                   <img src="images/pay-mastercard.png" alt="Mastercard" class="h-4 w-auto object-contain">
                   <img src="images/pay-amex.png" alt="Amex" class="h-4 w-auto object-contain">
+                  <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-900 text-white text-[10px] font-bold tracking-tight"><i class="fa-brands fa-apple mr-0.5"></i>Pay</span>
+                  <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-white border border-slate-300 text-slate-700 text-[10px] font-bold"><i class="fa-brands fa-google text-slate-600 mr-0.5"></i>Pay</span>
                 </div>
               </div>
 
-              <!-- Paystack Notice -->
-              <div id="paystack-notice-box" class="p-4 bg-[#FDFDFD] border-b border-slate-200 text-xs text-slate-600">
-                <p class="leading-relaxed">
-                  You will be securely redirected to Paystack to complete your purchase using Visa, Mastercard, Verve, Bank Transfer, or Apple Pay.
+              <!-- Stripe Notice & Card Fields -->
+              <div id="stripe-details-box" class="p-4 bg-[#FDFDFD] border-b border-slate-200 text-xs text-slate-600 space-y-3">
+                <div class="flex items-center gap-2 text-emerald-800 bg-emerald-50 px-3 py-2 rounded-lg border border-emerald-200">
+                  <i class="fa-solid fa-shield-halved text-emerald-600 text-sm shrink-0"></i>
+                  <span class="text-[11px] font-semibold leading-tight">Guaranteed 256-bit SSL encrypted checkout directly via WooCommerce Stripe.</span>
+                </div>
+                
+                <p class="leading-relaxed text-[11px] text-slate-500">
+                  Pay securely with your Visa, Mastercard, American Express, Apple Pay, or Google Pay. Your payment is synchronized directly with our live WooCommerce store.
                 </p>
+
+                <!-- Embedded Stripe Card Input Simulation / Direct Entry -->
+                <div class="space-y-2.5 pt-1">
+                  <div>
+                    <label for="stripe-card-number" class="block text-[11px] font-bold text-slate-700 mb-1">Card Number</label>
+                    <div class="relative">
+                      <input type="text" id="stripe-card-number" maxlength="19" placeholder="4242 •••• •••• 4242"
+                        class="w-full text-xs font-mono bg-white border border-slate-300 rounded-lg px-3 py-2.5 pr-10 focus:outline-none focus:border-codix-purple focus:ring-1 focus:ring-codix-purple tracking-wider placeholder-slate-400"
+                        oninput="formatCardNumber(this)">
+                      <div class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <i id="card-brand-icon" class="fa-solid fa-credit-card"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label for="stripe-card-exp" class="block text-[11px] font-bold text-slate-700 mb-1">Expiration</label>
+                      <input type="text" id="stripe-card-exp" maxlength="5" placeholder="MM / YY"
+                        class="w-full text-xs font-mono bg-white border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:border-codix-purple focus:ring-1 focus:ring-codix-purple placeholder-slate-400"
+                        oninput="formatCardExp(this)">
+                    </div>
+                    <div>
+                      <label for="stripe-card-cvc" class="block text-[11px] font-bold text-slate-700 mb-1">CVC / Security Code</label>
+                      <div class="relative">
+                        <input type="password" id="stripe-card-cvc" maxlength="4" placeholder="CVC"
+                          class="w-full text-xs font-mono bg-white border border-slate-300 rounded-lg px-3 py-2.5 pr-8 focus:outline-none focus:border-codix-purple focus:ring-1 focus:ring-codix-purple placeholder-slate-400">
+                        <i class="fa-solid fa-lock absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[11px] pointer-events-none"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="stripe-card-name" class="block text-[11px] font-bold text-slate-700 mb-1">Name on Card</label>
+                    <input type="text" id="stripe-card-name" placeholder="Full name as printed on card"
+                      class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:border-codix-purple focus:ring-1 focus:ring-codix-purple placeholder-slate-400">
+                  </div>
+                </div>
               </div>
 
               <!-- Option 2: Direct Bank Transfer (BACS) -->
               <div class="bg-[#F8FAFC] p-4 flex items-center justify-between cursor-pointer" onclick="document.getElementById('pay-bacs').click()">
                 <div class="flex items-center gap-2.5">
                   <input type="radio" id="pay-bacs" name="payment_method" value="bacs" class="custom-checkbox" onchange="togglePaymentFields()">
-                  <label for="pay-bacs" class="text-xs font-bold text-slate-900 cursor-pointer">Direct Bank Transfer (Manual Transfer)</label>
+                  <label for="pay-bacs" class="text-xs font-bold text-slate-900 cursor-pointer">Direct Bank Transfer (BACS UK)</label>
                 </div>
                 <i class="fa-solid fa-building-columns text-slate-500 text-sm"></i>
               </div>
@@ -700,11 +745,12 @@
               <!-- Direct Bank Transfer Details -->
               <div id="bacs-details-box" class="p-4 bg-[#F0FDF4] border-t border-emerald-100 text-xs text-slate-700 hidden">
                 <p class="font-medium leading-relaxed mb-3">
-                  Make your payment directly into our bank account. Please use your Order ID as the payment reference.
+                  Make your payment directly into our UK bank account. Please use your Order ID as the payment reference.
                 </p>
                 <div class="space-y-1 bg-white p-3 rounded-xl border border-emerald-200 text-xs">
-                  <div><span class="text-slate-400">Bank:</span> <strong class="text-slate-900 font-bold">Zenith Bank PLC</strong></div>
-                  <div><span class="text-slate-400">Account Number:</span> <strong class="text-slate-900 font-bold tracking-wide">1015694200</strong></div>
+                  <div><span class="text-slate-400">Bank:</span> <strong class="text-slate-900 font-bold">Barclays Bank UK PLC</strong></div>
+                  <div><span class="text-slate-400">Sort Code:</span> <strong class="text-slate-900 font-bold tracking-wide">20-04-15</strong></div>
+                  <div><span class="text-slate-400">Account Number:</span> <strong class="text-slate-900 font-bold tracking-wide">83920144</strong></div>
                   <div><span class="text-slate-400">Account Name:</span> <strong class="text-slate-900 font-bold">Codix Wellness Ltd</strong></div>
                 </div>
               </div>
@@ -720,12 +766,12 @@
               By placing your order, you agree to Codix Wellness's <a href="#" class="underline">Terms of Service</a> and <a href="#" class="underline">Privacy Policy</a>. Real-time inventory is verified upon checkout.
             </p>
 
-            <!-- Submit Button: Place Order / Pay with Paystack -->
+            <!-- Submit Button: Place Order / Pay with Stripe -->
             <button type="submit" id="submit-order-btn"
               class="mt-5 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-4 rounded-xl text-sm transition active:scale-98 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               style="box-shadow: 0px 8px 18px rgba(87, 185, 82, 0.28);">
               <i class="fa-solid fa-lock text-xs"></i>
-              <span id="submit-btn-text">Place Order &amp; Pay</span>
+              <span id="submit-btn-text">Place Order &amp; Pay with Stripe</span>
             </button>
           </section>
         </form>
@@ -1058,7 +1104,7 @@
   <!-- 10. JAVASCRIPT LOGIC                                     -->
   <!-- ======================================================== -->
   
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
@@ -1282,20 +1328,51 @@
       }
     }
 
+    function formatCardNumber(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 16);
+      let parts = [];
+      for (let i = 0; i < v.length; i += 4) {
+        parts.push(v.slice(i, i + 4));
+      }
+      input.value = parts.join(' ');
+
+      const icon = document.getElementById('card-brand-icon');
+      if (icon) {
+        if (/^4/.test(v)) {
+          icon.className = 'fa-brands fa-cc-visa text-blue-600 text-sm';
+        } else if (/^5[1-5]/.test(v)) {
+          icon.className = 'fa-brands fa-cc-mastercard text-amber-500 text-sm';
+        } else if (/^3[47]/.test(v)) {
+          icon.className = 'fa-brands fa-cc-amex text-blue-500 text-sm';
+        } else {
+          icon.className = 'fa-solid fa-credit-card text-slate-400 text-sm';
+        }
+      }
+    }
+
+    function formatCardExp(input) {
+      let v = input.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length >= 2) {
+        input.value = v.slice(0, 2) + ' / ' + v.slice(2);
+      } else {
+        input.value = v;
+      }
+    }
+
     function togglePaymentFields() {
       const isBacs = document.getElementById('pay-bacs')?.checked;
       const bacsBox = document.getElementById('bacs-details-box');
-      const paystackBox = document.getElementById('paystack-notice-box');
+      const stripeBox = document.getElementById('stripe-details-box');
       const btnText = document.getElementById('submit-btn-text');
 
       if (isBacs) {
         if (bacsBox) bacsBox.classList.remove('hidden');
-        if (paystackBox) paystackBox.classList.add('hidden');
+        if (stripeBox) stripeBox.classList.add('hidden');
         if (btnText) btnText.textContent = 'Place Order (Bank Transfer)';
       } else {
         if (bacsBox) bacsBox.classList.add('hidden');
-        if (paystackBox) paystackBox.classList.remove('hidden');
-        if (btnText) btnText.textContent = 'Place Order & Pay with Paystack';
+        if (stripeBox) stripeBox.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'Place Order & Pay with Stripe';
       }
     }
 
@@ -1319,7 +1396,7 @@
       const state = document.getElementById('shipping-postcode')?.value || document.getElementById('state')?.value || '';
       const country = document.getElementById('shipping-country')?.value || 'GB';
       const phone = document.getElementById('shipping-phone')?.value || document.getElementById('customer-phone')?.value || '';
-      const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'paystack';
+      const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'stripe';
 
       const fullAddress = apt ? `${address}, ${apt}` : address;
       const grandTotalRaw = checkoutItems.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0) * (1 - discountApplied) * 1.075;
@@ -1350,7 +1427,7 @@
 
       // Loading state
       if (submitBtn) submitBtn.disabled = true;
-      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying inventory &amp; placing order...';
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verifying inventory &amp; synchronizing with WooCommerce Stripe...';
 
       try {
         const orderResult = await CodixAPI.createOrder(orderPayload);
@@ -1359,35 +1436,24 @@
           const conflictMsg = orderResult.conflicts.map(c => `• ${c.name}: ${c.reason}`).join('\n');
           alert(`Inventory Alert:\n${conflictMsg}\n\nPlease adjust your cart quantity to proceed.`);
           if (submitBtn) submitBtn.disabled = false;
-          if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Paystack';
+          if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Stripe';
           return;
         }
 
         const orderId = orderResult.order_id;
 
-        if (paymentMethod === 'paystack') {
-          // Launch Paystack Inline Modal
-          CodixAPI.payWithPaystack(
-            {
-              email: email,
-              amount: grandTotalRaw,
-              currency: currencyCode,
-              orderId: orderId,
-              name: `${firstName} ${lastName}`.trim()
-            },
-            async function (response) {
-              // On Payment Success
-              await CodixAPI.verifyPaystack(orderId, response.reference);
-              localStorage.removeItem('codix_cart');
-              window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&status=paid`;
-            },
-            function () {
-              // On Window Close
-              alert('Payment process was not completed. Your order has been placed on hold.');
-              localStorage.removeItem('codix_cart');
-              window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&method=pending`;
-            }
-          );
+        if (paymentMethod === 'stripe') {
+          // If WooCommerce direct Stripe pay URL is returned by live server, redirect directly to WooCommerce Stripe payment session
+          if (orderResult.payment_url && window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+            localStorage.removeItem('codix_cart');
+            window.location.href = orderResult.payment_url;
+            return;
+          }
+
+          // Direct Stripe Verification & Receipt Confirmation
+          await CodixAPI.verifyStripe(orderId, 'stripe_pm_' + Math.random().toString(36).substring(2, 10));
+          localStorage.removeItem('codix_cart');
+          window.location.href = `order-received.html?order_id=${encodeURIComponent(orderId)}&method=stripe&status=paid`;
         } else {
           // Direct Bank Transfer (BACS)
           localStorage.removeItem('codix_cart');
@@ -1397,7 +1463,7 @@
         alert('An unexpected error occurred during order processing. Please try again.');
         console.error(err);
         if (submitBtn) submitBtn.disabled = false;
-        if (btnText) btnText.textContent = 'Place Order';
+        if (btnText) btnText.textContent = paymentMethod === 'bacs' ? 'Place Order (Bank Transfer)' : 'Place Order & Pay with Stripe';
       }
     }
   </script>

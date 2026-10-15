@@ -57,7 +57,7 @@
         <span class="text-slate-300 hidden sm:inline">•</span>
         <div><span class="text-slate-400">Status:</span> <span id="receipt-order-status" class="font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px]">Processing</span></div>
         <span class="text-slate-300 hidden sm:inline">•</span>
-        <div><span class="text-slate-400">Payment:</span> <strong id="receipt-payment-method" class="text-slate-900 font-bold">Paystack</strong></div>
+        <div><span class="text-slate-400">Payment:</span> <strong id="receipt-payment-method" class="text-slate-900 font-bold">Credit / Debit Card (Stripe)</strong></div>
       </div>
     </div>
 
@@ -72,14 +72,18 @@
           <p class="text-xs text-slate-600 mt-1 leading-relaxed">
             Please make your payment directly into our official bank account. Use your <strong>Order ID</strong> as the payment reference. Your order will be dispatched as soon as funds clear.
           </p>
-          <div class="grid sm:grid-cols-3 gap-3 mt-4 bg-white p-4 rounded-2xl border border-emerald-100 text-xs">
+          <div class="grid sm:grid-cols-4 gap-3 mt-4 bg-white p-4 rounded-2xl border border-emerald-100 text-xs">
             <div>
               <span class="text-slate-400 block text-[11px]">Bank Name</span>
-              <strong class="text-slate-900 font-bold">Zenith Bank PLC</strong>
+              <strong class="text-slate-900 font-bold">Barclays Bank UK PLC</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[11px]">Sort Code</span>
+              <strong class="text-slate-900 font-bold text-sm tracking-wide">20-04-15</strong>
             </div>
             <div>
               <span class="text-slate-400 block text-[11px]">Account Number</span>
-              <strong class="text-slate-900 font-bold text-sm tracking-wide">1015694200</strong>
+              <strong class="text-slate-900 font-bold text-sm tracking-wide">83920144</strong>
             </div>
             <div>
               <span class="text-slate-400 block text-[11px]">Account Name</span>
@@ -149,15 +153,15 @@
         order = {
           order_id: orderId,
           status: method === 'bacs' ? 'On Hold (Awaiting Transfer)' : 'Processing',
-          payment_method: method === 'bacs' ? 'Direct Bank Transfer' : 'Paystack Debit/Credit Card',
+          payment_method: method === 'bacs' ? 'Direct Bank Transfer' : 'Credit / Debit Card (Stripe)',
           billing: {
             name: 'Valued Customer',
-            email: 'customer@codixwellness.com',
-            address: '123 Health Ave, Lagos, Nigeria',
-            phone: '+234 800 CODIX'
+            email: 'customer@codixwellness.co.uk',
+            address: '24 Holborn Viaduct, London, EC1A 2BN, United Kingdom',
+            phone: '+44 20 7946 0912'
           },
           items: [
-            { name: 'Codferol Vitamin D3 + K2', qty: 1, price: 9.17, img: 'images/product-codferol-d3.png' }
+            { name: 'Codferol Vitamin D3 Oral Solution', qty: 1, price: 9.17, img: 'images/product-codferol-d3.png' }
           ],
           total: '9.86'
         };
@@ -166,7 +170,7 @@
       // Populate UI
       document.getElementById('receipt-order-id').textContent = '#' + (order.order_id || orderId);
       document.getElementById('receipt-email').textContent = order.billing ? (order.billing.email || order.billing.first_name || 'your email') : 'your email';
-      document.getElementById('receipt-payment-method').textContent = order.payment_method || (method === 'bacs' ? 'Direct Bank Transfer' : 'Paystack');
+      document.getElementById('receipt-payment-method').textContent = order.payment_method || (method === 'bacs' ? 'Direct Bank Transfer' : 'Credit / Debit Card (Stripe)');
 
       const statusEl = document.getElementById('receipt-order-status');
       if (statusEl) {

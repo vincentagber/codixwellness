@@ -14,7 +14,7 @@ export default [
         ...globals.node,
         CodixAPI: "readonly",
         CodixCurrency: "readonly",
-        PaystackPop: "readonly",
+        Stripe: "readonly",
         tailwind: "readonly",
         PRODUCTS: "readonly",
         PRODUCT_DATABASE: "readonly",

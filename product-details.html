@@ -546,7 +546,7 @@
           <!-- LEFT: Interactive Thumbnail + Showcase Card (Cols 1-6) -->
           <div class="lg:col-span-6 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
             <!-- Vertical Thumbnail Gallery -->
-            <div class="flex sm:flex-col gap-3 order-2 sm:order-1 shrink-0">
+            <div id="product-thumbnails" class="flex sm:flex-col gap-3 order-2 sm:order-1 shrink-0">
               <button onclick="switchProductMainImage('images/f-grid-8.png', this)"
                 class="thumb-btn active w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 border-emerald-500 bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
                 <img src="images/f-grid-8.png" alt="MacaRoot Thumbnail 1"
@@ -733,15 +733,15 @@
           <div
             class="lg:col-span-7 flex flex-col justify-center w-full pl-0 sm:pl-6 lg:pl-[48px] pr-0 sm:pr-8 lg:pr-[80px]"
             style="width: 100%; max-width: 642px; min-height: 634px; opacity: 1;">
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight tracking-tight"
+            <h2 id="benefits-title" class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight tracking-tight"
               style="font-family: 'Lato', sans-serif; font-weight: 300; color: #FFFFFF !important;">
               Five Core Benefits for<br>Stamina &amp; Vitality
             </h2>
-            <p class="text-xs sm:text-[13px] text-slate-200 mt-4 leading-relaxed font-normal">
+            <p id="benefits-subtitle" class="text-xs sm:text-[13px] text-slate-200 mt-4 leading-relaxed font-normal">
               Our medical experts formulated Codix MacaRoot Pure Botanical around five key biological areas essential for natural vigor, reproductive health, and endocrine balance.
             </p>
 
-            <div class="mt-6 space-y-4">
+            <div id="benefits-list" class="mt-6 space-y-4">
               <!-- Benefit 1 -->
               <div class="flex items-start gap-3.5">
                 <span class="text-white text-xs mt-1 shrink-0">●</span>
@@ -803,7 +803,7 @@
           <div class="lg:col-span-5 flex justify-center items-center">
             <div class="relative overflow-hidden shadow-2xl flex items-center justify-center w-full bg-white/5 p-6 rounded-[10.59px]"
               style="width: 100%; max-width: 644px; aspect-ratio: 1/1; max-height: 644px; border-radius: 10.59px; opacity: 1;">
-              <img src="images/f-grid-8.png" alt="Codix MacaRoot Pure Botanical Bottle Showcase"
+              <img id="benefits-img" src="images/f-grid-8.png" alt="Codix MacaRoot Pure Botanical Bottle Showcase"
                 class="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
                 style="border-radius: 10.59px; opacity: 1;">
             </div>
@@ -1538,121 +1538,416 @@
 
       // Check URL parameters for dynamic product loading
       const urlParams = new URLSearchParams(window.location.search);
-      const pid = urlParams.get('id');
+      const pid = urlParams.get('id') || urlParams.get('product') || urlParams.get('slug') || 's1';
 
       const PRODUCT_PROFILES = {
-        's5': {
-          name: 'Codix MacaRoot Pure Botanical',
-          title: 'Codix MacaRoot<br>Pure Botanical',
-          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
-          img: 'images/f-grid-8.png',
-          basePrice: 10.42,
-          subPrice: 6.77,
-          reviews: 89,
-          headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
-          narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
+        's1': {
+          id: 's1',
+          name: 'Codferol Vitamin D3 Oral Solution',
+          title: 'Codferol<br>Vitamin D3 Oral Solution',
+          subtitle: 'High-Strength Liquid Vitamin D3 Drops – 50ml Superior Absorption',
+          img: 'images/product-codferol-d3.png',
+          thumbs: ['images/product-codferol-d3.png'],
+          basePrice: 9.17,
+          subPrice: 5.96,
+          reviews: 1,
+          rating: 5,
+          headline: 'Essential Vitamin D3 Liquid Solution for Bones, Teeth & Immune Defense',
+          narrative: 'Codferol Vitamin D3 Oral Solution provides a high-potency, fast-absorbing liquid formulation designed to maintain normal bone mineral density, muscle function, and year-round immune defense. Specially developed for individuals with low sun exposure or dietary deficiencies during autumn and winter months.',
           bullets: [
-            'Pure 100% Lepidium meyenii Andean root extract',
-            'Supports libido, hormonal balance & reproductive wellness',
-            'Rich in adaptogens, amino acids, and essential micronutrients'
+            'High-strength bioavailable Vitamin D3 liquid drops for rapid uptake',
+            'Essential support for healthy bones, teeth, and muscle contraction',
+            'Clinically recognized autumn and winter immune resilience'
+          ],
+          details: 'Formulated with pharmaceutical-grade Cholecalciferol (Vitamin D3) in pure carrier oil for optimal gastrointestinal bioavailability. Recommended dose: 1 dose daily or as advised by your healthcare practitioner.',
+          benefitsHeading: 'Five Core Benefits for<br>Immunity &amp; Bone Health',
+          benefitsIntro: 'Our medical experts formulated Codferol Vitamin D3 Oral Solution around five key biological areas essential for bone mineral density, muscle power, and immune resilience.',
+          benefits: [
+            { title: 'Immune Defense & Resilience', desc: 'Promotes healthy white blood cell response and robust year-round pathogen defense.' },
+            { title: 'Bone & Dental Mineralization', desc: 'Facilitates optimal intestinal calcium absorption to preserve strong bones and teeth.' },
+            { title: 'Muscle Strength & Neuromuscular Tone', desc: 'Supports healthy muscle contraction, coordination, and post-exercise recovery.' },
+            { title: 'Rapid Liquid Bioavailability', desc: 'Sublingual oral liquid matrix bypasses slow tablet breakdown for faster cellular uptake.' },
+            { title: 'Seasonal Vitality & Mood', desc: 'Helps counter seasonal lethargy and fatigue during low-sunlight autumn and winter months.' }
+          ]
+        },
+        's2': {
+          id: 's2',
+          name: 'Winwell Daily Multivitamin',
+          title: 'Winwell<br>Daily Multivitamin',
+          subtitle: 'Comprehensive Daily Micronutrient Complex – 100ml All-Day Vitality',
+          img: 'images/product-winwell.jpg',
+          thumbs: ['images/product-winwell.jpg'],
+          basePrice: 7.08,
+          subPrice: 4.60,
+          reviews: 103,
+          rating: 5,
+          headline: 'Complete Daily Multivitamin & Mineral Synergistic Complex',
+          narrative: 'Winwell Daily Multivitamin delivers a balanced spectrum of essential vitamins, antioxidants, and trace minerals formulated to support continuous vitality, metabolic health, and daily cognitive focus. Built for modern active lifestyles to fill everyday nutritional gaps.',
+          bullets: [
+            'Comprehensive A-Z daily multivitamin and antioxidant matrix',
+            'Supports all-day stamina, metabolic vigor, and cognitive clarity',
+            'Gentle on the stomach with bioavailable micronutrient forms'
+          ],
+          details: 'Complete nutritional blend including Vitamins A, B-Complex, C, D, E, Zinc, and essential trace minerals. Ideal for daily maintenance of physical stamina and wellness.',
+          benefitsHeading: 'Five Core Benefits for<br>Daily Vitality &amp; Health',
+          benefitsIntro: 'Formulated around five essential physiological pillars to ensure your body operates at peak health, mental clarity, and daily vitality.',
+          benefits: [
+            { title: 'All-Day Vitality & Stamina', desc: 'B-complex vitamins fuel cellular energy metabolism to sustain active focus without jitters.' },
+            { title: 'Cognitive Focus & Alertness', desc: 'Essential neuro-nutrients support mental clarity, sharp memory, and executive performance.' },
+            { title: 'Immune Protection', desc: 'Antioxidants Vitamin C, E and Zinc defend cells from everyday oxidative stress and fatigue.' },
+            { title: 'Metabolic Equilibrium', desc: 'Chromium, Magnesium and trace minerals maintain optimal nutrient processing and blood balance.' },
+            { title: 'Hair, Skin & Nail Health', desc: 'Biotin and Vitamin A nourish cellular renewal and structural tissue integrity.' }
+          ]
+        },
+        's3': {
+          id: 's3',
+          name: 'Vitamin C + D Effervescent Tablets',
+          title: 'Vitamin C + D<br>Effervescent Tablets',
+          subtitle: 'Fast-Acting Refreshing Citrus Immune Defense with Zinc – 30ml / 20 Tablets',
+          img: 'images/f-grid-13.png',
+          thumbs: ['images/f-grid-13.png'],
+          basePrice: 4.58,
+          subPrice: 2.98,
+          reviews: 59,
+          rating: 5,
+          headline: 'Dual-Action Seasonal Immune Boost with Fast Liquid Dissolution',
+          narrative: 'Vitamin C + D Effervescent Tablets deliver a powerhouse combination of high-strength Vitamin C and vital Vitamin D in a refreshing effervescent drink. Designed for maximum bio-uptake, this fast-absorbing formulation provides instant hydration and robust cellular antioxidant protection.',
+          bullets: [
+            'High-potency Vitamin C (1000mg) combined with Vitamin D & Zinc',
+            'Delicious fast-dissolving effervescent hydration drink with natural citrus',
+            'Rapid gastrointestinal absorption for instant seasonal immune support'
+          ],
+          details: 'Dissolve 1 effervescent tablet in a 200ml glass of water daily. Refreshing natural citrus flavor with zero added sugar and no synthetic artificial colorants.',
+          benefitsHeading: 'Five Core Benefits for<br>Rapid Immune Defense',
+          benefitsIntro: 'Formulated around five key biological mechanisms to deliver rapid immune protection, cell shield antioxidant defense, and hydration.',
+          benefits: [
+            { title: 'Rapid Immune Shield', desc: 'High-dose Vitamin C jump-starts white blood cell activation and pathogen defense.' },
+            { title: 'Accelerated Cellular Uptake', desc: 'Effervescent dissolution buffers the stomach and accelerates nutrient absorption.' },
+            { title: 'Potent Antioxidant Defense', desc: 'Quenches free radicals caused by pollution, physical stress, and daily fatigue.' },
+            { title: 'Bone & Musculoskeletal Synergy', desc: 'Vitamin D works in harmony with Vitamin C to maintain bone structure and joint collagen.' },
+            { title: 'Refreshing Hydration Booster', desc: 'Turns daily hydration into an invigorating, energizing health ritual.' }
+          ]
+        },
+        's4': {
+          id: 's4',
+          name: 'Flexicod – Joint Health Support',
+          title: 'Flexicod<br>Joint Health Support',
+          subtitle: 'Advanced Glucosamine, Chondroitin & MSM Cartilage Mobility Matrix – 100ml',
+          img: 'images/f-grid-4.png',
+          thumbs: ['images/f-grid-4.png'],
+          basePrice: 8.33,
+          subPrice: 5.41,
+          reviews: 102,
+          rating: 5,
+          headline: 'Targeted Cartilage Repair, Flexibility & Joint Comfort Formula',
+          narrative: 'Flexicod is formulated with research-backed chondroprotective compounds including Glucosamine, Chondroitin, and organic MSM to nourish joint cartilage, enhance synovial lubrication, and relieve everyday joint stiffness. Keep moving freely with resilient, flexible joints.',
+          bullets: [
+            'High-strength Glucosamine and Chondroitin joint nourishment',
+            'Enhances synovial fluid lubrication and shock absorption',
+            'Promotes cartilage regeneration and eases daily joint stiffness'
+          ],
+          details: 'Premium joint nutrition containing Glucosamine Sulphate, Chondroitin Complex, Methylsulfonylmethane (MSM), and Vitamin C for normal collagen formation.',
+          benefitsHeading: 'Five Core Benefits for<br>Joint Mobility &amp; Flexibility',
+          benefitsIntro: 'Formulated around five biomechanical principles essential for healthy joint cartilage, synovial fluid preservation, and effortless flexibility.',
+          benefits: [
+            { title: 'Cartilage Regeneration', desc: 'Supplies the fundamental building blocks needed for healthy cartilage synthesis and repair.' },
+            { title: 'Synovial Fluid Lubrication', desc: 'Enhances joint cushioning to reduce everyday friction, clicking, and discomfort.' },
+            { title: 'Enhanced Mobility & Range', desc: 'Soothes stiff morning joints and restores fluid ease of movement.' },
+            { title: 'Collagen Biosynthesis', desc: 'Vitamin C cofactor promotes collagen structure inside ligaments, tendons, and discs.' },
+            { title: 'Active Lifestyle Longevity', desc: 'Protects weight-bearing knees, hips, and shoulders during physical activity.' }
+          ]
+        },
+        's5': {
+          id: 's5',
+          name: 'Codix Fat Burner – Metabolism Support',
+          title: 'Codix Fat Burner<br>Metabolism Support',
+          subtitle: 'Thermogenic Botanical Complex with Green Tea, L-Carnitine & Chromium – 50ml',
+          img: 'images/f-grid-5.png',
+          thumbs: ['images/f-grid-5.png'],
+          basePrice: 7.50,
+          subPrice: 4.88,
+          reviews: 97,
+          rating: 5,
+          headline: 'Natural Thermogenic Calorie Burn & Healthy Metabolic Rate Support',
+          narrative: 'Codix Fat Burner combines concentrated Green Tea Polyphenols, L-Carnitine, and essential Chromium to accelerate thermogenesis, encourage healthy fatty acid oxidation, and curb cravings. Formulated to support your clean weight management and body recomposition journey naturally.',
+          bullets: [
+            'Pure Green Tea EGCG extract for thermogenic calorie expenditure',
+            'L-Carnitine promotes fatty acid transport into cellular mitochondria',
+            'Chromium picolinate stabilizes normal blood glucose and reduces cravings'
+          ],
+          details: 'Contains Green Tea Extract (50% EGCG), L-Carnitine Tartrate, Chromium Picolinate, and B-Vitamins. Take 1-2 capsules daily before meals with water.',
+          benefitsHeading: 'Five Core Benefits for<br>Metabolism &amp; Energy',
+          benefitsIntro: 'Formulated around five metabolic pathways to assist thermogenesis, clean lipid breakdown, and steady blood sugar balance.',
+          benefits: [
+            { title: 'Thermogenic Metabolic Boost', desc: 'Stimulates energy expenditure and accelerates clean calorie utilization.' },
+            { title: 'Fat-to-Energy Conversion', desc: 'L-Carnitine shuttles stored fatty acids into mitochondria to generate fuel.' },
+            { title: 'Appetite & Craving Control', desc: 'Chromium assists insulin sensitivity to curb afternoon sugar cravings.' },
+            { title: 'Clean Energy Without Jitters', desc: 'Gentle natural botanical caffeine delivers sustained alertness.' },
+            { title: 'Body Composition Support', desc: 'Complements clean nutrition and active training for lean body goals.' }
+          ]
+        },
+        's6': {
+          id: 's6',
+          name: 'SelCEA – Hepato & Liver Support',
+          title: 'SelCEA<br>Hepato & Liver Support',
+          subtitle: 'Targeted Antioxidant & Detoxification Micronutrients – 100mg',
+          img: 'images/product-selcea.png',
+          thumbs: ['images/product-selcea.png'],
+          basePrice: 6.88,
+          subPrice: 4.47,
+          reviews: 88,
+          rating: 5,
+          headline: 'Advanced Hepatic Protection & Cellular Detoxification Formula',
+          narrative: 'SelCEA combines essential organic Selenium, Vitamin C, Vitamin E, and Vitamin A to provide complete cellular antioxidant defence and support natural liver metabolic pathways. Protects hepatic tissue from environmental toxins and everyday metabolic byproducts.',
+          bullets: [
+            'Comprehensive hepatic cellular protection with organic Selenium',
+            'Neutralizes free radicals, lipid peroxidation, and oxidative stress',
+            'Enhances natural liver detoxification enzymes and systemic vitality'
+          ],
+          details: 'Bioactive Selenium formulated with synergistic antioxidant vitamins A, C, and E. Supports normal thyroid function and immune vitality alongside deep liver care.',
+          benefitsHeading: 'Five Core Benefits for<br>Liver Detox &amp; Vitality',
+          benefitsIntro: 'Formulated around five cellular detox mechanisms to defend hepatocytes, enhance glutathione production, and promote clean energy.',
+          benefits: [
+            { title: 'Hepatic Cell Shield', desc: 'Defends liver hepatocyte membranes against oxidative and metabolic stress.' },
+            { title: 'Glutathione Enzyme Synergy', desc: 'Selenium acts as an essential cofactor for master antioxidant glutathione peroxidase.' },
+            { title: 'Systemic Detox Support', desc: 'Aids Phase 1 and Phase 2 hepatic elimination of environmental toxins.' },
+            { title: 'Cellular Anti-Aging', desc: 'Broad-spectrum vitamins A, C, and E neutralize free radicals body-wide.' },
+            { title: 'Vitality & Energy Restoration', desc: 'A healthy, unclogged liver directly drives cleaner daily metabolic energy.' }
           ]
         },
         's7': {
+          id: 's7',
           name: 'Codix MacaRoot Pure Botanical',
           title: 'Codix MacaRoot<br>Pure Botanical',
-          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
+          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health – 100mg',
           img: 'images/f-grid-8.png',
+          thumbs: ['images/f-grid-8.png', 'images/product-macaroot.png'],
           basePrice: 10.42,
           subPrice: 6.77,
           reviews: 89,
+          rating: 5,
           headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
           narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
           bullets: [
             'Pure 100% Lepidium meyenii Andean root extract',
             'Supports libido, hormonal balance & reproductive wellness',
             'Rich in adaptogens, amino acids, and essential micronutrients'
+          ],
+          details: '100% pure botanical Andean Maca root extract. Standardized potency formulated to support natural energy production, reproductive vigor, and adaptogenic stress response.',
+          benefitsHeading: 'Five Core Benefits for<br>Stamina &amp; Vitality',
+          benefitsIntro: 'Our medical experts formulated Codix MacaRoot Pure Botanical around five key biological areas essential for natural vigor, reproductive health, and endocrine balance.',
+          benefits: [
+            { title: 'Libido & Reproductive Wellness', desc: 'Traditionally revered to enhance sexual desire and intimate vitality.' },
+            { title: 'Natural Energy & Stamina', desc: 'Non-stimulant adaptogen improves physical endurance without crashes.' },
+            { title: 'Endocrine & Hormone Harmony', desc: 'Assists hypothalamic-pituitary-adrenal balance in men and women.' },
+            { title: 'Stress Resilience & Mood', desc: 'Adaptogenic bio-actives buffer the neurological impact of daily stress.' },
+            { title: 'Overall Vitality & Wellbeing', desc: 'Packed with natural amino acids, plant sterols, and vital minerals.' }
           ]
         },
-        'macaroot': {
-          name: 'Codix MacaRoot Pure Botanical',
-          title: 'Codix MacaRoot<br>Pure Botanical',
-          subtitle: '100% Pure Botanical – Supports Libido & Reproductive Health',
-          img: 'images/f-grid-8.png',
-          basePrice: 10.42,
-          subPrice: 6.77,
-          reviews: 89,
-          headline: 'Traditional Andean Superfood for Natural Stamina, Libido & Daily Vitality',
-          narrative: 'Sourced from premium Lepidium meyenii roots, Codix MacaRoot Pure Botanical delivers powerful adaptogenic support to elevate natural endurance, balance reproductive hormones, and promote overall vitality in both men and women. Free from synthetic additives, every vegetarian capsule contains pure concentrated herbal botanical goodness to help you thrive daily.',
-          bullets: [
-            'Pure 100% Lepidium meyenii Andean root extract',
-            'Supports libido, hormonal balance & reproductive wellness',
-            'Rich in adaptogens, amino acids, and essential micronutrients'
-          ]
-        },
-        'everose': {
-          name: 'Codix Everose Evening Primrose',
-          title: 'Codix Everose<br>Evening Primrose',
-          subtitle: 'Cold-Pressed GLA & Vitamin E – Women\'s Health Support',
+        's8': {
+          id: 's8',
+          name: 'Codix Everose Evening Primrose Oil',
+          title: 'Codix Everose<br>Evening Primrose Oil',
+          subtitle: 'Cold-Pressed GLA & Vitamin E – Women\'s Health & Skin Radiance – 100ml',
           img: 'images/product-everose.png',
+          thumbs: ['images/product-everose.png'],
           basePrice: 13.33,
           subPrice: 8.66,
           reviews: 58,
+          rating: 5,
           headline: 'Pure Cold-Pressed Evening Primrose Oil for Hormonal Balance & Radiant Skin',
-          narrative: 'Codix Everose Evening Primrose Oil is meticulously cold-pressed to preserve natural Gamma-Linolenic Acid (GLA) levels. Specially formulated to nurture female hormonal balance throughout monthly cycles and menopause.',
+          narrative: 'Codix Everose Evening Primrose Oil is meticulously cold-pressed to preserve natural Gamma-Linolenic Acid (GLA) levels. Specially formulated to nurture female hormonal balance throughout monthly cycles and menopause, while deeply nourishing dry skin from within for a supple, luminous complexion.',
           bullets: [
             'High concentration of natural Gamma-Linolenic Acid (GLA)',
             'Supports monthly cycle balance & menopause ease',
             'Nourishes dry skin from within for a supple, radiant glow'
+          ],
+          details: '1000mg pure cold-pressed Evening Primrose Oil yielding standardized 10% GLA, enriched with natural Vitamin E to prevent oxidation.',
+          benefitsHeading: 'Five Core Benefits for<br>Women\'s Health &amp; Radiance',
+          benefitsIntro: 'Formulated around five female physiological health areas essential for hormonal equilibrium, cycle comfort, and radiant skin.',
+          benefits: [
+            { title: 'Monthly Cycle Harmony', desc: 'GLA modulates prostaglandins to ease pre-menstrual physical and emotional tensions.' },
+            { title: 'Menopause Comfort', desc: 'Helps regulate body temperature balance and soothe menopausal transitions.' },
+            { title: 'Deep Skin Hydration', desc: 'Fortifies epidermal lipid barriers to relieve dry, irritated or itchy skin.' },
+            { title: 'Healthy Joint Fluidity', desc: 'Anti-inflammatory omega-6 fatty acids soothe delicate joint tissues.' },
+            { title: 'Hair & Scalp Nourishment', desc: 'Essential fatty acids feed hair follicles for stronger, shinier hair growth.' }
           ]
         },
-        'selcea': {
-          name: 'SelCEA – Hepato & Liver Support',
-          title: 'SelCEA<br>Hepato & Liver Support',
-          subtitle: 'Targeted Antioxidant & Detoxification Micronutrients',
-          img: 'images/product-selcea.png',
-          basePrice: 6.88,
-          subPrice: 4.47,
+        's9': {
+          id: 's9',
+          name: 'Day 2 Day Collagen Mag Plus',
+          title: 'Day 2 Day<br>Collagen Mag Plus',
+          subtitle: 'Hydrolyzed Bioactive Peptides with Magnesium & Vitamin C – 150ml',
+          img: 'images/f-grid-6.png',
+          thumbs: ['images/f-grid-6.png'],
+          basePrice: 14.50,
+          subPrice: 9.43,
           reviews: 76,
-          headline: 'Advanced Hepatic Protection & Cellular Detoxification Formula',
-          narrative: 'SelCEA combines essential Selenium, Vitamin C, Vitamin E, and Vitamin A to provide complete cellular antioxidant defence and support natural liver metabolic pathways.',
+          rating: 5,
+          headline: 'Bioactive Collagen Peptides & Magnesium for Skin Elasticity, Hair & Muscle Recovery',
+          narrative: 'Day 2 Day Collagen Mag Plus unites premium hydrolyzed bioactive collagen peptides with high-absorption Magnesium, Hyaluronic Acid, and Vitamin C. Replenishes dermal collagen reserves to reduce fine lines, strengthen brittle nails, and support overnight muscle and tendon regeneration.',
           bullets: [
-            'Comprehensive hepatic cellular protection',
-            'Neutralizes free radicals and oxidative stress',
-            'Enhances energy metabolism and systemic vitality'
+            'Hydrolyzed Type I & III collagen peptides for superior skin absorption',
+            'Combined with Magnesium citrate for muscle relaxation and recovery',
+            'Hyaluronic Acid and Vitamin C maximize cellular hydration and collagen synthesis'
+          ],
+          details: 'Premium hydrolyzed collagen peptide powder/solution with Magnesium, Hyaluronic Acid, and Vitamin C. Mix 1 scoop or sachet with water, smoothie, or juice daily.',
+          benefitsHeading: 'Five Core Benefits for<br>Collagen &amp; Recovery',
+          benefitsIntro: 'Formulated around five structural longevity areas essential for dermal firmness, cartilage flexibility, and muscle replenishment.',
+          benefits: [
+            { title: 'Dermal Elasticity & Firmness', desc: 'Bioactive peptides stimulate skin fibroblasts to rebuild the collagen matrix.' },
+            { title: 'Fine Line & Wrinkle Smoothing', desc: 'Clinically shown to improve skin hydration and reduce depth of lines.' },
+            { title: 'Hair Thickness & Strong Nails', desc: 'Keratin synthesis cofactors prevent brittle nails and nourish thinning hair.' },
+            { title: 'Musculoskeletal & Joint Recovery', desc: 'Magnesium and collagen repair connective tendons and relieve muscle tension.' },
+            { title: 'Deep Cellular Hydration', desc: 'Hyaluronic Acid locks moisture inside deep dermal tissue for a youthful dew.' }
           ]
         }
       };
 
-      if (pid && PRODUCT_PROFILES[pid]) {
-        const prod = PRODUCT_PROFILES[pid];
+      // Aliases
+      PRODUCT_PROFILES['codferol'] = PRODUCT_PROFILES['s1'];
+      PRODUCT_PROFILES['codferol-vitamin-d3-oral-solution'] = PRODUCT_PROFILES['s1'];
+      PRODUCT_PROFILES['winwell'] = PRODUCT_PROFILES['s2'];
+      PRODUCT_PROFILES['winwell-daily-multivitamin'] = PRODUCT_PROFILES['s2'];
+      PRODUCT_PROFILES['vitaminc'] = PRODUCT_PROFILES['s3'];
+      PRODUCT_PROFILES['vitamin-c-d-effervescent-tablets'] = PRODUCT_PROFILES['s3'];
+      PRODUCT_PROFILES['flexicod'] = PRODUCT_PROFILES['s4'];
+      PRODUCT_PROFILES['flexicod-joint-health-support'] = PRODUCT_PROFILES['s4'];
+      PRODUCT_PROFILES['fatburner'] = PRODUCT_PROFILES['s5'];
+      PRODUCT_PROFILES['codix-fat-burner-metabolism-support'] = PRODUCT_PROFILES['s5'];
+      PRODUCT_PROFILES['selcea'] = PRODUCT_PROFILES['s6'];
+      PRODUCT_PROFILES['selcea-hepato-liver-support'] = PRODUCT_PROFILES['s6'];
+      PRODUCT_PROFILES['macaroot'] = PRODUCT_PROFILES['s7'];
+      PRODUCT_PROFILES['codix-macaroot-pure-botanical'] = PRODUCT_PROFILES['s7'];
+      PRODUCT_PROFILES['everose'] = PRODUCT_PROFILES['s8'];
+      PRODUCT_PROFILES['codix-everose-evening-primrose-oil'] = PRODUCT_PROFILES['s8'];
+      PRODUCT_PROFILES['collagen'] = PRODUCT_PROFILES['s9'];
+      PRODUCT_PROFILES['day-2-day-collagen-mag-plus'] = PRODUCT_PROFILES['s9'];
+
+      function renderProductToDOM(prod) {
+        document.title = `${prod.name} - Codix Wellness`;
+
         const breadcrumbEl = document.getElementById('breadcrumb-product-name');
         if (breadcrumbEl) breadcrumbEl.textContent = prod.name;
+
         const titleEl = document.getElementById('product-title');
         if (titleEl) titleEl.innerHTML = prod.title;
         const subtitleEl = document.getElementById('product-subtitle');
         if (subtitleEl) subtitleEl.textContent = prod.subtitle;
+
         const mainImgEl = document.getElementById('main-product-img');
-        if (mainImgEl) mainImgEl.src = prod.img;
+        if (mainImgEl) {
+          mainImgEl.src = prod.img;
+          mainImgEl.alt = prod.name;
+        }
+
+        const thumbContainer = document.getElementById('product-thumbnails');
+        if (thumbContainer && Array.isArray(prod.thumbs)) {
+          thumbContainer.innerHTML = prod.thumbs.map((thumb, idx) => `
+            <button onclick="switchProductMainImage('${thumb}', this)"
+              class="thumb-btn ${idx === 0 ? 'active' : ''} w-14 h-14 sm:w-16 sm:h-16 rounded-full sm:rounded-2xl border-2 ${idx === 0 ? 'border-emerald-500' : 'border-transparent'} bg-slate-50 p-1.5 overflow-hidden transition hover:opacity-90 cursor-pointer shadow-sm">
+              <img src="${thumb}" alt="${prod.name} Thumbnail ${idx + 1}" class="w-full h-full object-contain ${idx === 0 ? 'rounded-xl' : ''}">
+            </button>
+          `).join('');
+        }
+
         basePrice = prod.basePrice;
-        subPrice = prod.subPrice;
+        subPrice = prod.subPrice || parseFloat((prod.basePrice * 0.65).toFixed(2));
+        updatePriceDisplays();
+        updatePriceOption(selectedPlan);
+
         const revEl = document.getElementById('product-reviews-count');
-        if (revEl) revEl.textContent = `${prod.reviews} Reviews`;
+        if (revEl) revEl.textContent = `${prod.reviews || 88} Reviews`;
+
         const headEl = document.getElementById('product-headline');
         if (headEl) headEl.textContent = prod.headline;
         const narEl = document.getElementById('product-narrative');
         if (narEl) narEl.textContent = prod.narrative;
         const bullEl = document.getElementById('product-bullets');
-        if (bullEl) {
+        if (bullEl && Array.isArray(prod.bullets)) {
           bullEl.innerHTML = prod.bullets.map(b => `<li>${b}</li>`).join('');
         }
-        updatePriceDisplays();
-        updatePriceOption('subscription');
-      } else {
-        basePrice = 10.42;
-        subPrice = 6.77;
-        updatePriceDisplays();
-        updatePriceOption('subscription');
+
+        const accDetails = document.getElementById('acc-details');
+        if (accDetails && prod.details) {
+          accDetails.textContent = prod.details;
+        }
+
+        const benTitle = document.getElementById('benefits-title');
+        if (benTitle) benTitle.innerHTML = prod.benefitsHeading || ('Five Core Benefits for<br>' + prod.name);
+        const benSub = document.getElementById('benefits-subtitle');
+        if (benSub) benSub.textContent = prod.benefitsIntro || ('Our medical experts formulated ' + prod.name + ' around key biological areas essential for natural health and optimal vitality.');
+        const benImg = document.getElementById('benefits-img');
+        if (benImg) {
+          benImg.src = prod.img;
+          benImg.alt = prod.name + ' Showcase';
+        }
+        const benList = document.getElementById('benefits-list');
+        if (benList && Array.isArray(prod.benefits)) {
+          benList.innerHTML = prod.benefits.map(b => `
+            <div class="flex items-start gap-3.5">
+              <span class="text-white text-xs mt-1 shrink-0">●</span>
+              <div>
+                <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${b.title}</h3>
+                <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-relaxed font-normal">${b.desc}</p>
+              </div>
+            </div>
+          `).join('');
+        }
       }
+
+      async function applyProductProfile(productId) {
+        const key = String(productId || '').trim();
+        let prod = PRODUCT_PROFILES[key] || PRODUCT_PROFILES[key.toLowerCase()];
+
+        // If not in static dictionary, attempt live retrieval from CodixAPI / WooCommerce
+        if (!prod && typeof CodixAPI !== 'undefined' && CodixAPI.getProductDetail) {
+          try {
+            const remote = await CodixAPI.getProductDetail(key);
+            if (remote) {
+              prod = {
+                id: remote.id,
+                name: remote.name,
+                title: remote.name.replace(/\s*[–-]\s*/, '<br>'),
+                subtitle: remote.short_description || remote.cat || 'Premium Wellness Formulation',
+                img: remote.image || remote.img || 'images/product-winwell.jpg',
+                thumbs: [remote.image || remote.img || 'images/product-winwell.jpg'],
+                basePrice: remote.price || 9.99,
+                subPrice: parseFloat((remote.price * 0.65).toFixed(2)),
+                reviews: remote.reviews || 88,
+                rating: remote.rating || 5,
+                headline: remote.short_description || ('Targeted Nutritional Support: ' + remote.name),
+                narrative: remote.description || remote.short_description || ('Codix Wellness ' + remote.name + ' provides high-potency targeted nutrition to support optimal daily health, vitality, and cellular wellbeing.'),
+                bullets: [
+                  'Formulated with bioavailable active pharmaceutical-grade ingredients',
+                  'Comprehensive support for daily health, cellular vitality, and immune balance',
+                  'Manufactured under strict GMP certified quality standards with no unnecessary fillers'
+                ],
+                details: remote.description || ('100% authentic ' + remote.name + ' formulation manufactured to pharmaceutical standards.'),
+                benefitsHeading: 'Five Core Benefits for<br>' + remote.name,
+                benefitsIntro: 'Formulated around five primary physiological pillars to ensure your body receives optimal support and cellular nourishment.',
+                benefits: [
+                  { title: 'Targeted Biological Support', desc: 'Formulated with clinically recognized bioactives for focused health outcomes.' },
+                  { title: 'Superior Bioavailability', desc: 'Optimized molecular delivery ensures maximum cellular uptake and gastrointestinal comfort.' },
+                  { title: 'All-Day Stamina & Resilience', desc: 'Promotes sustained metabolic energy and guards against everyday fatigue.' },
+                  { title: 'Antioxidant & Cellular Defense', desc: 'Protects cells against oxidative stress caused by environment, aging, and daily stress.' },
+                  { title: 'Pure Guaranteed Potency', desc: 'Third-party tested for purity, strength, and complete absence of harmful contaminants.' }
+                ]
+              };
+            }
+          } catch (err) {
+            console.warn('Could not fetch remote product details:', err);
+          }
+        }
+
+        if (!prod) {
+          prod = PRODUCT_PROFILES['s1'];
+        }
+
+        renderProductToDOM(prod);
+      }
+
+      applyProductProfile(pid);
       showTestimonial(0);
     });
 

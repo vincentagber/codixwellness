@@ -273,3 +273,36 @@ test('Shop Page (shop.html): Contains all required WooCommerce dynamic elements'
   assert.ok(html.includes('renderShopSkeletonGrid'), 'Must define renderShopSkeletonGrid');
   assert.ok(html.includes('resetShopFilters'), 'Must define resetShopFilters');
 });
+
+// ----------------------------------------------------
+// 5. WooCommerce Stripe Payment Gateway Integration Tests
+// ----------------------------------------------------
+test('PHP Bridge: GET /wp-json/codix/v1/payment-config returns Stripe gateway config', () => {
+  const stdout = execSync('REQUEST_URI="/wp-json/codix/v1/payment-config" php wp-json.php', {
+    cwd: ROOT_DIR,
+    encoding: 'utf8'
+  });
+  const data = JSON.parse(stdout);
+  assert.equal(data.success, true);
+  assert.equal(data.active_gateway, 'stripe');
+  assert.equal(data.currency, 'GBP');
+  assert.ok(data.bacs_account);
+  assert.equal(data.bacs_account.bank_name, 'Barclays Bank UK PLC');
+});
+
+test('Checkout Page (checkout.html): Contains WooCommerce Stripe payment elements and zero Paystack elements', () => {
+  const html = fs.readFileSync(path.join(ROOT_DIR, 'checkout.html'), 'utf8');
+
+  // Must have Stripe radio, box, and script
+  assert.ok(html.includes('id="pay-stripe"'), 'Must have pay-stripe radio');
+  assert.ok(html.includes('id="stripe-details-box"'), 'Must have stripe-details-box');
+  assert.ok(html.includes('src="https://js.stripe.com/v3/"'), 'Must load Stripe.js v3');
+  assert.ok(html.includes('Credit / Debit Card (Stripe)'), 'Must display Stripe payment option title');
+  assert.ok(html.includes('Barclays Bank UK PLC'), 'Must have Barclays UK bank transfer');
+
+  // Must NOT have old Paystack text
+  assert.ok(!html.includes('Paystack (Debit/Credit Card, Bank, USSD)'), 'Must not have Paystack radio label');
+  assert.ok(!html.includes('https://js.paystack.co/v1/inline.js'), 'Must not load Paystack inline JS');
+  assert.ok(!html.includes('Zenith Bank PLC'), 'Must not have Zenith Bank');
+});
+
