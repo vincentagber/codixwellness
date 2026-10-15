@@ -1,36 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Order Confirmation | ClinicWare Healthcare Dispensary</title>
+  <title>Order Confirmation | Codix Wellness</title>
   <meta name="description"
-    content="Official order verification and dispensary receipt for your ClinicWare healthcare prescription and supplements." />
+    content="Official order confirmation and dispensary receipt for your Codix Wellness healthcare products and supplements." />
 
-  <!-- Google Fonts: Plus Jakarta Sans & Newsreader for premium editorial pharma feel -->
+  <!-- Google Fonts: Plus Jakarta Sans, Newsreader & Lato -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+  <!-- Tailwind CSS CDN with Full Codix Design System Config -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Lato', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             serif: ['Newsreader', 'Georgia', 'serif'],
           },
           colors: {
+            'codix-green': '#57B952',
+            'codix-green-dark': '#469C42',
+            'codix-navy': '#211C68',
+            'codix-purple': '#382898',
+            'codix-orange': '#F2971F',
+            'codix-orange-dark': '#DE8413',
+            'codix-bg-gray': '#F5F5F7',
             brand: {
               50: '#F0FDF9',
               100: '#CCFBED',
               200: '#99F6DC',
-              500: '#0F766E', // Forest Teal
+              500: '#0F766E',
               600: '#0D6861',
               700: '#0B5751',
               800: '#08433F',
@@ -41,102 +51,418 @@
       }
     }
   </script>
+
   <style data-purpose="custom-styling">
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #333333;
+      background-color: #F8FAFC;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
 
     .font-serif-title {
       font-family: 'Newsreader', Georgia, serif;
     }
 
+    .container-codix {
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+
+    .top-bar-bg {
+      background-color: #57B952;
+      position: relative;
+      overflow: visible !important;
+      z-index: 100;
+    }
+
+    .top-bar-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+
+    .footer-green-bg {
+      background-color: #57B952;
+    }
+
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dropdown-menu.open {
+      z-index: 99999 !important;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Mega Menu */
+    .mega-menu-btn {
+      background-color: #D7F4D8;
+      color: #211C68;
+      transition: all 0.2s ease;
+      border: none;
+      outline: none;
+    }
+
+    .mega-menu-btn.active {
+      background-color: #382898 !important;
+      color: #ffffff !important;
+    }
+
+    .mega-menu-btn.active .mega-cat-icon {
+      filter: brightness(0) invert(1);
+    }
+
+    .mega-menu {
+      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.2);
+    }
+
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMega 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInMega {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mega-menu h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #211C68;
+      margin-bottom: 12px;
+    }
+
+    .mega-menu a {
+      display: block;
+      font-size: 13px;
+      color: #475569;
+      padding: 3px 0;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .mega-menu a:hover {
+      color: #57B952 !important;
+      font-weight: 600;
+    }
+
+    /* Modal / Drawer Overlays */
+    .modal-overlay:not(.open) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .modal-overlay.open {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      display: flex;
+    }
+
     @media print {
-      .no-print {
+      .no-print, aside, header, nav, footer, .brand-strip-bg {
         display: none !important;
       }
 
       body {
         background: white !important;
         padding: 0 !important;
+        color: #000000 !important;
+      }
+
+      main {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
     }
   </style>
 </head>
 
 <body
-  class="bg-[#F8FAFC] text-slate-800 min-h-screen antialiased flex flex-col selection:bg-teal-100 selection:text-teal-900">
-  
-  <!-- BEGIN: Top Navigation / Brand Bar -->
-  <header class="bg-white border-b border-slate-200/80 sticky top-0 z-30 no-print backdrop-blur-md bg-white/95">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Brand Logo -->
-      <div class="flex items-center gap-3">
-        <a class="flex items-center gap-2.5 group" href="index.html">
-          <div
-            class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold tracking-tight text-sm shadow-sm transition-transform group-hover:scale-105">
-            <span class="text-teal-400 font-black">C</span>W
+  class="bg-[#F8FAFC] text-slate-800 min-h-screen antialiased flex flex-col selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- ======================================================== -->
+  <!-- 1. ORIGINAL TOP PROMOTIONAL ANNOUNCEMENT BAR             -->
+  <!-- ======================================================== -->
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-[100] overflow-visible select-none no-print"
+    aria-label="Announcement">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <!-- Left: Free Shipping message -->
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over £60.</span>
+      </div>
+
+      <!-- Right: Language, Currency, Account -->
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <!-- Language Selector -->
+        <div class="relative">
+          <button id="lang-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1 cursor-pointer"
+            aria-label="Select Language">
+            <span id="lang-label">EN</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="lang-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-lg border border-slate-100 py-1.5 z-[9999]">
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('EN')">English (EN)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('ES')">Español (ES)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('FR')">Français (FR)</button>
           </div>
-          <div class="flex flex-col">
-            <span class="text-sm font-extrabold tracking-wider text-slate-900 uppercase">ClinicWare</span>
-            <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase -mt-0.5">Healthcare Dispensary</span>
-          </div>
+        </div>
+
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
+        </div>
+
+        <!-- My Account Trigger -->
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition cursor-pointer">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
+          <span>My account</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. ORIGINAL MAIN HEADER                                  -->
+  <!-- ======================================================== -->
+  <header class="bg-white sticky top-0 z-40 border-b border-slate-200/80 shadow-xs no-print">
+    <div class="container-codix flex items-center justify-between h-[72px] sm:h-[80px] gap-2 sm:gap-4">
+      <!-- Left: Mobile Hamburger + Codix Logo -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <button id="mobile-hamburger-btn" onclick="openMobileMenu()"
+          class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D7F4D8] text-codix-navy hover:bg-[#EDF8EE] flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95"
+          aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars text-base text-codix-navy"></i>
+        </button>
+
+        <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain">
         </a>
       </div>
 
-      <!-- Checkout Step Breadcrumb Indicator (Desktop) -->
-      <nav aria-label="Progress" class="hidden md:flex items-center gap-2 text-xs font-semibold">
-        <a href="cart.html" class="text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition">
-          <svg class="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewbox="0 0 20 20">
-            <path clip-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              fill-rule="evenodd"></path>
-          </svg>
-          Cart
-        </a>
-        <span class="text-slate-300">/</span>
-        <a href="checkout.html" class="text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition">
-          <svg class="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewbox="0 0 20 20">
-            <path clip-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              fill-rule="evenodd"></path>
-          </svg>
-          Checkout
-        </a>
-        <span class="text-slate-300">/</span>
-        <span
-          class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200/60 font-bold">
-          <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
-          Order Confirmed
-        </span>
-      </nav>
+      <!-- Search Bar -->
+      <div id="search-container" class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form action="shop.html" method="GET"
+          class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition"
+          style="height: 50px; border-radius: 999px;" role="search">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm"></i>
+          <input name="q" type="text" placeholder="Search everything at codix wellness..."
+            class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2">
+          <button type="submit"
+            class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
+          </button>
+        </form>
+      </div>
 
-      <!-- Right Header Actions -->
-      <div class="flex items-center gap-4 text-xs font-medium text-slate-600">
-        <a class="hidden sm:inline-flex items-center gap-1.5 hover:text-slate-900 transition-colors"
-          href="#support-section">
-          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-            <path
-              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-          </svg>
-          Help &amp; FAQs
+      <!-- Action Icons -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <!-- Wishlist -->
+        <a href="shop.html"
+          class="w-10 h-10 rounded-full border border-[#FECDD3] text-[#F43F5E] hover:bg-rose-50 flex items-center justify-center transition relative group"
+          aria-label="Wishlist">
+          <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
         </a>
-        <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
-        <div class="flex items-center gap-2">
-          <div id="header-user-initials"
-            class="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs">
-            VA
+
+        <!-- Sign In -->
+        <a href="login.html" class="flex items-center gap-2 cursor-pointer group" aria-label="Sign In to Account">
+          <div
+            class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 flex items-center justify-center transition group-hover:scale-105">
+            <i class="fa-regular fa-user text-sm"></i>
           </div>
-          <span id="header-user-firstname" class="hidden sm:inline text-xs font-semibold text-slate-700">Vincent</span>
+          <div class="hidden xl:flex flex-col leading-tight select-none">
+            <span class="text-[13px] font-bold text-slate-800 group-hover:text-codix-green transition">Sign In</span>
+            <span class="text-[10px] text-slate-400">Account</span>
+          </div>
+        </a>
+
+        <!-- Shopping Cart -->
+        <a href="cart.html" class="flex items-center gap-2 cursor-pointer group select-none" aria-label="Shopping Cart">
+          <div
+            class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
+            <span id="cart-header-count"
+              class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">0</span>
+          </div>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total-display"
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">£0.00</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 3. ORIGINAL NAVIGATION BAR & MEGA MENU                   -->
+    <!-- ======================================================== -->
+    <nav class="block bg-white relative border-t border-slate-200/70"
+      style="width: 100%; min-height: 52px; padding: 6px 0;"
+      aria-label="Main Navigation">
+      <div class="container-codix relative flex items-center justify-between gap-6" style="min-height: 44px;">
+        <!-- Left Group: Product Categories + Nav Links -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
+          <div class="mega-menu-wrapper relative">
+            <button id="mega-menu-btn" onclick="toggleMegaMenu(event)"
+              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer"
+              aria-haspopup="true" aria-expanded="false">
+              <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
+              <span>Product Categories</span>
+            </button>
+          </div>
+
+          <!-- Nav Links -->
+          <ul class="flex items-center gap-7 text-[13px] sm:text-[14px] font-bold" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+          </ul>
+        </div>
+
+        <!-- Right Quick Links: Verified Checkout Badge -->
+        <div class="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-500">
+          <span class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+            <i class="fa-solid fa-shield-check text-emerald-600"></i>
+            <span>Verified 256-Bit SSL Checkout</span>
+          </span>
+        </div>
+
+        <!-- Full-Width Mega Menu Dropdown -->
+        <div id="mega-menu-dropdown"
+          class="mega-menu absolute top-full left-0 right-0 mt-3 w-full bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10 z-50 transition-all hidden"
+          role="menu">
+          <h3 class="text-base font-bold pb-3 mb-6 border-b border-slate-100" style="color: #382898;">
+            Product Categories
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
+            <div>
+              <a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Immunity</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">General Wellness</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell Multivitamin</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Codferol D3</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Beauty &amp; Skin</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Zinc 50mg Tablets</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Joint &amp; Bone</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod Tablets</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Weight &amp; Metabolism</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Apple Cider Vinegar</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Sexual Health</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Wellness Vitality</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- 4. CHECKOUT STEP BREADCRUMB INDICATOR                    -->
+  <!-- ======================================================== -->
+  <section class="bg-white border-b border-slate-200/80 py-3.5 no-print" aria-label="Checkout Progress">
+    <div class="container-codix flex items-center justify-center">
+      <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
+        <a href="cart.html" class="flex items-center gap-1.5 text-slate-400 hover:text-codix-green transition">
+          <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold"><i class="fa-solid fa-check text-[9px]"></i></span>
+          <span class="hidden sm:inline">1. Cart</span>
+        </a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+        <a href="checkout.html" class="flex items-center gap-1.5 text-slate-400 hover:text-codix-green transition">
+          <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold"><i class="fa-solid fa-check text-[9px]"></i></span>
+          <span class="hidden sm:inline">2. Payment</span>
+        </a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+        <div class="flex items-center gap-1.5 text-codix-green font-bold">
+          <span class="w-5 h-5 rounded-full bg-codix-green text-white flex items-center justify-center text-[10px] font-bold shadow-xs">3</span>
+          <span>Order Confirmation</span>
         </div>
       </div>
     </div>
-  </header>
-  <!-- END: Top Navigation -->
+  </section>
 
-  <!-- BEGIN: Main Page Content -->
+  <!-- ======================================================== -->
+  <!-- 5. MAIN EDITORIAL CONTENT (RESPONSIVE & FUNCTIONAL)      -->
+  <!-- ======================================================== -->
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6 flex-grow w-full"
     data-purpose="confirmation-page-container">
 
@@ -144,7 +470,7 @@
     <section class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-9 shadow-sm relative overflow-hidden"
       data-purpose="hero-order-overview">
       <!-- Decorative subtle ambient corner accent -->
-      <div class="absolute -right-20 -top-20 w-64 h-64 bg-teal-50/50 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-emerald-50/60 rounded-full blur-3xl pointer-events-none"></div>
 
       <!-- Top Row: Icon, Headline & Action Buttons -->
       <div
@@ -152,9 +478,9 @@
         <div class="flex items-start gap-4 sm:gap-5">
           <!-- Refined Verification Icon -->
           <div
-            class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0 shadow-sm">
+            class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 shadow-sm">
             <div
-              class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-700 flex items-center justify-center text-white shadow-sm shadow-teal-900/10">
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm shadow-emerald-900/10">
               <svg class="w-5 h-5 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
@@ -165,8 +491,8 @@
           <div class="space-y-1.5 max-w-2xl">
             <div class="flex items-center gap-2">
               <span id="hero-badge-tag"
-                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200/60 uppercase tracking-wide">
-                <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
+                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/60 uppercase tracking-wide">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
                 Official Dispensary Order Verified
               </span>
               <span id="hero-order-ref" class="text-xs text-slate-400 font-mono hidden sm:inline">Ref: #CW-378652</span>
@@ -187,7 +513,7 @@
         <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:shrink-0 w-full sm:w-auto no-print">
           <!-- Download Invoice Button -->
           <button
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm w-full sm:w-auto cursor-pointer"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm w-full sm:w-auto cursor-pointer active:scale-95"
             data-purpose="print-receipt-button" onclick="window.print()" type="button">
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
               <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
@@ -196,7 +522,7 @@
             <span>Download Invoice (PDF)</span>
           </button>
           <!-- Continue Shopping Button -->
-          <a class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition-all shadow-sm w-full sm:w-auto cursor-pointer"
+          <a class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-codix-navy hover:bg-[#181440] text-xs font-semibold text-white transition-all shadow-sm w-full sm:w-auto cursor-pointer active:scale-95"
             data-purpose="continue-shopping-button" href="shop.html">
             <span>Continue Shopping</span>
             <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24">
@@ -238,8 +564,8 @@
           <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Order Status</p>
           <div class="mt-1">
             <span id="meta-order-status-badge"
-              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200/50">
-              <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/50">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
               <span id="meta-order-status-text">Payment Confirmed</span>
             </span>
           </div>
@@ -264,7 +590,7 @@
               class="font-mono font-semibold text-slate-800 bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
               Royal Mail RM749204829GB
             </span>
-            <a class="text-teal-700 hover:text-teal-800 font-bold hover:underline flex items-center gap-1"
+            <a class="text-emerald-700 hover:text-emerald-800 font-bold hover:underline flex items-center gap-1"
               href="https://www.royalmail.com/track-your-item" target="_blank" rel="noopener">
               <span>Track Live</span>
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
@@ -279,13 +605,13 @@
         <div class="relative">
           <!-- Desktop horizontal line connecting steps -->
           <div class="hidden md:block absolute top-5 left-10 right-10 h-0.5 bg-slate-200 -z-0">
-            <div class="h-full bg-teal-700 w-2/3 transition-all duration-500"></div>
+            <div class="h-full bg-emerald-600 w-2/3 transition-all duration-500"></div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
             <!-- Step 1: Order Placed (Completed) -->
             <div class="flex md:flex-col items-center md:items-start gap-3.5 bg-white md:bg-transparent">
               <div
-                class="w-10 h-10 rounded-full bg-teal-700 text-white flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
+                class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
                 <svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
@@ -293,7 +619,7 @@
               <div class="md:pr-2">
                 <p class="text-xs font-bold text-slate-900 leading-tight flex items-center gap-1.5">
                   1. Order Placed
-                  <span class="text-[10px] text-teal-700 font-semibold md:hidden">• Complete</span>
+                  <span class="text-[10px] text-emerald-700 font-semibold md:hidden">• Complete</span>
                 </p>
                 <p id="step-placed-time" class="text-[11px] text-slate-500 mt-0.5">Oct 15, 2026 • 13:14 BST</p>
               </div>
@@ -301,24 +627,24 @@
             <!-- Step 2: Payment Verified (Completed) -->
             <div class="flex md:flex-col items-center md:items-start gap-3.5 bg-white md:bg-transparent">
               <div
-                class="w-10 h-10 rounded-full bg-teal-700 text-white flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
+                class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
                 <svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
               </div>
               <div class="md:pr-2">
                 <p class="text-xs font-bold text-slate-900 leading-tight">2. Payment Verified</p>
-                <p id="step-payment-desc" class="text-[11px] text-teal-700 font-medium mt-0.5">Stripe 256-Bit SSL • Authorized</p>
+                <p id="step-payment-desc" class="text-[11px] text-emerald-700 font-medium mt-0.5">Stripe 256-Bit SSL • Authorized</p>
               </div>
             </div>
             <!-- Step 3: Preparing in Warehouse (Active) -->
             <div class="flex md:flex-col items-center md:items-start gap-3.5 bg-white md:bg-transparent">
               <div
-                class="w-10 h-10 rounded-full bg-teal-50 border-2 border-teal-700 text-teal-700 flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
-                <div class="w-2.5 h-2.5 rounded-full bg-teal-700 animate-ping"></div>
+                class="w-10 h-10 rounded-full bg-emerald-50 border-2 border-emerald-600 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm ring-4 ring-white">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></div>
               </div>
               <div class="md:pr-2">
-                <p class="text-xs font-bold text-teal-900 leading-tight">3. Pharmacy Prep</p>
+                <p class="text-xs font-bold text-emerald-900 leading-tight">3. Pharmacy Prep</p>
                 <p class="text-[11px] text-slate-500 mt-0.5">Dispensary pack by 17:00 Today</p>
               </div>
             </div>
@@ -346,7 +672,7 @@
     <!-- Direct Bank Transfer Instruction Box (Shown only if BACS payment) -->
     <div id="bank-transfer-box" class="bg-[#F0FDF4] border border-emerald-200 rounded-2xl p-6 sm:p-7 shadow-sm hidden">
       <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-xl bg-teal-700 text-white flex items-center justify-center shrink-0 text-xl shadow-sm">
+        <div class="w-12 h-12 rounded-xl bg-codix-green text-white flex items-center justify-center shrink-0 text-xl shadow-sm">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
           </svg>
@@ -377,7 +703,7 @@
             </div>
             <div>
               <span class="text-slate-400 block text-[11px]">Beneficiary Name</span>
-              <strong class="text-slate-900 font-bold">ClinicWare UK Ltd</strong>
+              <strong class="text-slate-900 font-bold">Codix Wellness Ltd</strong>
             </div>
           </div>
           <p class="text-[11px] text-slate-500 mt-3">
@@ -396,7 +722,7 @@
           data-purpose="ordered-items-card">
           <div class="flex items-center justify-between pb-5 border-b border-slate-100">
             <div class="flex items-center gap-2.5 font-bold text-base text-slate-900">
-              <span class="p-1.5 rounded-lg bg-teal-50 text-teal-700">
+              <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                   <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2"></path>
@@ -416,7 +742,7 @@
             <div class="py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               data-purpose="product-item-row">
               <div class="flex items-start sm:items-center gap-4">
-                <!-- Product Image Thumbnail -->
+                <!-- Product Image Thumbnail with Strict Boundary Protection -->
                 <div
                   class="w-20 h-20 rounded-xl bg-slate-50 border border-slate-200/80 p-2 flex items-center justify-center shrink-0 overflow-hidden relative group"
                   style="width: 80px; height: 80px; min-width: 80px; min-height: 80px; max-width: 80px; max-height: 80px;">
@@ -435,7 +761,7 @@
                     </span>
                     <span class="text-xs text-slate-400 font-mono">SKU: D3-50ML-GB</span>
                   </div>
-                  <h3 class="text-base font-bold text-slate-900 hover:text-teal-700 transition-colors">
+                  <h3 class="text-base font-bold text-slate-900 hover:text-emerald-700 transition-colors">
                     Codferol Vitamin D3 Oral Solution
                   </h3>
                   <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
@@ -498,15 +824,15 @@
 
         <!-- Fulfillment Notice & Temperature Controlled Box -->
         <div
-          class="bg-teal-50/50 rounded-2xl border border-teal-100/80 p-5 flex items-start gap-3.5 text-xs text-slate-600">
-          <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+          class="bg-emerald-50/50 rounded-2xl border border-emerald-100/80 p-5 flex items-start gap-3.5 text-xs text-slate-600">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
               <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
                 stroke-linejoin="round" stroke-width="2"></path>
             </svg>
           </div>
           <div class="space-y-1">
-            <h4 class="font-bold text-teal-950">UK Pharmacy Dispensary Packaging Notice</h4>
+            <h4 class="font-bold text-emerald-950">UK Pharmacy Dispensary Packaging Notice</h4>
             <p class="leading-relaxed text-slate-600">
               Your pharmaceutical oral solution is packed in tamper-evident, recyclable protective padding. Store below
               25°C upon arrival and keep away from direct sunlight. Batch lot verification has been recorded for your
@@ -525,7 +851,7 @@
           data-purpose="delivery-eta-card">
           <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
             <div class="flex items-center gap-2 font-bold text-sm text-slate-900">
-              <span class="p-1 rounded bg-teal-50 text-teal-700">
+              <span class="p-1 rounded bg-emerald-50 text-emerald-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                   <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="2"></path>
@@ -533,7 +859,7 @@
               </span>
               <span>Estimated Delivery</span>
             </div>
-            <span class="text-[11px] font-bold text-teal-700 uppercase tracking-wider">Priority</span>
+            <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Priority</span>
           </div>
           <div class="pt-4 space-y-2">
             <div id="eta-delivery-day" class="text-xl font-extrabold text-slate-900">
@@ -544,7 +870,7 @@
             </p>
             <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
               <span class="flex items-center gap-1.5 font-medium">
-                <svg class="w-3.5 h-3.5 text-teal-600" fill="currentColor" viewbox="0 0 20 20">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewbox="0 0 20 20">
                   <path
                     d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.707l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 111.414-1.414L9 10.586l3.293-3.293a1 1 0 011.414 1.414z">
                   </path>
@@ -561,7 +887,7 @@
           data-purpose="delivery-address-card">
           <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
             <div class="flex items-center gap-2 font-bold text-sm text-slate-900">
-              <span class="p-1 rounded bg-teal-50 text-teal-700">
+              <span class="p-1 rounded bg-emerald-50 text-emerald-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                   <path
                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
@@ -599,7 +925,7 @@
         <section class="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-sm"
           data-purpose="security-assurance-card">
           <div class="flex items-center gap-2 font-bold text-sm text-slate-900 pb-3 border-b border-slate-100">
-            <span class="p-1 rounded bg-teal-50 text-teal-700">
+            <span class="p-1 rounded bg-emerald-50 text-emerald-700">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                 <path
                   d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
@@ -616,7 +942,7 @@
             <div class="flex items-center justify-between">
               <span class="text-slate-400">SSL Encryption</span>
               <span
-                class="font-mono text-[11px] font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200/50">
+                class="font-mono text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/50">
                 256-Bit TLS Secured
               </span>
             </div>
@@ -635,7 +961,7 @@
         <section class="bg-slate-50/80 rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3"
           data-purpose="support-card" id="support-section">
           <div class="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-slate-600">
-            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewbox="0 0 24 24">
               <path
                 d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -666,29 +992,252 @@
   </main>
   <!-- END: Main Page Content -->
 
-  <!-- BEGIN: Minimal Footer -->
-  <footer class="mt-12 border-t border-slate-200 bg-white py-8 text-xs text-slate-400 no-print">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-extrabold text-slate-700 uppercase tracking-wider text-xs">ClinicWare UK Ltd</span>
-        <span>•</span>
-        <span>Registered Pharmacy No. 9012384</span>
+  <!-- ======================================================== -->
+  <!-- 6. ORIGINAL BRAND LOGOS STRIP                            -->
+  <!-- ======================================================== -->
+  <section class="brand-strip-bg px-3 sm:px-6 py-6 flex items-center justify-center no-print"
+    style="width: 100%; background-color: #382898;"
+    aria-label="Partner Brands">
+    <div class="grid grid-cols-3 sm:grid-cols-6 items-center justify-items-center gap-4 sm:gap-8 w-full max-w-[1216px] mx-auto">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
       </div>
-      <div class="flex items-center gap-5 text-slate-500">
-        <a class="hover:text-slate-800 transition-colors" href="#">Privacy Policy</a>
-        <a class="hover:text-slate-800 transition-colors" href="#">Terms of Sale</a>
-        <a class="hover:text-slate-800 transition-colors" href="#">Dispensary License</a>
-        <a class="hover:text-slate-800 transition-colors" href="#">Returns &amp; Refunds</a>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-amere-clean.png" alt="Amere" class="max-h-[26px] sm:max-h-[30px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[32px] sm:max-h-[36px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[28px] sm:max-h-[32px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 7. ORIGINAL MAIN GREEN FOOTER                            -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white no-print" style="background-color: #57B952;" aria-label="Footer">
+    <div class="container-codix pt-12 pb-8">
+      <div>
+        <a href="index.html" class="inline-flex items-center justify-center bg-[#CBE9C9] rounded-[2px] px-4 py-2 transition hover:opacity-90 shadow-xs"
+          style="width: 192px; height: 55px;" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain">
+        </a>
+      </div>
+
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14">
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full lg:max-w-[780px] gap-8 sm:gap-12">
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Company</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Help</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Shop</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="shop.html?cat=Immunity" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="shop.html?cat=General%20Wellness" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="shop.html?cat=Beauty" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="shop.html?cat=Joints" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a></li>
+              <li><a href="shop.html?cat=Weight" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a></li>
+              <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full lg:w-[380px] shrink-0">
+          <h4 class="text-base sm:text-lg font-bold text-white mb-4 tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-col gap-2.5">
+            <div class="flex flex-wrap gap-2">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Instagram">Instagram</a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="YouTube">Youtube</a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Facebook">Facebook</a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="LinkedIn">LinkedIn</a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Twitter">Twitter</a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="TikTok">Tik Tok</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/90">
+        <p class="text-center md:text-left">
+          Copyright © 2026 Codix Wellness &nbsp;|&nbsp; Registered in England &amp; Wales
+        </p>
+        <div class="flex items-center gap-2 text-center">
+          <a href="#" class="hover:underline transition">Terms of Use</a>
+          <span>|</span>
+          <a href="#" class="hover:underline transition">Privacy Policy</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <img src="images/pay-amex.png" alt="American Express" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-visa.png" alt="Visa" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-paypal.png" alt="PayPal" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-mastercard.png" alt="Mastercard" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+        </div>
       </div>
     </div>
   </footer>
-  <!-- END: Minimal Footer -->
+
+  <!-- ======================================================== -->
+  <!-- 8. ORIGINAL MOBILE MENU DRAWER OVERLAY                   -->
+  <!-- ======================================================== -->
+  <div id="mobile-menu-overlay" class="modal-overlay no-print" onclick="closeMobileMenuOnBackdrop(event)">
+    <div class="fixed top-0 left-0 bottom-0 w-[300px] sm:w-[340px] bg-white z-50 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto object-contain">
+          <button onclick="closeMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 cursor-pointer">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <ul class="space-y-3 text-sm font-bold text-slate-800">
+          <li><a href="index.html" class="block py-2 hover:text-codix-green transition">Home</a></li>
+          <li><a href="about.html" class="block py-2 hover:text-codix-green transition">About Us</a></li>
+          <li><a href="shop.html" class="block py-2 hover:text-codix-green transition">Shop</a></li>
+          <li><a href="cart.html" class="block py-2 hover:text-codix-green transition">Cart</a></li>
+          <li><a href="index.html#support" class="block py-2 hover:text-codix-green transition">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="pt-6 border-t border-slate-100 space-y-2">
+        <a href="login.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-regular fa-user text-codix-green"></i> My Account / Sign In
+        </a>
+        <a href="cart.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-solid fa-cart-shopping text-codix-green"></i> View Cart
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts: Currency & API Integrations -->
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/framer.js"></script>
   <script>
+    // Mega Menu toggle
+    function toggleMegaMenu(e) {
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      const btn = document.getElementById('mega-menu-btn');
+      const menu = document.getElementById('mega-menu-dropdown');
+      if (!btn || !menu) return;
+
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        }
+      }
+    });
+
+    // Mobile Menu
+    function openMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) overlay.classList.add('open');
+    }
+    function closeMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) overlay.classList.remove('open');
+    }
+    function closeMobileMenuOnBackdrop(e) {
+      if (e.target.id === 'mobile-menu-overlay') closeMobileMenu();
+    }
+
+    // Language dropdown toggle
+    const langBtn = document.getElementById('lang-btn');
+    const langDropdown = document.getElementById('lang-dropdown');
+    if (langBtn && langDropdown) {
+      langBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        langDropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function () {
+        langDropdown.classList.remove('open');
+      });
+    }
+    function selectLang(lang) {
+      const label = document.getElementById('lang-label');
+      if (label) label.textContent = lang;
+      if (langDropdown) langDropdown.classList.remove('open');
+    }
+
+    // Main Dynamic Order Confirmation Logic
     document.addEventListener('DOMContentLoaded', async function () {
+      // Sync Header Cart badge
+      try {
+        const cart = JSON.parse(localStorage.getItem('codix_cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+        const countEl = document.getElementById('cart-header-count');
+        if (countEl) countEl.textContent = count;
+        const totalDisplay = document.getElementById('cart-header-total-display');
+        if (totalDisplay) {
+          const total = cart.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0);
+          totalDisplay.textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(total) : `£${total.toFixed(2)}`;
+        }
+      } catch (e) {}
+
       const urlParams = new URLSearchParams(window.location.search);
       const rawOrderId = urlParams.get('order_id') || 'CW-378652';
       const orderId = rawOrderId.replace(/^#+/, '');
@@ -733,14 +1282,11 @@
         };
       }
 
-      // Customer Name & Initials
+      // Customer Name
       const firstName = order.billing?.first_name || 'Vincent';
       const lastName = order.billing?.last_name || 'Agber';
       const fullName = (order.billing?.name || `${firstName} ${lastName}`).trim();
-      const initials = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase() || 'VA';
 
-      document.getElementById('header-user-initials').textContent = initials;
-      document.getElementById('header-user-firstname').textContent = firstName;
       document.getElementById('hero-customer-greeting').textContent = `Thank you for your order, ${firstName}`;
       
       const email = order.billing?.email || 'vincentagber74@gmail.com';
@@ -750,7 +1296,7 @@
       const cleanRef = `#CW-${orderId.replace(/^CW-?/i, '')}`;
       document.getElementById('hero-order-ref').textContent = `Ref: ${cleanRef}`;
       document.getElementById('meta-order-id').textContent = cleanRef;
-      document.title = `Order Confirmation ${cleanRef} | ClinicWare Health`;
+      document.title = `Order Confirmation ${cleanRef} | Codix Wellness`;
 
       // Copy Button
       const copyBtn = document.getElementById('copy-order-btn');
@@ -866,7 +1412,7 @@
                     </span>
                     <span class="text-xs text-slate-400 font-mono">SKU: ${sku}</span>
                   </div>
-                  <h3 class="text-base font-bold text-slate-900 hover:text-teal-700 transition-colors">
+                  <h3 class="text-base font-bold text-slate-900 hover:text-emerald-700 transition-colors">
                     ${it.name || 'Dispensary Item'}
                   </h3>
                   <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
