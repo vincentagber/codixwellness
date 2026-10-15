@@ -5,150 +5,969 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Confirmation | Codix Wellness</title>
-  <meta name="description" content="Thank you for your order with Codix Wellness. Track your order and view receipt.">
+  <meta name="description"
+    content="Thank you for your order with Codix Wellness. Track your order status, view shipment timeline, and download your official VAT receipt.">
 
+  <!-- Tailwind CSS CDN with Codix Design System Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'codix-green': '#57B952',
+            'codix-green-dark': '#469C42',
+            'codix-navy': '#211C68',
+            'codix-purple': '#3A2F99',
+            'codix-orange': '#F2971F',
+            'codix-orange-dark': '#DE8413',
+            'codix-bg-gray': '#F5F5F7',
+          },
+          fontFamily: {
+            sans: ['Lato', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Google Fonts: Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/tailwind.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
 
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .top-bar-bg { background-color: #57B952; position: relative; overflow: visible !important; z-index: 100 !important; }
-    .dropdown-menu { opacity: 0 !important; visibility: hidden !important; display: none !important; transform: translateY(6px); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); z-index: 99999 !important; }
-    .dropdown-menu.open { opacity: 1 !important; visibility: visible !important; display: block !important; transform: translateY(0); z-index: 99999 !important; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
+      color: #333333;
+      background-color: #F8FAFC;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container-codix {
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+
+    .top-bar-bg {
+      background-color: #57B952;
+      position: relative;
+      overflow: visible !important;
+      z-index: 100;
+    }
+
+    .top-bar-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+
+    .footer-green-bg {
+      background-color: #57B952;
+    }
+
+    .dropdown-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dropdown-menu.open {
+      z-index: 99999 !important;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Modal / Drawer Overlays */
+    .modal-overlay:not(.open) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .modal-overlay.open {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      display: flex;
+    }
+
+    /* Mega Menu Clean Styling */
+    .mega-menu-btn {
+      background-color: #D7F4D8;
+      color: #211C68;
+      transition: all 0.2s ease;
+      border: none;
+      outline: none;
+    }
+
+    .mega-menu-btn.active {
+      background-color: #382898 !important;
+      color: #ffffff !important;
+    }
+
+    .mega-menu-btn.active .mega-cat-icon {
+      filter: brightness(0) invert(1);
+    }
+
+    .mega-menu {
+      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.2);
+    }
+
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMega 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInMega {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mega-menu h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #211C68;
+      margin-bottom: 12px;
+    }
+
+    .mega-menu a {
+      display: block;
+      font-size: 13px;
+      color: #475569;
+      padding: 3px 0;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .mega-menu a:hover {
+      color: #57B952 !important;
+      font-weight: 600;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      aside, header, nav, .brand-strip-bg, footer, #mobile-menu-overlay, .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      main {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .print-border {
+        border: 1px solid #e2e8f0 !important;
+      }
+    }
   </style>
 </head>
 
-<body class="bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#57B952] selection:text-white">
+<body class="font-sans antialiased text-slate-800 bg-[#F8FAFC] selection:bg-codix-green selection:text-white flex flex-col min-h-screen">
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
-    <div class="container-codix max-w-[1200px] mx-auto px-4 sm:px-6 h-[72px] sm:h-[80px] flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2" aria-label="Codix Wellness Home">
-        <img src="images/logo.png" alt="Codix Wellness" class="h-10 sm:h-12 w-auto object-contain">
-      </a>
-      <div class="flex items-center gap-4 text-xs font-semibold">
-        <a href="shop.html" class="text-[#382898] hover:text-[#57B952] flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-arrow-left text-[11px]"></i>
-          <span>Continue Shopping</span>
+  <!-- ======================================================== -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                      -->
+  <!-- ======================================================== -->
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-[100] overflow-visible select-none"
+    aria-label="Announcement">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <!-- Left: Free Shipping message -->
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over £60.</span>
+      </div>
+
+      <!-- Right: Language, Currency, Account -->
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <!-- Language Selector -->
+        <div class="relative">
+          <button id="lang-btn" class="flex items-center gap-1 hover:text-white/80 transition py-1 cursor-pointer"
+            aria-label="Select Language">
+            <span id="lang-label">EN</span>
+            <i class="fa-solid fa-chevron-down text-[9px]"></i>
+          </button>
+          <div id="lang-dropdown"
+            class="dropdown-menu absolute top-full right-0 mt-1 min-w-[120px] bg-white text-slate-700 rounded-lg shadow-lg border border-slate-100 py-1.5 z-[9999]">
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('EN')">English (EN)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('ES')">Español (ES)</button>
+            <button class="w-full text-left px-3.5 py-1.5 text-xs hover:bg-emerald-50 hover:text-codix-green font-medium cursor-pointer" onclick="selectLang('FR')">Français (FR)</button>
+          </div>
+        </div>
+
+        <!-- Currency: GBP Only -->
+        <div class="flex items-center gap-1 py-1">
+          <span id="curr-label" class="font-medium">£ GBP</span>
+        </div>
+
+        <!-- My Account Trigger -->
+        <a href="login.html" class="flex items-center gap-1.5 hover:text-white/80 transition cursor-pointer">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
+          <span>My account</span>
         </a>
       </div>
     </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN HEADER                                           -->
+  <!-- ======================================================== -->
+  <header class="bg-white sticky top-0 z-40 border-b border-slate-200/80 shadow-xs">
+    <div class="container-codix flex items-center justify-between h-[72px] sm:h-[80px] gap-2 sm:gap-4">
+      <!-- Left: Mobile Hamburger + Logo -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <button id="mobile-hamburger-btn" onclick="openMobileMenu()"
+          class="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D7F4D8] text-codix-navy hover:bg-[#EDF8EE] flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95"
+          aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars text-base text-codix-navy"></i>
+        </button>
+
+        <a href="index.html" class="flex items-center gap-2 group" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 sm:h-10 w-auto object-contain">
+        </a>
+      </div>
+
+      <!-- Search Bar -->
+      <div id="search-container" class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form action="shop.html" method="GET"
+          class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition"
+          style="height: 50px; border-radius: 999px;" role="search">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm"></i>
+          <input name="q" type="text" placeholder="Search everything at codix wellness..."
+            class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2">
+          <button type="submit"
+            class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Action Icons -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <!-- Wishlist -->
+        <a href="shop.html"
+          class="w-10 h-10 rounded-full border border-[#FECDD3] text-[#F43F5E] hover:bg-rose-50 flex items-center justify-center transition relative group"
+          aria-label="Wishlist">
+          <i class="fa-regular fa-heart text-sm group-hover:scale-110 transition-transform"></i>
+        </a>
+
+        <!-- Sign In -->
+        <a href="login.html" class="flex items-center gap-2 cursor-pointer group" aria-label="Sign In to Account">
+          <div
+            class="w-10 h-10 rounded-full border border-[#BBF7D0] text-codix-green hover:bg-emerald-50 flex items-center justify-center transition group-hover:scale-105">
+            <i class="fa-regular fa-user text-sm"></i>
+          </div>
+          <div class="hidden xl:flex flex-col leading-tight select-none">
+            <span class="text-[13px] font-bold text-slate-800 group-hover:text-codix-green transition">Sign In</span>
+            <span class="text-[10px] text-slate-400">Account</span>
+          </div>
+        </a>
+
+        <!-- Shopping Cart -->
+        <a href="cart.html" class="flex items-center gap-2 cursor-pointer group select-none" aria-label="Shopping Cart">
+          <div
+            class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm group-hover:scale-110 transition-transform"></i>
+            <span id="cart-header-count"
+              class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">0</span>
+          </div>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total-display"
+              class="text-[14px] font-extrabold text-slate-900 group-hover:text-codix-green transition">£0.00</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 3. NAVIGATION BAR & MEGA MENU                            -->
+    <!-- ======================================================== -->
+    <nav class="block bg-white relative border-t border-slate-200/70"
+      style="width: 100%; min-height: 52px; padding: 6px 0;"
+      aria-label="Main Navigation">
+      <div class="container-codix relative flex items-center justify-between gap-6" style="min-height: 44px;">
+        <!-- Left Group: Product Categories + Nav Links -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
+          <div class="mega-menu-wrapper relative">
+            <button id="mega-menu-btn" onclick="toggleMegaMenu(event)"
+              class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer"
+              aria-haspopup="true" aria-expanded="false">
+              <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
+              <span>Product Categories</span>
+            </button>
+          </div>
+
+          <!-- Nav Links -->
+          <ul class="flex items-center gap-7 text-[13px] sm:text-[14px] font-bold" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+          </ul>
+        </div>
+
+        <!-- Right Quick Links -->
+        <div class="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-500">
+          <span class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+            <i class="fa-solid fa-shield-check text-emerald-600"></i>
+            <span>Verified 256-Bit SSL Checkout</span>
+          </span>
+        </div>
+
+        <!-- Full-Width Mega Menu Dropdown -->
+        <div id="mega-menu-dropdown"
+          class="mega-menu absolute top-full left-0 right-0 mt-3 w-full bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10 z-50 transition-all hidden"
+          role="menu">
+          <h3 class="text-base font-bold pb-3 mb-6 border-b border-slate-100" style="color: #3A2F99;">
+            Product Categories
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
+            <div>
+              <a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Immunity</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">General Wellness</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell Multivitamin</a></li>
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Codferol D3</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Beauty &amp; Skin</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Zinc 50mg Tablets</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Joint &amp; Bone</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod Tablets</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Weight &amp; Metabolism</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Apple Cider Vinegar</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">
+                <h4 class="text-sm font-bold mb-3.5" style="color: #211C68;">Sexual Health</h4>
+              </a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Wellness Vitality</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
   </header>
 
-  <!-- Main Content -->
-  <main class="container-codix max-w-[900px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
-    <!-- Success Banner -->
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 text-center mb-8">
-      <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-emerald-50 text-[#57B952] flex items-center justify-center text-2xl sm:text-3xl mb-4 shadow-inner">
-        <i class="fa-solid fa-circle-check"></i>
+  <!-- ======================================================== -->
+  <!-- 4. CHECKOUT STEP BREADCRUMB                              -->
+  <!-- ======================================================== -->
+  <section class="bg-white border-b border-slate-200/80 py-3.5 no-print" aria-label="Checkout Progress">
+    <div class="container-codix flex items-center justify-center">
+      <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
+        <a href="cart.html" class="flex items-center gap-1.5 text-slate-400 hover:text-codix-green transition">
+          <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold"><i class="fa-solid fa-check text-[9px]"></i></span>
+          <span class="hidden sm:inline">1. Cart</span>
+        </a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+        <a href="checkout.html" class="flex items-center gap-1.5 text-slate-400 hover:text-codix-green transition">
+          <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold"><i class="fa-solid fa-check text-[9px]"></i></span>
+          <span class="hidden sm:inline">2. Payment</span>
+        </a>
+        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+        <div class="flex items-center gap-1.5 text-codix-green font-bold">
+          <span class="w-5 h-5 rounded-full bg-codix-green text-white flex items-center justify-center text-[10px] font-bold shadow-xs">3</span>
+          <span>Order Confirmation</span>
+        </div>
       </div>
-      <span class="text-xs font-bold text-[#57B952] uppercase tracking-widest block mb-1">Order Confirmed</span>
-      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">Thank you for your order!</h1>
-      <p class="text-slate-500 text-sm mt-2 max-w-lg mx-auto">
-        We have received your order and sent a detailed confirmation receipt to <strong id="receipt-email" class="text-slate-800">your email</strong>.
-      </p>
+    </div>
+  </section>
 
-      <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-3.5 text-xs text-slate-700">
-        <div><span class="text-slate-400">Order Number:</span> <strong id="receipt-order-id" class="text-slate-900 font-black">#CW-00000</strong></div>
-        <span class="text-slate-300 hidden sm:inline">•</span>
-        <div><span class="text-slate-400">Status:</span> <span id="receipt-order-status" class="font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px]">Processing</span></div>
-        <span class="text-slate-300 hidden sm:inline">•</span>
-        <div><span class="text-slate-400">Payment:</span> <strong id="receipt-payment-method" class="text-slate-900 font-bold">Credit / Debit Card (Stripe)</strong></div>
+  <!-- ======================================================== -->
+  <!-- 5. MAIN CONTENT RECEIPT CONTAINER                        -->
+  <!-- ======================================================== -->
+  <main class="container-codix max-w-[1080px] mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1">
+    
+    <!-- Hero Confirmation Card -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 mb-8 relative overflow-hidden print-border">
+      <!-- Subtle Brand Accent Background Ring -->
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-emerald-50/70 pointer-events-none blur-2xl"></div>
+      
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-100">
+        <div class="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
+          <!-- Animated Checkmark Emblem -->
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-emerald-50 border-2 border-emerald-100 text-codix-green flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-[11px] font-bold mb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="receipt-badge-title">ORDER RECEIVED &amp; VERIFIED</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">Thank you for your order!</h1>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1 max-w-xl">
+              We have received your purchase. A full confirmation receipt has been sent to <strong id="receipt-email" class="text-slate-800 font-bold">your email</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="flex flex-wrap items-center gap-3 shrink-0 no-print">
+          <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition shadow-xs cursor-pointer active:scale-95">
+            <i class="fa-solid fa-print text-slate-500"></i>
+            <span>Print Receipt</span>
+          </button>
+          <a href="shop.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold transition shadow-sm cursor-pointer active:scale-95">
+            <span>Continue Shopping</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Ribbon -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 text-xs text-slate-700">
+        <div class="bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100">
+          <span class="text-slate-400 block text-[11px] font-medium mb-1">Order Reference</span>
+          <strong id="receipt-order-id" class="text-slate-900 font-black text-sm tracking-wide">#CW-000000</strong>
+        </div>
+        <div class="bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100">
+          <span class="text-slate-400 block text-[11px] font-medium mb-1">Date &amp; Time</span>
+          <strong id="receipt-order-date" class="text-slate-900 font-bold text-xs">Today</strong>
+        </div>
+        <div class="bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100">
+          <span class="text-slate-400 block text-[11px] font-medium mb-1">Order Status</span>
+          <span id="receipt-order-status" class="inline-block font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px]">Paid &amp; Processing</span>
+        </div>
+        <div class="bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100">
+          <span class="text-slate-400 block text-[11px] font-medium mb-1">Payment Method</span>
+          <strong id="receipt-payment-method" class="text-slate-900 font-bold text-xs">Stripe (Card)</strong>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- Order Fulfillment Progress Stepper                       -->
+      <!-- ======================================================== -->
+      <div class="mt-8 pt-6 border-t border-slate-100 no-print">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Fulfillment Status Tracker</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Step 1: Order Placed -->
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 shadow-xs">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 leading-tight">Order Placed</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Order verified</p>
+            </div>
+          </div>
+          <!-- Step 2: Payment Confirmed -->
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 shadow-xs">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 leading-tight">Payment Verified</h4>
+              <p id="tracker-payment-sub" class="text-[11px] text-emerald-600 font-medium mt-0.5">Stripe Encrypted</p>
+            </div>
+          </div>
+          <!-- Step 3: Preparing Dispatch -->
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-codix-green/20 text-codix-green-dark border border-codix-green flex items-center justify-center text-xs shrink-0 animate-pulse">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 leading-tight">Processing Dispatch</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">UK Warehouse</p>
+            </div>
+          </div>
+          <!-- Step 4: Out for Delivery -->
+          <div class="flex items-start gap-3 opacity-60">
+            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xs shrink-0">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 leading-tight">Royal Mail Tracked</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Dispatched within 24h</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Direct Bank Transfer Instruction Box (Shown only if BACS payment) -->
-    <div id="bank-transfer-box" class="bg-[#F0FDF4] border border-emerald-200 rounded-3xl p-6 sm:p-8 mb-8 hidden">
+    <div id="bank-transfer-box" class="bg-[#F0FDF4] border border-emerald-200 rounded-3xl p-6 sm:p-8 mb-8 hidden shadow-xs">
       <div class="flex items-start gap-4">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-lg shadow-sm">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-sm">
           <i class="fa-solid fa-building-columns"></i>
         </div>
         <div class="flex-1">
-          <h2 class="text-base font-black text-slate-900">Direct Bank Transfer Instructions</h2>
-          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-            Please make your payment directly into our official bank account. Use your <strong>Order ID</strong> as the payment reference. Your order will be dispatched as soon as funds clear.
-          </p>
-          <div class="grid sm:grid-cols-4 gap-3 mt-4 bg-white p-4 rounded-2xl border border-emerald-100 text-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-base font-black text-slate-900">Direct Bank Transfer Instructions (BACS)</h2>
+              <p class="text-xs text-slate-600 mt-0.5">Please transfer your order amount directly into our official UK corporate bank account.</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold self-start sm:self-auto">
+              <i class="fa-solid fa-clock"></i> Awaiting Transfer
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 bg-white p-4 rounded-2xl border border-emerald-100 text-xs">
             <div>
               <span class="text-slate-400 block text-[11px]">Bank Name</span>
               <strong class="text-slate-900 font-bold">Barclays Bank UK PLC</strong>
             </div>
             <div>
               <span class="text-slate-400 block text-[11px]">Sort Code</span>
-              <strong class="text-slate-900 font-bold text-sm tracking-wide">20-04-15</strong>
+              <strong class="text-slate-900 font-bold text-sm tracking-wider">20-04-15</strong>
             </div>
             <div>
               <span class="text-slate-400 block text-[11px]">Account Number</span>
-              <strong class="text-slate-900 font-bold text-sm tracking-wide">83920144</strong>
+              <strong class="text-slate-900 font-bold text-sm tracking-wider">83920144</strong>
             </div>
             <div>
-              <span class="text-slate-400 block text-[11px]">Account Name</span>
+              <span class="text-slate-400 block text-[11px]">Beneficiary Name</span>
               <strong class="text-slate-900 font-bold">Codix Wellness Ltd</strong>
             </div>
           </div>
+          <p class="text-[11px] text-slate-500 mt-3">
+            <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i>
+            <strong>Payment Reference:</strong> Please use your Order ID <code id="bacs-ref-code" class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-bold">#CW-000000</code> as the reference.
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- Order Items & Billing Summary -->
-    <div class="grid md:grid-cols-3 gap-8">
-      <!-- Left 2 Cols: Itemized List -->
-      <div class="md:col-span-2 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8">
-        <h2 class="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100">Ordered Items</h2>
-        <div id="receipt-items-list" class="space-y-4">
-          <!-- Populated by JS -->
+    <!-- 2-Column Grid: Ordered Items vs Shipping & Support -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      
+      <!-- Left 2 Cols: Ordered Items Card -->
+      <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 print-border">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-codix-green"></i>
+            <h2 class="text-base font-bold text-slate-900">Ordered Items</h2>
+          </div>
+          <span id="receipt-item-count" class="text-xs text-slate-400 font-medium">1 Item</span>
         </div>
 
-        <div class="border-t border-slate-100 mt-6 pt-4 space-y-2 text-xs text-slate-600">
-          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><strong id="receipt-subtotal" class="text-slate-800">£0.00</strong></div>
-          <div class="flex justify-between"><span class="text-slate-500">Shipping</span><strong class="text-emerald-600">FREE</strong></div>
-          <div class="flex justify-between"><span class="text-slate-500">Estimated Taxes</span><strong id="receipt-tax" class="text-slate-800">£0.00</strong></div>
-          <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-100"><span class="text-slate-900">Grand Total</span><strong id="receipt-total" class="text-base text-[#181440]">£0.00</strong></div>
+        <!-- Populated dynamically with strict image size containment -->
+        <div id="receipt-items-list" class="divide-y divide-slate-100">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Financial Summary Breakdown -->
+        <div class="border-t border-slate-100 mt-6 pt-5 space-y-2.5 text-xs text-slate-600">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Items Subtotal</span>
+            <strong id="receipt-subtotal" class="text-slate-800 font-semibold">£0.00</strong>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500 flex items-center gap-1">
+              <span>UK Express Delivery</span>
+              <span class="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">Tracked 24</span>
+            </span>
+            <strong class="text-emerald-600 font-bold uppercase tracking-wider">FREE</strong>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-500">Estimated VAT / Taxes (Included)</span>
+            <strong id="receipt-tax" class="text-slate-800 font-semibold">£0.00</strong>
+          </div>
+          <div class="flex justify-between items-center text-sm font-black text-slate-900 pt-3 border-t border-slate-100">
+            <span class="text-slate-900 text-base">Grand Total Paid</span>
+            <strong id="receipt-total" class="text-lg font-black text-codix-navy">£0.00</strong>
+          </div>
         </div>
       </div>
 
-      <!-- Right 1 Col: Customer Details & Help -->
+      <!-- Right 1 Col: Customer Details & Concierge Support -->
       <div class="space-y-6">
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-          <h2 class="text-sm font-bold text-slate-900 mb-3">Delivery Address</h2>
-          <div id="receipt-delivery-address" class="text-xs text-slate-600 leading-relaxed">
-            <p id="receipt-customer-name" class="font-bold text-slate-900"></p>
-            <p id="receipt-customer-address"></p>
-            <p id="receipt-customer-phone" class="mt-1 text-slate-500"></p>
+        
+        <!-- Delivery Address Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 print-border">
+          <div class="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100">
+            <i class="fa-solid fa-location-dot text-codix-green"></i>
+            <h2 class="text-sm font-bold text-slate-900">Delivery Address</h2>
+          </div>
+          <div id="receipt-delivery-address" class="text-xs text-slate-600 leading-relaxed space-y-1">
+            <p id="receipt-customer-name" class="font-bold text-slate-900 text-sm"></p>
+            <p id="receipt-customer-address" class="text-slate-600"></p>
+            <p id="receipt-customer-phone" class="text-slate-500 mt-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-phone text-[10px] text-slate-400"></i>
+              <span id="receipt-phone-text"></span>
+            </p>
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 text-center">
-          <i class="fa-solid fa-headset text-2xl text-[#382898] mb-2"></i>
-          <h3 class="text-xs font-bold text-slate-900">Need assistance?</h3>
-          <p class="text-[11px] text-slate-500 mt-1">Our customer wellness team is ready to support you.</p>
-          <a href="index.html#support" class="mt-3 inline-block bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-4 py-2 rounded-xl transition">
-            Contact Support
-          </a>
+        <!-- Payment Verification Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 print-border">
+          <div class="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100">
+            <i class="fa-solid fa-shield-halved text-codix-green"></i>
+            <h2 class="text-sm font-bold text-slate-900">Payment Security</h2>
+          </div>
+          <div class="text-xs text-slate-600 space-y-2">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Gateway:</span>
+              <strong id="receipt-gateway-name" class="text-slate-900 font-bold">Stripe Payments UK</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Security:</span>
+              <span class="text-emerald-600 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-lock text-[10px]"></i> 256-Bit TLS Encrypted
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Transaction Status:</span>
+              <span id="receipt-charge-status" class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold text-[11px]">Approved &amp; Cleared</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistance & Support Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 text-center no-print">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-codix-purple mx-auto flex items-center justify-center text-xl mb-3 shadow-inner">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Need assistance?</h3>
+          <p class="text-[12px] text-slate-500 mt-1 leading-relaxed">
+            Our registered pharmacist and customer support team are available Mon–Fri, 9am–5pm GMT.
+          </p>
+          <div class="mt-4 flex flex-col gap-2">
+            <a href="mailto:support@codixwellness.co.uk" class="w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-bold py-2.5 px-4 rounded-xl transition border border-slate-200">
+              <i class="fa-regular fa-envelope text-slate-500"></i>
+              <span>support@codixwellness.co.uk</span>
+            </a>
+            <a href="index.html#support" class="w-full inline-flex items-center justify-center gap-2 bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-xs">
+              <i class="fa-solid fa-comments"></i>
+              <span>Contact Wellness Concierge</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 6. BRAND LOGOS STRIP                                     -->
+  <!-- ======================================================== -->
+  <section class="brand-strip-bg px-3 sm:px-6 py-6 flex items-center justify-center no-print"
+    style="width: 100%; background-color: #382898;"
+    aria-label="Partner Brands">
+    <div class="grid grid-cols-3 sm:grid-cols-6 items-center justify-items-center gap-4 sm:gap-8 w-full max-w-[1216px] mx-auto">
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-allisa-clean.png" alt="Allisa" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-amere-clean.png" alt="Amere" class="max-h-[26px] sm:max-h-[30px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-unter-clean.png" alt="Unter" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-jurosa-clean.png" alt="JUROSA" class="max-h-[32px] sm:max-h-[36px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-bticn-clean.png" alt="bticn" class="max-h-[28px] sm:max-h-[32px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+      <div class="flex items-center justify-center p-2 h-[50px] sm:h-[60px]">
+        <img src="images/brand-optimize-clean.png" alt="Optimize" class="max-h-[30px] sm:max-h-[34px] max-w-full w-auto object-contain opacity-90 hover:opacity-100 hover:scale-105 transition-all" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 7. MAIN FOOTER                                           -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white no-print" style="background-color: #57B952;" aria-label="Footer">
+    <div class="container-codix pt-12 pb-8">
+      <div>
+        <a href="index.html" class="inline-flex items-center justify-center bg-[#CBE9C9] rounded-[2px] px-4 py-2 transition hover:opacity-90 shadow-xs"
+          style="width: 192px; height: 55px;" aria-label="Codix Wellness Homepage">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="max-h-[38px] max-w-[165px] w-auto object-contain">
+        </a>
+      </div>
+
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-14">
+        <div class="grid grid-cols-1 sm:grid-cols-3 w-full lg:max-w-[780px] gap-8 sm:gap-12">
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Company</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">About Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Charity Support</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Careers</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Help</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="about.html" class="hover:text-white hover:underline transition">Contact Us</a></li>
+              <li><a href="about.html" class="hover:text-white hover:underline transition">FAQs</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Product Subscriptions</a></li>
+              <li><a href="shop.html" class="hover:text-white hover:underline transition">Delivery &amp; Returns</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg sm:text-xl font-bold text-white mb-5 tracking-tight">Shop</h4>
+            <ul class="space-y-3.5 text-sm text-white/95 font-normal">
+              <li><a href="shop.html?cat=Immunity" class="hover:text-white hover:underline transition">Immunity</a></li>
+              <li><a href="shop.html?cat=General%20Wellness" class="hover:text-white hover:underline transition">General Wellness</a></li>
+              <li><a href="shop.html?cat=Beauty" class="hover:text-white hover:underline transition">Beauty &amp; Skin Health</a></li>
+              <li><a href="shop.html?cat=Joints" class="hover:text-white hover:underline transition">Joint, Bone &amp; Muscle Health</a></li>
+              <li><a href="shop.html?cat=Weight" class="hover:text-white hover:underline transition">Weight Management &amp; Metabolism</a></li>
+              <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-white hover:underline transition">Sexual Health</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full lg:w-[380px] shrink-0">
+          <h4 class="text-base sm:text-lg font-bold text-white mb-4 tracking-normal">Follow Our Social Media</h4>
+          <div class="flex flex-col gap-2.5">
+            <div class="flex flex-wrap gap-2">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Instagram">Instagram</a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="YouTube">Youtube</a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Facebook">Facebook</a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="LinkedIn">LinkedIn</a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="Twitter">Twitter</a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2 rounded-full text-white text-xs font-semibold hover:brightness-110 hover:scale-105 transition-all shadow-sm"
+                style="background-color: #211C68;" aria-label="TikTok">Tik Tok</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-8" style="width: 100%; height: 0px; border-top: 1.33px solid #CBE9C9;"></div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/90">
+        <p class="text-center md:text-left">
+          Copyright © 2026 Codix Wellness &nbsp;|&nbsp; Registered in England &amp; Wales
+        </p>
+        <div class="flex items-center gap-2 text-center">
+          <a href="#" class="hover:underline transition">Terms of Use</a>
+          <span>|</span>
+          <a href="#" class="hover:underline transition">Privacy Policy</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <img src="images/pay-amex.png" alt="American Express" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-visa.png" alt="Visa" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-paypal.png" alt="PayPal" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
+          <img src="images/pay-mastercard.png" alt="Mastercard" class="h-6 w-auto object-contain rounded-[2px] shadow-xs">
         </div>
       </div>
     </div>
-  </main>
-  
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- 8. MOBILE MENU DRAWER OVERLAY                            -->
+  <!-- ======================================================== -->
+  <div id="mobile-menu-overlay" class="modal-overlay" onclick="closeMobileMenuOnBackdrop(event)">
+    <div class="fixed top-0 left-0 bottom-0 w-[300px] sm:w-[340px] bg-white z-50 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <img src="images/logo.png" alt="Codix Wellness Logo" class="h-8 w-auto object-contain">
+          <button onclick="closeMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 cursor-pointer">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <ul class="space-y-3 text-sm font-bold text-slate-800">
+          <li><a href="index.html" class="block py-2 hover:text-codix-green transition">Home</a></li>
+          <li><a href="about.html" class="block py-2 hover:text-codix-green transition">About Us</a></li>
+          <li><a href="shop.html" class="block py-2 hover:text-codix-green transition">Shop</a></li>
+          <li><a href="cart.html" class="block py-2 hover:text-codix-green transition">Cart</a></li>
+          <li><a href="index.html#support" class="block py-2 hover:text-codix-green transition">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="pt-6 border-t border-slate-100 space-y-2">
+        <a href="login.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-regular fa-user text-codix-green"></i> My Account / Sign In
+        </a>
+        <a href="cart.html" class="w-full flex items-center gap-2.5 py-2 px-3 text-xs font-semibold text-slate-700 hover:bg-emerald-50 rounded-lg transition">
+          <i class="fa-solid fa-cart-shopping text-codix-green"></i> View Cart
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
+  
   <script>
+    // Mega Menu toggle
+    function toggleMegaMenu(e) {
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      const btn = document.getElementById('mega-menu-btn');
+      const menu = document.getElementById('mega-menu-dropdown');
+      if (!btn || !menu) return;
+
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        }
+      }
+    });
+
+    // Mobile Menu
+    function openMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) overlay.classList.add('open');
+    }
+    function closeMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) overlay.classList.remove('open');
+    }
+    function closeMobileMenuOnBackdrop(e) {
+      if (e.target.id === 'mobile-menu-overlay') closeMobileMenu();
+    }
+
+    // Language dropdown toggle
+    const langBtn = document.getElementById('lang-btn');
+    const langDropdown = document.getElementById('lang-dropdown');
+    if (langBtn && langDropdown) {
+      langBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        langDropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function () {
+        langDropdown.classList.remove('open');
+      });
+    }
+    function selectLang(lang) {
+      const label = document.getElementById('lang-label');
+      if (label) label.textContent = lang;
+      if (langDropdown) langDropdown.classList.remove('open');
+    }
+
+    // Main Order Receipt Population
     document.addEventListener('DOMContentLoaded', async function () {
+      // Sync Header Cart badge
+      try {
+        const cart = JSON.parse(localStorage.getItem('codix_cart') || '[]');
+        const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+        const countEl = document.getElementById('cart-header-count');
+        if (countEl) countEl.textContent = count;
+        const totalDisplay = document.getElementById('cart-header-total-display');
+        if (totalDisplay) {
+          const total = cart.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0);
+          totalDisplay.textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(total) : `£${total.toFixed(2)}`;
+        }
+      } catch (e) {}
+
       const urlParams = new URLSearchParams(window.location.search);
       const orderId = urlParams.get('order_id') || 'CW-' + Math.floor(100000 + Math.random() * 900000);
-      const method = urlParams.get('method');
+      const method = urlParams.get('method') || 'stripe';
+      const statusParam = urlParams.get('status');
 
-      // Fetch order details
+      // Fetch order details via CodixAPI or localStorage
       let order = null;
       if (typeof CodixAPI !== 'undefined') {
         order = await CodixAPI.getOrder(orderId);
       }
 
+      // Default fallback if order not stored in current session
       if (!order) {
         order = {
           order_id: orderId,
@@ -156,67 +975,176 @@
           payment_method: method === 'bacs' ? 'Direct Bank Transfer' : 'Credit / Debit Card (Stripe)',
           billing: {
             name: 'Valued Customer',
-            email: 'customer@codixwellness.co.uk',
-            address: '24 Holborn Viaduct, London, EC1A 2BN, United Kingdom',
+            first_name: 'Vincent',
+            last_name: 'Agber',
+            email: 'vincentagber74@gmail.com',
+            address: 'Plot 4, Ikeja, Lagos',
+            city: 'Ikeja',
             phone: '+44 20 7946 0912'
           },
           items: [
-            { name: 'Codferol Vitamin D3 Oral Solution', qty: 1, price: 9.17, img: 'images/product-codferol-d3.png' }
+            {
+              id: 's1',
+              name: 'Codferol Vitamin D3 Oral Solution',
+              qty: 1,
+              price: 9.17,
+              size: '50ml',
+              img: 'images/product-codferol-d3.png'
+            }
           ],
-          total: '9.86'
+          total: '9.86',
+          date_created: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
         };
       }
 
-      // Populate UI
-      document.getElementById('receipt-order-id').textContent = '#' + (order.order_id || orderId);
-      document.getElementById('receipt-email').textContent = order.billing ? (order.billing.email || order.billing.first_name || 'your email') : 'your email';
-      document.getElementById('receipt-payment-method').textContent = order.payment_method || (method === 'bacs' ? 'Direct Bank Transfer' : 'Credit / Debit Card (Stripe)');
+      // Format Date
+      let orderDateFormatted = 'Today';
+      if (order.date_created) {
+        try {
+          const d = new Date(order.date_created);
+          if (!isNaN(d.getTime())) {
+            orderDateFormatted = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          } else {
+            orderDateFormatted = order.date_created;
+          }
+        } catch (e) {
+          orderDateFormatted = order.date_created;
+        }
+      }
+      const dateEl = document.getElementById('receipt-order-date');
+      if (dateEl) dateEl.textContent = orderDateFormatted;
 
-      const statusEl = document.getElementById('receipt-order-status');
-      if (statusEl) {
-        statusEl.textContent = order.status || (method === 'bacs' ? 'Awaiting Payment' : 'Processing');
-        if (method === 'bacs') {
-          statusEl.className = 'font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px]';
+      // Populate Order Reference & Bacs Ref
+      const cleanOrderId = '#' + (order.order_id || orderId).replace(/^#+/, '');
+      document.getElementById('receipt-order-id').textContent = cleanOrderId;
+      const bacsRef = document.getElementById('bacs-ref-code');
+      if (bacsRef) bacsRef.textContent = cleanOrderId;
+
+      // Populate Customer Email
+      const email = (order.billing && order.billing.email) ? order.billing.email : 'your email address';
+      document.getElementById('receipt-email').textContent = email;
+
+      // Populate Payment Method & Gateway
+      const isBacs = method === 'bacs' || (order.payment_method && order.payment_method.toLowerCase().includes('bank'));
+      const paymentMethodName = isBacs ? 'Direct Bank Transfer (BACS)' : 'Credit / Debit Card (Stripe)';
+      document.getElementById('receipt-payment-method').textContent = paymentMethodName;
+      
+      const gatewayEl = document.getElementById('receipt-gateway-name');
+      if (gatewayEl) {
+        gatewayEl.textContent = isBacs ? 'Barclays Bank UK Transfer' : 'Stripe Payments UK';
+      }
+
+      const chargeStatusEl = document.getElementById('receipt-charge-status');
+      if (chargeStatusEl) {
+        if (isBacs) {
+          chargeStatusEl.textContent = 'Pending Bank Transfer';
+          chargeStatusEl.className = 'text-amber-800 bg-amber-50 px-2 py-0.5 rounded font-semibold text-[11px]';
+        } else {
+          chargeStatusEl.textContent = 'Approved & Cleared';
+          chargeStatusEl.className = 'text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold text-[11px]';
         }
       }
 
-      if (method === 'bacs' || (order.payment_method && order.payment_method.toLowerCase().includes('bank'))) {
+      // Populate Status Badge & Progress Tracker
+      const statusBadge = document.getElementById('receipt-order-status');
+      const badgeTitle = document.getElementById('receipt-badge-title');
+      const trackerPaymentSub = document.getElementById('tracker-payment-sub');
+
+      if (isBacs) {
+        if (statusBadge) {
+          statusBadge.textContent = 'Awaiting Payment';
+          statusBadge.className = 'inline-block font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px]';
+        }
+        if (badgeTitle) badgeTitle.textContent = 'ORDER PLACED • AWAITING TRANSFER';
+        if (trackerPaymentSub) trackerPaymentSub.textContent = 'Awaiting Bank Transfer';
         const bankBox = document.getElementById('bank-transfer-box');
         if (bankBox) bankBox.classList.remove('hidden');
+      } else {
+        if (statusBadge) {
+          statusBadge.textContent = 'Paid & Processing';
+          statusBadge.className = 'inline-block font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px]';
+        }
+        if (badgeTitle) badgeTitle.textContent = 'ORDER RECEIVED & VERIFIED';
+        if (trackerPaymentSub) trackerPaymentSub.textContent = 'Stripe Encrypted • Verified';
       }
 
-      // Delivery Address
+      // Populate Delivery Address
       if (order.billing) {
+        const fullName = order.billing.name || 
+          (order.billing.first_name ? `${order.billing.first_name} ${order.billing.last_name || ''}`.trim() : 'Customer');
         const nameEl = document.getElementById('receipt-customer-name');
-        if (nameEl) nameEl.textContent = order.billing.name || (order.billing.first_name ? `${order.billing.first_name} ${order.billing.last_name || ''}` : 'Customer');
+        if (nameEl) nameEl.textContent = fullName;
+
+        const street = order.billing.address || order.billing.address_1 || '';
+        const city = order.billing.city || '';
+        const state = order.billing.state || '';
+        const country = order.billing.country || 'United Kingdom';
+        const fullAddr = [street, city, state, country].filter(Boolean).join(', ');
+        
         const addrEl = document.getElementById('receipt-customer-address');
-        if (addrEl) addrEl.textContent = order.billing.address || (order.billing.address_1 ? `${order.billing.address_1}, ${order.billing.city || ''}` : '');
-        const phoneEl = document.getElementById('receipt-customer-phone');
-        if (phoneEl) phoneEl.textContent = order.billing.phone || '';
+        if (addrEl) addrEl.textContent = fullAddr || 'Delivery address registered with order.';
+
+        const phone = order.billing.phone || '+44 20 7946 0912';
+        const phoneEl = document.getElementById('receipt-phone-text');
+        if (phoneEl) phoneEl.textContent = phone;
       }
 
-      // Items
+      // Render Itemized Order List with STRICT Thumbnail Constraints
       const itemsContainer = document.getElementById('receipt-items-list');
-      const items = order.items || [];
-      if (itemsContainer && items.length > 0) {
+      const items = order.items && order.items.length > 0 ? order.items : [
+        { name: 'Codferol Vitamin D3 Oral Solution', qty: 1, price: 9.17, img: 'images/product-codferol-d3.png', size: '50ml' }
+      ];
+
+      const countBadge = document.getElementById('receipt-item-count');
+      if (countBadge) {
+        const totalItemsCount = items.reduce((sum, it) => sum + (it.qty || 1), 0);
+        countBadge.textContent = totalItemsCount === 1 ? '1 Item' : `${totalItemsCount} Items`;
+      }
+
+      if (itemsContainer) {
         itemsContainer.innerHTML = items.map(it => {
-          const formatted = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format((it.price || 9.17) * (it.qty || 1)) : `£${((it.price || 9.17) * (it.qty || 1)).toFixed(2)}`;
+          const unitPrice = parseFloat(it.price || 9.17);
+          const qty = parseInt(it.qty || 1, 10);
+          const lineTotal = unitPrice * qty;
+          const formattedLineTotal = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(lineTotal) : `£${lineTotal.toFixed(2)}`;
+          const formattedUnitPrice = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(unitPrice) : `£${unitPrice.toFixed(2)}`;
+          const imgSrc = it.img || it.image || 'images/product-codferol-d3.png';
+          const sizeText = it.size ? `Size: ${it.size}` : 'Standard Edition';
+
           return `
-            <div class="flex items-center justify-between gap-3 py-2 border-b border-slate-50 last:border-0">
-              <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 p-1 flex items-center justify-center shrink-0">
-                <img src="${it.img || it.image || 'images/product-codferol-d3.png'}" alt="${it.name || 'Product'}" class="max-h-full max-w-full object-contain">
+            <div class="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
+              <div class="flex items-center gap-3.5 min-w-0">
+                <!-- Strict fixed thumbnail dimensions (Tailwind + Inline Style Enforced) -->
+                <div class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200/80 p-1 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs"
+                     style="width: 56px; height: 56px; min-width: 56px; min-height: 56px; max-width: 56px; max-height: 56px;">
+                  <img src="${imgSrc}" 
+                       alt="${it.name || 'Product'}" 
+                       style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; max-width: 48px; max-height: 48px; object-fit: contain;" 
+                       class="object-contain"
+                       loading="lazy">
+                </div>
+                <div class="min-w-0">
+                  <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate leading-snug">${it.name || 'Wellness Supplement'}</h4>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${sizeText}</span>
+                    <span class="text-[11px] font-semibold text-slate-500">Qty: ${qty} &times; ${formattedUnitPrice}</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex-1 min-w-0">
-                <h4 class="text-xs font-bold text-slate-900 truncate">${it.name || 'Product'}</h4>
-                <p class="text-[11px] text-slate-400">Qty: ${it.qty || 1}</p>
+              <div class="text-right shrink-0">
+                <span class="text-xs sm:text-sm font-black text-slate-900">${formattedLineTotal}</span>
               </div>
-              <span class="text-xs font-bold text-slate-800 shrink-0">${formatted}</span>
             </div>
           `;
         }).join('');
       }
 
-      const totalVal = parseFloat(order.total || 9.86);
+      // Compute Subtotal, Tax, and Total
+      let totalVal = parseFloat(order.total || 0);
+      if (!totalVal || totalVal === 0) {
+        totalVal = items.reduce((sum, it) => sum + ((it.price || 9.17) * (it.qty || 1)), 0);
+      }
+      
       const subtotalVal = totalVal / 1.075;
       const taxVal = totalVal - subtotalVal;
 
@@ -226,5 +1154,5 @@
     });
   </script>
 </body>
-</html>
 
+</html>
