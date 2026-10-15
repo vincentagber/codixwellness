@@ -810,7 +810,7 @@ function codix_wc_create_order(WP_REST_Request $request) {
         // Standalone simulated order
         $order_id = 'CW-' . rand(100000, 999999);
         $order_key = 'wc_order_' . bin2hex(random_bytes(6));
-        $payment_url = 'https://codixwellness.co.uk/checkout/order-pay/' . $order_id . '/?pay_for_order=true&key=' . $order_key;
+        $payment_url = 'order-received.html?order_id=' . rawurlencode($order_id) . ($payment_method === 'bacs' ? '&method=bacs' : '&method=stripe&status=paid');
         return new WP_REST_Response([
             'success'      => true,
             'order_id'     => $order_id,

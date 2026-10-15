@@ -77,28 +77,23 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
 #########################################
-# WORDPRESS
+# DECOUPLED APP ROUTES & SAFE FALLBACKS
 #########################################
 
-RewriteRule ^index\.php$ - [L]
+# Checkout and Order Received sub-paths route directly to their HTML pages
+RewriteRule ^checkout(?:/.*)?$ checkout.html [L,QSA]
+RewriteRule ^order-received(?:/.*)?$ order-received.html [L,QSA]
 
+# WordPress routing (only if index.php physically exists)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . index.php [L]
-
-</IfModule>
-# BEGIN WordPress
-# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
-# dynamically generated, and should only be modified via WordPress filters.
-# Any changes to the directives between these markers will be overwritten.
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/index.php -f
 RewriteRule . /index.php [L]
-</IfModule>
 
+# Decoupled SPA fallback
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+</IfModule>
 # END WordPress

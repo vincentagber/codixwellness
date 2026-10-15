@@ -529,10 +529,10 @@
         <!-- Express Checkout Block -->
         <div class="mb-8">
           <p class="text-center text-xs font-semibold text-slate-500 mb-3 tracking-wide">Express checkout</p>
-          <div class="grid grid-cols-2 gap-3 max-w-[480px] mx-auto">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-w-[560px] mx-auto">
             <!-- Shop Pay Button -->
             <button type="button" onclick="handleExpressCheckout('Shop Pay')"
-              class="h-12 rounded-lg text-white font-bold flex items-center justify-center gap-1.5 transition hover:brightness-110 active:scale-98 cursor-pointer shadow-xs"
+              class="h-11 rounded-lg text-white font-bold flex items-center justify-center gap-1 transition hover:brightness-110 active:scale-98 cursor-pointer shadow-xs"
               style="background-color: #5A31F4;" aria-label="Express checkout with Shop Pay">
               <span class="italic font-extrabold text-base tracking-tight">shop</span>
               <span class="text-xs bg-white text-[#5A31F4] font-black px-1.5 py-0.5 rounded ml-0.5">pay</span>
@@ -540,10 +540,18 @@
 
             <!-- Google Pay Button -->
             <button type="button" onclick="handleExpressCheckout('Google Pay')"
-              class="h-12 rounded-lg bg-[#111111] hover:bg-black text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
+              class="h-11 rounded-lg bg-[#111111] hover:bg-black text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
               aria-label="Express checkout with Google Pay">
               <i class="fa-brands fa-google text-sm"></i>
               <span class="text-sm font-semibold tracking-tight">Pay</span>
+            </button>
+
+            <!-- Apple Pay Button -->
+            <button type="button" onclick="handleExpressCheckout('Apple Pay')"
+              class="h-11 rounded-lg bg-black hover:bg-slate-900 text-white font-bold flex items-center justify-center gap-1.5 transition active:scale-98 cursor-pointer shadow-xs"
+              aria-label="Express checkout with Apple Pay">
+              <i class="fa-brands fa-apple text-base"></i>
+              <span class="text-sm font-bold tracking-tight">Pay</span>
             </button>
           </div>
 
@@ -1371,6 +1379,55 @@
       }
     }
 
+    async function handleExpressCheckout(method) {
+      if (checkoutItems.length === 0) {
+        alert('Your cart is empty. Please add items to checkout.');
+        return;
+      }
+
+      // 1. Preselect Stripe payment method
+      const stripeRadio = document.getElementById('pay-stripe');
+      if (stripeRadio) {
+        stripeRadio.checked = true;
+        togglePaymentFields();
+      }
+
+      // 2. Validate essential fields
+      const emailInput = document.getElementById('customer-email');
+      const firstNameInput = document.getElementById('first-name');
+      const addressInput = document.getElementById('shipping-address') || document.getElementById('address');
+
+      if (!emailInput || !emailInput.value.trim() || !firstNameInput || !firstNameInput.value.trim() || !addressInput || !addressInput.value.trim()) {
+        const target = (!emailInput || !emailInput.value.trim()) ? emailInput : ((!firstNameInput || !firstNameInput.value.trim()) ? firstNameInput : addressInput);
+        if (target) {
+          target.focus();
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        showExpressToast(`Express checkout with ${method}: Please confirm your contact & delivery address below to complete order.`);
+        return;
+      }
+
+      // 3. Trigger submit
+      const form = document.getElementById('checkout-form');
+      if (form) {
+        form.requestSubmit ? form.requestSubmit() : handleOrderSubmit(new Event('submit'));
+      }
+    }
+
+    function showExpressToast(msg) {
+      const existing = document.getElementById('express-toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'express-toast';
+      toast.className = 'fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-all duration-300 transform translate-y-0 max-w-sm';
+      toast.innerHTML = `<i class="fa-solid fa-circle-info text-emerald-400 text-sm shrink-0"></i><span class="leading-relaxed">${msg}</span><button type="button" onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white ml-2"><i class="fa-solid fa-xmark"></i></button>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        if (toast && toast.parentElement) toast.remove();
+      }, 5000);
+    }
+
     async function handleOrderSubmit(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('submit-order-btn');
@@ -1458,13 +1515,6 @@
         const orderId = orderResult.order_id;
 
         if (paymentMethod === 'stripe') {
-          // If WooCommerce direct Stripe pay URL is returned by live server, redirect directly to WooCommerce Stripe payment session
-          if (orderResult.payment_url && window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-            localStorage.removeItem('codix_cart');
-            window.location.href = orderResult.payment_url;
-            return;
-          }
-
           // Direct Stripe Verification & Receipt Confirmation
           await CodixAPI.verifyStripe(orderId, 'stripe_pm_' + Math.random().toString(36).substring(2, 10));
           localStorage.removeItem('codix_cart');

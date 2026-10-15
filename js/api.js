@@ -844,7 +844,7 @@
         success: true,
         order_id: localOrderId,
         order_key: localOrderKey,
-        payment_url: isBacs ? '' : 'https://codixwellness.co.uk/checkout/order-pay/' + localOrderId + '/?pay_for_order=true&key=' + localOrderKey,
+        payment_url: isBacs ? 'order-received.html?order_id=' + encodeURIComponent(localOrderId) + '&method=bacs' : 'order-received.html?order_id=' + encodeURIComponent(localOrderId) + '&method=stripe&status=paid',
         total: orderPayload.total || '0.00',
         currency: orderPayload.currency || 'GBP',
         status: isBacs ? 'on-hold' : 'pending',
