@@ -13,6 +13,9 @@
   'use strict';
 
   function getApiBase() {
+    if (typeof CodixConfig !== 'undefined' && CodixConfig.getApiBase) {
+      return CodixConfig.getApiBase();
+    }
     if (typeof window !== 'undefined' && window.CODIX_API_BASE) {
       return String(window.CODIX_API_BASE).replace(/\/+$/, '');
     }
@@ -28,10 +31,15 @@
 
       // If running on localhost/127.0.0.1 in a subdirectory (e.g. MAMP /CodixWellness/)
       if (host.indexOf('localhost') !== -1 || host.indexOf('127.0.0.1') !== -1) {
-        var folderMatch = pathname.match(/^(\/[^/]+)\/(?:shop|index|product|cart|checkout|about|blog|login|register)/i);
-        if (folderMatch && folderMatch[1] && !folderMatch[1].startsWith('/wp-')) {
+        var folderMatch = pathname.match(/^(\/[^/]+)/);
+        if (folderMatch && folderMatch[1] && folderMatch[1].toLowerCase() === '/codixwellness') {
           return folderMatch[1] + '/wp-json';
         }
+        return '/wp-json';
+      }
+
+      if (proto === 'http:' || proto === 'https:') {
+        return window.location.origin + '/wp-json';
       }
     }
     return '/wp-json';
@@ -416,9 +424,9 @@
     },
 
     /**
-     * Clear user session
+     * Clear local session storage
      */
-    logout: function () {
+    clearSession: function () {
       try {
         localStorage.removeItem('codix_jwt_token');
         localStorage.removeItem('codix_user');
@@ -445,7 +453,7 @@
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       };
-      if (auth && this.getToken()) {
+      if (auth !== false && this.getToken()) {
         headers['Authorization'] = 'Bearer ' + this.getToken();
       }
       return headers;
@@ -713,44 +721,334 @@
     },
 
     /**
-     * Authenticate user with WordPress / JWT
+     * Customer registration with WordPress / WooCommerce
      */
-    login: async function (username, password) {
-      try {
-        var res = await fetch(apiEndpoint('/jwt-auth/v1/token'), {
-          method: 'POST',
-          headers: this.getHeaders(false),
-          body: JSON.stringify({ username: username, password: password })
-        });
+    register: async function (userData) {
+      userData = userData || {};
+      var payload = {
+        first_name: userData.firstName || userData.first_name || '',
+        last_name: userData.lastName || userData.last_name || '',
+        email: userData.email || '',
+        password: userData.password || '',
+        username: userData.username || userData.email || ''
+      };
 
-        var data = await res.json().catch(function () { return {}; });
-
-        if (res.ok && data.token) {
-          this.setToken(data.token);
-          var userObj = {
-            email: data.user_email || username,
-            name: data.user_display_name || username
-          };
-          localStorage.setItem('codix_user', JSON.stringify(userObj));
-          return { success: true, user: userObj };
-        } else if (res.status >= 400 && res.status < 500) {
-          return {
-            success: false,
-            message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Invalid username or password'
-          };
-        }
-      } catch (err) {
-        console.warn('Backend login endpoint unreachable, using local fallback:', err);
+      if (!payload.email || !payload.email.includes('@')) {
+        return { success: false, code: 'invalid_email', message: 'Please provide a valid email address.' };
+      }
+      if (!payload.password || payload.password.length < 6) {
+        return { success: false, code: 'weak_password', message: 'Password must be at least 6 characters long.' };
+      }
+      if (!payload.first_name) {
+        return { success: false, code: 'missing_name', message: 'First name is required.' };
       }
 
-      // Offline / Local mock auth for preview
-      var mockUser = {
-        email: username.includes('@') ? username : username + '@example.com',
-        name: username.split('@')[0]
+      var endpoints = [
+        apiEndpoint('/codix/v1/auth/register'),
+        apiEndpoint('/wp/v2/users/register')
+      ];
+
+      for (var i = 0; i < endpoints.length; i++) {
+        try {
+          var res = await fetch(endpoints[i], {
+            method: 'POST',
+            headers: this.getHeaders(false),
+            body: JSON.stringify(payload)
+          });
+
+          var data = await res.json().catch(function () { return {}; });
+
+          if (res.ok && data.success) {
+            if (data.token) this.setToken(data.token);
+            if (data.user) {
+              localStorage.setItem('codix_user', JSON.stringify(data.user));
+            }
+            return { success: true, token: data.token, user: data.user };
+          } else if (res.status >= 400) {
+            return {
+              success: false,
+              code: data.code || 'registration_error',
+              message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Registration failed. Please check your details.'
+            };
+          }
+        } catch (err) {
+          // Continue to next endpoint if network fails
+        }
+      }
+
+      return {
+        success: false,
+        code: 'network_error',
+        message: 'Could not connect to authentication server. Please check your network connection.'
       };
-      this.setToken('mock_jwt_token_' + Date.now());
-      localStorage.setItem('codix_user', JSON.stringify(mockUser));
-      return { success: true, user: mockUser, isMock: true };
+    },
+
+    /**
+     * Authenticate customer with WordPress / WooCommerce Backend
+     */
+    login: async function (username, password) {
+      if (!username || !password) {
+        return {
+          success: false,
+          code: 'missing_credentials',
+          message: 'Please enter both your email address and password.'
+        };
+      }
+
+      var endpoints = [
+        apiEndpoint('/codix/v1/auth/login'),
+        apiEndpoint('/jwt-auth/v1/token')
+      ];
+
+      for (var i = 0; i < endpoints.length; i++) {
+        try {
+          var res = await fetch(endpoints[i], {
+            method: 'POST',
+            headers: this.getHeaders(false),
+            body: JSON.stringify({
+              email: username,
+              username: username,
+              password: password
+            })
+          });
+
+          var data = await res.json().catch(function () { return {}; });
+
+          if (res.ok && (data.token || (data.success && data.token))) {
+            var token = data.token;
+            this.setToken(token);
+            var userObj = data.user || {
+              id: data.user_id || null,
+              email: data.user_email || username,
+              name: data.user_display_name || data.user_nicename || username.split('@')[0],
+              first_name: data.first_name || (data.user_display_name ? data.user_display_name.split(' ')[0] : username.split('@')[0]),
+              display_name: data.user_display_name || username
+            };
+            localStorage.setItem('codix_user', JSON.stringify(userObj));
+            return { success: true, user: userObj, token: token };
+          } else if (res.status >= 400 && res.status < 500) {
+            return {
+              success: false,
+              code: data.code || 'invalid_credentials',
+              message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Invalid username or password.'
+            };
+          }
+        } catch (err) {
+          // Continue to fallback endpoint
+        }
+      }
+
+      return {
+        success: false,
+        code: 'connection_error',
+        message: 'Unable to connect to authentication server. Please verify your connection.'
+      };
+    },
+
+    /**
+     * Clear user session and notify backend
+     */
+    logout: async function () {
+      var token = this.getToken();
+      if (token) {
+        try {
+          await fetch(apiEndpoint('/codix/v1/auth/logout'), {
+            method: 'POST',
+            headers: this.getHeaders(true)
+          });
+        } catch (e) {}
+      }
+      try {
+        localStorage.removeItem('codix_jwt_token');
+        localStorage.removeItem('codix_user');
+      } catch (e) {}
+      return { success: true };
+    },
+
+    /**
+     * Request password reset instructions
+     */
+    lostPassword: async function (email) {
+      if (!email || !email.includes('@')) {
+        return { success: false, code: 'invalid_email', message: 'Please enter a valid email address.' };
+      }
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/auth/lost-password'), {
+          method: 'POST',
+          headers: this.getHeaders(false),
+          body: JSON.stringify({ email: email })
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (res.ok && data.success) {
+          return { success: true, message: data.message || 'Password reset instructions have been sent.' };
+        } else if (data.message) {
+          return { success: false, message: data.message };
+        }
+      } catch (e) {}
+
+      return {
+        success: true,
+        message: 'If an account exists for that email, password reset instructions have been sent.'
+      };
+    },
+
+    /**
+     * Confirm password reset
+     */
+    resetPassword: async function (key, email, newPassword) {
+      if (!key || !newPassword || newPassword.length < 6) {
+        return { success: false, message: 'Valid reset key and new password (min 6 chars) are required.' };
+      }
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/auth/reset-password'), {
+          method: 'POST',
+          headers: this.getHeaders(false),
+          body: JSON.stringify({ key: key, email: email, password: newPassword })
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (res.ok && data.success) {
+          return { success: true, message: data.message || 'Password reset successfully.' };
+        } else if (data.message) {
+          return { success: false, message: data.message };
+        }
+      } catch (e) {}
+
+      return { success: false, message: 'Unable to reset password. The link may have expired.' };
+    },
+
+    /**
+     * Retrieve authenticated customer profile
+     */
+    getProfile: async function () {
+      if (!this.getToken()) {
+        return { success: false, code: 'unauthorized', message: 'User is not signed in.' };
+      }
+
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/customer/profile'), {
+          headers: this.getHeaders(true)
+        });
+
+        if (res.status === 401) {
+          this.logout();
+          return { success: false, code: 'unauthorized', message: 'Your session has expired. Please sign in again.' };
+        }
+
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.success && data.customer) {
+            localStorage.setItem('codix_user', JSON.stringify(data.customer));
+            return { success: true, customer: data.customer };
+          }
+        }
+      } catch (e) {}
+
+      var local = this.getUser();
+      return local ? { success: true, customer: local, isCached: true } : { success: false, code: 'fetch_error', message: 'Could not load customer profile.' };
+    },
+
+    /**
+     * Update customer profile
+     */
+    updateProfile: async function (profileData) {
+      if (!this.getToken()) {
+        return { success: false, code: 'unauthorized', message: 'Authentication required.' };
+      }
+
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/customer/profile'), {
+          method: 'PUT',
+          headers: this.getHeaders(true),
+          body: JSON.stringify(profileData)
+        });
+
+        if (res.status === 401) {
+          this.logout();
+          return { success: false, code: 'unauthorized', message: 'Your session has expired.' };
+        }
+
+        var data = await res.json().catch(function () { return {}; });
+        if (res.ok && data.success && data.customer) {
+          localStorage.setItem('codix_user', JSON.stringify(data.customer));
+          return { success: true, customer: data.customer };
+        }
+      } catch (e) {}
+
+      return { success: false, message: 'Failed to update profile.' };
+    },
+
+    /**
+     * Retrieve authenticated customer order history (Server-side Authorized)
+     */
+    getCustomerOrders: async function () {
+      if (!this.getToken()) {
+        return { success: false, code: 'unauthorized', orders: [], message: 'Authentication required.' };
+      }
+
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/customer/orders'), {
+          headers: this.getHeaders(true)
+        });
+
+        if (res.status === 401) {
+          this.logout();
+          return { success: false, code: 'unauthorized', orders: [], message: 'Your session has expired.' };
+        }
+
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.success && Array.isArray(data.orders)) {
+            return { success: true, orders: data.orders, total: data.total || data.orders.length };
+          }
+        }
+      } catch (e) {}
+
+      var currentUser = this.getUser();
+      if (currentUser && currentUser.email) {
+        try {
+          var history = JSON.parse(localStorage.getItem('codix_order_history') || '[]');
+          var userOrders = history.filter(function (o) {
+            return o.billing && o.billing.email && o.billing.email.toLowerCase() === currentUser.email.toLowerCase();
+          });
+          return { success: true, orders: userOrders, total: userOrders.length, isLocal: true };
+        } catch (e) {}
+      }
+
+      return { success: true, orders: [], total: 0 };
+    },
+
+    /**
+     * Store API Cart Operations
+     */
+    getCart: async function () {
+      try {
+        var res = await fetch(apiEndpoint('/wc/store/v1/cart'), {
+          headers: this.getHeaders(true)
+        });
+        if (res.ok) {
+          var cartData = await res.json();
+          return { success: true, cart: cartData };
+        }
+      } catch (e) {}
+
+      var localCart = [];
+      try { localCart = JSON.parse(localStorage.getItem('codix_cart') || '[]'); } catch (e) {}
+      return { success: true, cart: { items: localCart }, isLocal: true };
+    },
+
+    addToCartStoreApi: async function (productId, quantity) {
+      quantity = quantity || 1;
+      try {
+        var res = await fetch(apiEndpoint('/wc/store/v1/cart/add-item'), {
+          method: 'POST',
+          headers: this.getHeaders(true),
+          body: JSON.stringify({ id: productId, quantity: quantity })
+        });
+        if (res.ok) {
+          return await res.json();
+        }
+      } catch (e) {}
+      return null;
     },
 
     /**
@@ -902,7 +1200,7 @@
     getOrder: async function (orderId) {
       try {
         var res = await fetch(apiEndpoint('/codix/v1/track-order?order_id=' + encodeURIComponent(orderId)), {
-          headers: this.getHeaders(false)
+          headers: this.getHeaders(true)
         });
         if (res.ok) {
           var data = await res.json();
@@ -969,8 +1267,36 @@
       if (onSuccess) {
         onSuccess({ reference: 'stripe_ref_' + Math.random().toString(36).substring(2, 10) });
       }
+    },
+
+    /**
+     * Sync header navigation based on customer authentication state
+     */
+    syncAuthNav: function () {
+      if (typeof document === 'undefined') return;
+      try {
+        if (this.getToken()) {
+          var user = this.getUser();
+          var name = (user && (user.first_name || user.display_name)) ? (user.first_name || user.display_name.split(' ')[0]) : 'Account';
+          var accountLinks = document.querySelectorAll('a[href="login.html"], a[href="create-account.html"]');
+          accountLinks.forEach(function (link) {
+            if (typeof window !== 'undefined' && window.location.pathname.endsWith('login.html')) return;
+            link.href = 'account.html';
+            var span = link.querySelector('span');
+            if (span && span.textContent.toLowerCase().includes('account')) {
+              span.textContent = name;
+            }
+          });
+        }
+      } catch (e) {}
     }
   };
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function () {
+      CodixAPI.syncAuthNav();
+    });
+  }
 
   return CodixAPI;
 }));

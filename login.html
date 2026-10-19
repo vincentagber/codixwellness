@@ -429,25 +429,28 @@
 
       <!-- Form Inputs -->
       <form id="login-form" onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-4 my-auto">
+        <!-- Inline Alert Notification -->
+        <div id="login-alert" class="hidden rounded-xl p-3 text-xs sm:text-sm font-medium transition" role="alert"></div>
+
         <!-- Email address -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">Email address</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="login-email">Email address</label>
           <div class="relative flex items-center">
             <i class="fa-regular fa-envelope absolute left-4 text-[#57B952] text-sm"></i>
-            <input type="email" id="login-email" required value="johncarter@outlook.com" placeholder="Email address"
+            <input type="email" id="login-email" required placeholder="name@example.com" autocomplete="email"
               class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#57B952] focus:outline-none focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
           </div>
         </div>
 
         <!-- Password -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">Password</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="login-password">Password</label>
           <div class="relative flex items-center">
             <i class="fa-solid fa-lock absolute left-4 text-slate-400 text-sm"></i>
-            <input type="password" id="login-password" required value="password123" placeholder="Password"
+            <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="current-password"
               class="w-full pl-11 pr-11 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
             <button type="button" onclick="togglePasswordVisibility('login-password')" class="absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer" aria-label="Toggle password visibility">
-              <i class="fa-regular fa-eye text-sm"></i>
+              <i class="fa-regular fa-eye text-sm" id="login-password-eye"></i>
             </button>
           </div>
           <!-- Forgot Password Link -->
@@ -458,9 +461,9 @@
 
         <!-- Submit Button -->
         <button type="submit" id="login-btn"
-          class="mt-2 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
+          class="mt-2 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer flex items-center justify-center gap-2"
           style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
-          Sign in
+          <span>Sign in</span>
         </button>
       </form>
 
@@ -655,6 +658,7 @@
     </div>
   </footer>
   
+  <script src="js/config.js"></script>
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
@@ -707,38 +711,97 @@
 
     function togglePasswordVisibility(inputId) {
       const input = document.getElementById(inputId);
+      const eye = document.getElementById(inputId + '-eye');
       if (input) {
-        input.type = input.type === 'password' ? 'text' : 'password';
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        if (eye) {
+          eye.className = isPassword ? 'fa-regular fa-eye-slash text-sm' : 'fa-regular fa-eye text-sm';
+        }
       }
     }
 
+    function showLoginAlert(type, message) {
+      const alertBox = document.getElementById('login-alert');
+      if (!alertBox) return;
+      alertBox.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-green-50', 'text-green-800', 'border-green-200', 'bg-amber-50', 'text-amber-800', 'border-amber-200');
+      
+      if (type === 'error') {
+        alertBox.className = 'rounded-xl p-3 text-xs sm:text-sm font-medium border bg-red-50 text-red-700 border-red-200 flex items-start gap-2';
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0"></i><span>${message}</span>`;
+      } else if (type === 'success') {
+        alertBox.className = 'rounded-xl p-3 text-xs sm:text-sm font-medium border bg-green-50 text-green-800 border-green-200 flex items-start gap-2';
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-check mt-0.5 shrink-0"></i><span>${message}</span>`;
+      } else if (type === 'warning') {
+        alertBox.className = 'rounded-xl p-3 text-xs sm:text-sm font-medium border bg-amber-50 text-amber-800 border-amber-200 flex items-start gap-2';
+        alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mt-0.5 shrink-0"></i><span>${message}</span>`;
+      }
+    }
+
+    // Handle check session and incoming URL parameters
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      
+      // If user already authenticated, redirect to account or redirect parameter
+      const redirectTarget = params.get('redirect') || 'account.html';
+      if (typeof CodixAPI !== 'undefined' && CodixAPI.getToken()) {
+        window.location.href = redirectTarget;
+        return;
+      }
+
+      if (params.get('registered') === '1') {
+        showLoginAlert('success', 'Your account was created successfully! Please sign in with your credentials.');
+      } else if (params.get('expired') === '1') {
+        showLoginAlert('warning', 'Your session has expired. Please sign in again.');
+      } else if (params.get('reset') === '1') {
+        showLoginAlert('success', 'Password reset instructions sent. Please check your inbox.');
+      }
+    });
+
     async function handleLoginSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('login-email').value;
+      const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
       const btn = document.getElementById('login-btn');
 
+      if (!email || !password) {
+        showLoginAlert('error', 'Please enter both your email and password.');
+        return;
+      }
+
       if (btn) {
         btn.disabled = true;
-        btn.textContent = 'Signing in...';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-sm"></i><span>Signing in...</span>';
       }
 
       try {
         const result = await CodixAPI.login(email, password);
-        if (result.success) {
-          window.location.href = 'index.html';
+        if (result && result.success) {
+          showLoginAlert('success', 'Signed in successfully. Redirecting to your account...');
+          const params = new URLSearchParams(window.location.search);
+          const rawRedirect = params.get('redirect');
+          // Validate redirect URL to prevent open redirects
+          let target = 'account.html';
+          if (rawRedirect && !rawRedirect.startsWith('http://') && !rawRedirect.startsWith('https://') && !rawRedirect.startsWith('//')) {
+            target = rawRedirect;
+          }
+          setTimeout(() => {
+            window.location.href = target;
+          }, 400);
         } else {
-          alert(result.message || 'Login failed. Please verify your credentials.');
+          const errMsg = (result && result.message) ? result.message : 'Invalid email or password. Please verify your credentials.';
+          showLoginAlert('error', errMsg);
           if (btn) {
             btn.disabled = false;
-            btn.textContent = 'Sign in';
+            btn.innerHTML = '<span>Sign in</span>';
           }
         }
       } catch (err) {
-        alert('An error occurred during sign in.');
+        console.error('Login error:', err);
+        showLoginAlert('error', 'Unable to reach the authentication service. Please check your internet connection and try again.');
         if (btn) {
           btn.disabled = false;
-          btn.textContent = 'Sign in';
+          btn.innerHTML = '<span>Sign in</span>';
         }
       }
     }

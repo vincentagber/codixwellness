@@ -428,52 +428,58 @@
       </div>
 
       <!-- Form Inputs -->
-      <form onsubmit="event.preventDefault(); alert('Account created successfully!'); window.location.href='login.html';" class="flex flex-col gap-4 my-auto">
+      <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="flex flex-col gap-4 my-auto">
+        <!-- Inline Alert Notification -->
+        <div id="register-alert" class="hidden rounded-xl p-3 text-xs sm:text-sm font-medium transition" role="alert"></div>
+
         <!-- First Name -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">First Name</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="reg-first-name">First Name</label>
           <div class="relative flex items-center">
             <i class="fa-regular fa-user absolute left-4 text-slate-400 text-sm"></i>
-            <input type="text" required placeholder="First Name"
+            <input type="text" id="reg-first-name" required placeholder="First Name" autocomplete="given-name"
               class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#57B952] focus:outline-none focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
           </div>
         </div>
 
         <!-- Last Name -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">Last Name</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="reg-last-name">Last Name</label>
           <div class="relative flex items-center">
             <i class="fa-regular fa-user absolute left-4 text-slate-400 text-sm"></i>
-            <input type="text" required placeholder="Last Name"
+            <input type="text" id="reg-last-name" required placeholder="Last Name" autocomplete="family-name"
               class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
           </div>
         </div>
 
         <!-- Email -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">Email</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="reg-email">Email</label>
           <div class="relative flex items-center">
             <i class="fa-regular fa-envelope absolute left-4 text-slate-400 text-sm"></i>
-            <input type="email" required placeholder="Email"
+            <input type="email" id="reg-email" required placeholder="name@example.com" autocomplete="email"
               class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
           </div>
         </div>
 
         <!-- Password -->
         <div>
-          <label class="block text-xs font-bold text-[#181440] mb-1.5">Password</label>
+          <label class="block text-xs font-bold text-[#181440] mb-1.5" for="reg-password">Password</label>
           <div class="relative flex items-center">
-            <i class="fa-regular fa-eye absolute left-4 text-slate-400 text-sm"></i>
-            <input type="password" required placeholder="Password"
-              class="w-full pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+            <i class="fa-solid fa-lock absolute left-4 text-slate-400 text-sm"></i>
+            <input type="password" id="reg-password" required minlength="6" placeholder="Create a secure password" autocomplete="new-password"
+              class="w-full pl-11 pr-11 py-3 text-xs sm:text-sm text-slate-700 placeholder:text-slate-400 rounded-xl border border-[#F1F2F9] focus:outline-none focus:border-[#57B952] focus:ring-2 focus:ring-[#57B952]/20 transition bg-white">
+            <button type="button" onclick="togglePasswordVisibility('reg-password')" class="absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer" aria-label="Toggle password visibility">
+              <i class="fa-regular fa-eye text-sm" id="reg-password-eye"></i>
+            </button>
           </div>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit"
-          class="mt-3 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer"
+        <button type="submit" id="reg-btn"
+          class="mt-3 w-full bg-[#57B952] hover:bg-[#48A344] text-white font-bold py-3.5 rounded-2xl transition shadow-md hover:shadow-lg active:scale-95 text-sm cursor-pointer flex items-center justify-center gap-2"
           style="box-shadow: 0px 8px 16px rgba(87, 185, 82, 0.25);">
-          Create
+          <span>Create account</span>
         </button>
       </form>
 
@@ -721,6 +727,7 @@
   </div>
 
   
+  <script src="js/config.js"></script>
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
@@ -735,7 +742,7 @@
       if (el) { el.classList.remove('open'); document.body.style.overflow = ''; }
     }
   </script>
-<script>
+  <script>
     function toggleMegaMenu(e) {
       if (e) {
         e.stopPropagation();
@@ -769,6 +776,95 @@
           }
         }
       }
-    });</script>
+    });
+
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(inputId + '-eye');
+      if (input) {
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        if (eye) {
+          eye.className = isPassword ? 'fa-regular fa-eye-slash text-sm' : 'fa-regular fa-eye text-sm';
+        }
+      }
+    }
+
+    function showRegisterAlert(type, message) {
+      const alertBox = document.getElementById('register-alert');
+      if (!alertBox) return;
+      if (type === 'error') {
+        alertBox.className = 'rounded-xl p-3 text-xs sm:text-sm font-medium border bg-red-50 text-red-700 border-red-200 flex items-start gap-2';
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0"></i><span>${message}</span>`;
+      } else if (type === 'success') {
+        alertBox.className = 'rounded-xl p-3 text-xs sm:text-sm font-medium border bg-green-50 text-green-800 border-green-200 flex items-start gap-2';
+        alertBox.innerHTML = `<i class="fa-solid fa-circle-check mt-0.5 shrink-0"></i><span>${message}</span>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof CodixAPI !== 'undefined' && CodixAPI.getToken()) {
+        window.location.href = 'account.html';
+      }
+    });
+
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('reg-first-name').value.trim();
+      const lastName = document.getElementById('reg-last-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const btn = document.getElementById('reg-btn');
+
+      if (!firstName || !email || !password) {
+        showRegisterAlert('error', 'Please fill in all required fields.');
+        return;
+      }
+
+      if (password.length < 6) {
+        showRegisterAlert('error', 'Password must be at least 6 characters long.');
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-sm"></i><span>Creating account...</span>';
+      }
+
+      try {
+        const result = await CodixAPI.register({
+          firstName,
+          lastName,
+          email,
+          password
+        });
+
+        if (result && result.success) {
+          showRegisterAlert('success', 'Account created successfully! Redirecting...');
+          setTimeout(() => {
+            if (CodixAPI.getToken()) {
+              window.location.href = 'account.html';
+            } else {
+              window.location.href = 'login.html?registered=1';
+            }
+          }, 600);
+        } else {
+          const errMsg = (result && result.message) ? result.message : 'Registration failed. Please check your information and try again.';
+          showRegisterAlert('error', errMsg);
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Create account</span>';
+          }
+        }
+      } catch (err) {
+        console.error('Registration error:', err);
+        showRegisterAlert('error', 'Unable to reach the registration service. Please try again.');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Create account</span>';
+        }
+      }
+    }
+  </script>
 </body>
 </html>

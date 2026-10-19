@@ -81,6 +81,117 @@ add_action('rest_api_init', function () {
         'callback'            => 'codix_wc_track_order',
         'permission_callback' => '__return_true'
     ]);
+
+    // Customer Authentication & Registration Endpoints
+    register_rest_route('codix/v1', '/auth/register', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_auth_register',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/auth/login', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_auth_login',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/auth/logout', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_auth_logout',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/auth/lost-password', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_auth_lost_password',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/auth/reset-password', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_auth_reset_password',
+        'permission_callback' => '__return_true'
+    ]);
+
+    // Customer Profile & Order History (Customer Authorization Enforced Server-side)
+    register_rest_route('codix/v1', '/customer/profile', [
+        'methods'             => ['GET', 'PUT', 'POST'],
+        'callback'            => 'codix_wc_customer_profile_handler',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/customer/orders', [
+        'methods'             => 'GET',
+        'callback'            => 'codix_wc_get_customer_orders',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('codix/v1', '/customer/orders/(?P<id>[\w-]+)', [
+        'methods'             => 'GET',
+        'callback'            => 'codix_wc_get_single_customer_order',
+        'permission_callback' => '__return_true'
+    ]);
+
+    // Store API & Cart Endpoints
+    register_rest_route('codix/v1', '/cart', [
+        'methods'             => ['GET', 'POST', 'DELETE'],
+        'callback'            => 'codix_wc_cart_handler',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/cart', [
+        'methods'             => ['GET', 'DELETE'],
+        'callback'            => 'codix_wc_store_cart_endpoint',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/cart/add-item', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_store_add_cart_item',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/cart/update-item', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_store_update_cart_item',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/cart/remove-item', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_store_remove_cart_item',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/cart/clear', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_store_clear_cart',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/checkout', [
+        'methods'             => 'POST',
+        'callback'            => 'codix_wc_create_order',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/products', [
+        'methods'             => 'GET',
+        'callback'            => 'codix_wc_get_products',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/products/(?P<id>[\w-]+)', [
+        'methods'             => 'GET',
+        'callback'            => 'codix_wc_get_product_detail',
+        'permission_callback' => '__return_true'
+    ]);
+
+    register_rest_route('wc/store/v1', '/products/categories', [
+        'methods'             => 'GET',
+        'callback'            => 'codix_wc_get_categories',
+        'permission_callback' => '__return_true'
+    ]);
 });
 
 // 2. Format a WooCommerce product into clean decoupled frontend schema
@@ -762,7 +873,7 @@ function codix_wc_verify_stock(WP_REST_Request $request) {
 
 // 10. Headless Order Creation Endpoint
 function codix_wc_create_order(WP_REST_Request $request) {
-    $params = $request->get_json_params();
+    $params = array_merge($request->get_params(), $request->get_json_params());
 
     $items = isset($params['items']) ? $params['items'] : [];
     $billing = isset($params['billing']) ? $params['billing'] : [];
@@ -806,24 +917,54 @@ function codix_wc_create_order(WP_REST_Request $request) {
         }
     }
 
+    // Associate customer if authenticated
+    $authenticated_user = codix_wc_get_authenticated_user($request);
+    $customer_id = $authenticated_user ? (is_object($authenticated_user) ? $authenticated_user->ID : $authenticated_user['id']) : null;
+
     if (!function_exists('wc_create_order')) {
         // Standalone simulated order
         $order_id = 'CW-' . rand(100000, 999999);
         $order_key = 'wc_order_' . bin2hex(random_bytes(6));
         $payment_url = 'order-received.html?order_id=' . rawurlencode($order_id) . ($payment_method === 'bacs' ? '&method=bacs' : '&method=stripe&status=paid');
+        $grand_total = $params['total'] ?? '0.00';
+
+        $order_record = [
+            'id'             => $order_id,
+            'order_id'       => $order_id,
+            'order_number'   => $order_id,
+            'order_key'      => $order_key,
+            'customer_id'    => $customer_id,
+            'status'         => $payment_method === 'bacs' ? 'on-hold' : 'pending',
+            'status_label'   => $payment_method === 'bacs' ? 'On Hold' : 'Pending Payment',
+            'total'          => strval($grand_total),
+            'currency'       => $currency,
+            'payment_method' => $payment_method === 'bacs' ? 'Direct Bank Transfer' : 'Credit / Debit Card (Stripe)',
+            'billing'        => $billing,
+            'items'          => $items,
+            'date_created'   => date('Y-m-d H:i:s')
+        ];
+
+        $orders = codix_wc_read_json('orders.json', []);
+        $orders[$order_id] = $order_record;
+        codix_wc_write_json('orders.json', $orders);
+
         return new WP_REST_Response([
             'success'      => true,
             'order_id'     => $order_id,
             'order_key'    => $order_key,
             'payment_url'  => $payment_url,
-            'total'        => $params['total'] ?? '0.00',
+            'total'        => $grand_total,
             'currency'     => $currency,
-            'status'       => $payment_method === 'bacs' ? 'on-hold' : 'pending'
+            'status'       => $order_record['status']
         ], 200);
     }
 
     try {
         $order = wc_create_order(["status" => "pending"]);
+
+        if ($customer_id) {
+            $order->set_customer_id(intval($customer_id));
+        }
 
         foreach ($items as $item) {
             $product_id = intval($item['id']);
@@ -981,56 +1122,95 @@ function codix_wc_verify_paystack(WP_REST_Request $request) {
 
 // 12. Order Tracking Endpoint
 function codix_wc_track_order(WP_REST_Request $request) {
-    $order_id = intval($request->get_param('order_id'));
-    $email = sanitize_email($request->get_param('email'));
+    $raw_order_id = $request->get_param('order_id') ?: $request->get_param('id') ?: '';
+    $order_id = sanitize_text_field(ltrim((string)$raw_order_id, '#'));
+    $email = sanitize_email($request->get_param('email') ?? '');
 
-    if (!$order_id) {
+    if (empty($order_id)) {
         return new WP_REST_Response(['success' => false, 'message' => 'Order ID is required'], 400);
     }
 
-    if (!function_exists('wc_get_order')) {
-        return new WP_REST_Response(['success' => false, 'message' => 'Order tracking unavailable offline'], 404);
+    $auth_user = codix_wc_get_authenticated_user($request);
+    $auth_id = $auth_user ? (is_object($auth_user) ? $auth_user->ID : $auth_user['id']) : null;
+    $auth_email = $auth_user ? (is_object($auth_user) ? $auth_user->user_email : $auth_user['email']) : null;
+
+    // 1. Try WooCommerce Core
+    if (is_numeric($order_id) && function_exists('wc_get_order')) {
+        $order = wc_get_order(intval($order_id));
+        if ($order) {
+            // Authorization Check:
+            if ($auth_id) {
+                if ($order->get_customer_id() != $auth_id && strcasecmp($order->get_billing_email(), $auth_email) !== 0) {
+                    return new WP_REST_Response(["success" => false, "code" => "forbidden", "message" => "You are not authorized to view this order."], 403);
+                }
+            } elseif ($email && strtolower($order->get_billing_email()) !== strtolower($email)) {
+                return new WP_REST_Response(["success" => false, "message" => "Billing email does not match order records"], 403);
+            }
+
+            $items = [];
+            foreach ($order->get_items() as $item) {
+                $product = $item->get_product();
+                $items[] = [
+                    'id'    => $item->get_product_id(),
+                    'name'  => $item->get_name(),
+                    'qty'   => $item->get_quantity(),
+                    'total' => $item->get_total(),
+                    'image' => $product && function_exists('wp_get_attachment_url') ? (wp_get_attachment_url($product->get_image_id()) ?: '') : ''
+                ];
+            }
+
+            return new WP_REST_Response([
+                'success' => true,
+                'order' => [
+                    'id'             => $order->get_id(),
+                    'order_id'       => $order->get_id(),
+                    'order_number'   => $order->get_order_number(),
+                    'status'         => $order->get_status(),
+                    'status_label'   => function_exists('wc_get_order_status_name') ? wc_get_order_status_name($order->get_status()) : ucfirst($order->get_status()),
+                    'date_created'   => $order->get_date_created() ? $order->get_date_created()->format('Y-m-d H:i:s') : '',
+                    'total'          => $order->get_total(),
+                    'currency'       => $order->get_currency(),
+                    'payment_method' => $order->get_payment_method_title(),
+                    'billing' => [
+                        'name'       => $order->get_formatted_billing_full_name(),
+                        'first_name' => $order->get_billing_first_name(),
+                        'last_name'  => $order->get_billing_last_name(),
+                        'email'      => $order->get_billing_email(),
+                        'phone'      => $order->get_billing_phone(),
+                        'address'    => $order->get_billing_address_1() . ', ' . $order->get_billing_city(),
+                        'address_1'  => $order->get_billing_address_1(),
+                        'city'       => $order->get_billing_city(),
+                        'country'    => $order->get_billing_country()
+                    ],
+                    'items' => $items
+                ]
+            ], 200);
+        }
     }
 
-    $order = wc_get_order($order_id);
-    if (!$order) {
-        return new WP_REST_Response(['success' => false, 'message' => 'Order not found'], 404);
+    // 2. Try Decoupled Order Storage
+    $orders = codix_wc_read_json('orders.json', []);
+    if (isset($orders[$order_id])) {
+        $ord = $orders[$order_id];
+
+        // Authorization check:
+        if ($auth_id) {
+            if (!empty($ord['customer_id']) && (string)$ord['customer_id'] !== (string)$auth_id) {
+                if (empty($ord['billing']['email']) || strcasecmp($ord['billing']['email'], $auth_email) !== 0) {
+                    return new WP_REST_Response(["success" => false, "code" => "forbidden", "message" => "You are not authorized to view this order."], 403);
+                }
+            }
+        } elseif ($email && !empty($ord['billing']['email']) && strcasecmp($ord['billing']['email'], $email) !== 0) {
+            return new WP_REST_Response(["success" => false, "message" => "Billing email does not match order records"], 403);
+        }
+
+        return new WP_REST_Response([
+            'success' => true,
+            'order'   => $ord
+        ], 200);
     }
 
-    if ($email && strtolower($order->get_billing_email()) !== strtolower($email)) {
-        return new WP_REST_Response(["success" => false, "message" => "Billing email does not match order records"], 403);
-    }
-
-    $items = [];
-    foreach ($order->get_items() as $item) {
-        $product = $item->get_product();
-        $items[] = [
-            'name' => $item->get_name(),
-            'qty'  => $item->get_quantity(),
-            'total' => $item->get_total(),
-            'image' => $product ? wp_get_attachment_url($product->get_image_id()) : ''
-        ];
-    }
-
-    return new WP_REST_Response([
-        'success' => true,
-        'order' => [
-            'id' => $order->get_id(),
-            'status' => $order->get_status(),
-            'status_label' => wc_get_order_status_name($order->get_status()),
-            'date_created' => $order->get_date_created()->format('Y-m-d H:i:s'),
-            'total' => $order->get_total(),
-            'currency' => $order->get_currency(),
-            'payment_method' => $order->get_payment_method_title(),
-            'billing' => [
-                'name' => $order->get_formatted_billing_full_name(),
-                'email' => $order->get_billing_email(),
-                'phone' => $order->get_billing_phone(),
-                'address' => $order->get_billing_address_1() . ', ' . $order->get_billing_city()
-            ],
-            'items' => $items
-        ]
-    ], 200);
+    return new WP_REST_Response(['success' => false, 'message' => 'Order not found'], 404);
 }
 
 // 14. Real-time Stripe Webhook Receiver
@@ -1084,4 +1264,988 @@ function codix_wc_stripe_webhook(WP_REST_Request $request) {
 
     return new WP_REST_Response(['received' => true, 'event' => $event_type, 'order_id' => $order_id], 200);
 }
+
+// =========================================================================
+// 15. Standalone Data Storage Helpers (Decoupled Resilient Persistence)
+// =========================================================================
+
+function codix_wc_get_data_dir() {
+    $dir = __DIR__ . '/data';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0755, true);
+    }
+    return $dir;
+}
+
+function codix_wc_read_json($filename, $default = []) {
+    $path = codix_wc_get_data_dir() . '/' . $filename;
+    if (!file_exists($path)) {
+        return $default;
+    }
+    $content = @file_get_contents($path);
+    if ($content === false || $content === '') {
+        return $default;
+    }
+    $decoded = json_decode($content, true);
+    return is_array($decoded) ? $decoded : $default;
+}
+
+function codix_wc_write_json($filename, $data) {
+    $path = codix_wc_get_data_dir() . '/' . $filename;
+    $encoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    return @file_put_contents($path, $encoded, LOCK_EX) !== false;
+}
+
+// =========================================================================
+// 16. Authentication & Session Security Helpers
+// =========================================================================
+
+function codix_wc_get_bearer_token($request = null) {
+    if ($request && method_exists($request, 'get_header')) {
+        $auth = $request->get_header('authorization');
+        if (!empty($auth) && preg_match('/Bearer\s+(\S+)/i', $auth, $m)) {
+            return $m[1];
+        }
+    }
+
+    $server_keys = ['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION', 'Authorization'];
+    foreach ($server_keys as $k) {
+        if (!empty($_SERVER[$k]) && preg_match('/Bearer\s+(\S+)/i', $_SERVER[$k], $m)) {
+            return $m[1];
+        }
+    }
+
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+        foreach ($headers as $k => $v) {
+            if (strcasecmp($k, 'Authorization') === 0 && preg_match('/Bearer\s+(\S+)/i', $v, $m)) {
+                return $m[1];
+            }
+        }
+    }
+
+    // Fallback to query parameter or cookie
+    if ($request && method_exists($request, 'get_param') && $request->get_param('token')) {
+        return sanitize_text_field($request->get_param('token'));
+    }
+    if (!empty($_COOKIE['codix_jwt_token'])) {
+        return sanitize_text_field($_COOKIE['codix_jwt_token']);
+    }
+
+    return null;
+}
+
+function codix_wc_get_authenticated_user($request = null) {
+    $token = codix_wc_get_bearer_token($request);
+    if (empty($token)) {
+        if (function_exists('is_user_logged_in') && is_user_logged_in()) {
+            return wp_get_current_user();
+        }
+        return null;
+    }
+
+    // If WordPress core is present, verify against user meta
+    if (function_exists('get_users')) {
+        $token_hash = hash('sha256', $token);
+        $users = get_users([
+            'meta_key'   => '_codix_auth_token_' . $token_hash,
+            'number'     => 1
+        ]);
+        if (!empty($users)) {
+            $user = $users[0];
+            $expires = intval(get_user_meta($user->ID, '_codix_auth_expires_' . $token_hash, true));
+            if ($expires > 0 && $expires < time()) {
+                delete_user_meta($user->ID, '_codix_auth_token_' . $token_hash);
+                delete_user_meta($user->ID, '_codix_auth_expires_' . $token_hash);
+                return null;
+            }
+            return $user;
+        }
+    }
+
+    // Standalone / decoupled session verification
+    $sessions = codix_wc_read_json('sessions.json', []);
+    $token_hash = hash('sha256', $token);
+    if (isset($sessions[$token_hash])) {
+        $sess = $sessions[$token_hash];
+        if (isset($sess['expires_at']) && $sess['expires_at'] < time()) {
+            unset($sessions[$token_hash]);
+            codix_wc_write_json('sessions.json', $sessions);
+            return null;
+        }
+        $users = codix_wc_read_json('users.json', []);
+        $user_id = $sess['user_id'] ?? null;
+        if ($user_id && isset($users[$user_id])) {
+            return $users[$user_id];
+        }
+    }
+
+    return null;
+}
+
+function codix_wc_store_session($user_id, $token, $expires_at) {
+    $token_hash = hash('sha256', $token);
+
+    if (function_exists('update_user_meta') && is_numeric($user_id)) {
+        update_user_meta(intval($user_id), '_codix_auth_token_' . $token_hash, 1);
+        update_user_meta(intval($user_id), '_codix_auth_expires_' . $token_hash, $expires_at);
+    }
+
+    $sessions = codix_wc_read_json('sessions.json', []);
+    $sessions[$token_hash] = [
+        'user_id'    => $user_id,
+        'created_at' => time(),
+        'expires_at' => $expires_at
+    ];
+    codix_wc_write_json('sessions.json', $sessions);
+}
+
+function codix_wc_revoke_session($token) {
+    $token_hash = hash('sha256', $token);
+
+    if (function_exists('get_users')) {
+        $users = get_users([
+            'meta_key'   => '_codix_auth_token_' . $token_hash,
+            'number'     => 1
+        ]);
+        if (!empty($users)) {
+            delete_user_meta($users[0]->ID, '_codix_auth_token_' . $token_hash);
+            delete_user_meta($users[0]->ID, '_codix_auth_expires_' . $token_hash);
+        }
+    }
+
+    $sessions = codix_wc_read_json('sessions.json', []);
+    if (isset($sessions[$token_hash])) {
+        unset($sessions[$token_hash]);
+        codix_wc_write_json('sessions.json', $sessions);
+        return true;
+    }
+    return false;
+}
+
+// =========================================================================
+// 17. WordPress & Decoupled Customer Authentication Endpoints
+// =========================================================================
+
+function codix_wc_auth_register(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $email = sanitize_email($params['email'] ?? $request->get_param('email') ?? '');
+    $password = (string)($params['password'] ?? $request->get_param('password') ?? '');
+    $first_name = sanitize_text_field($params['first_name'] ?? $params['firstName'] ?? $request->get_param('first_name') ?? '');
+    $last_name = sanitize_text_field($params['last_name'] ?? $params['lastName'] ?? $request->get_param('last_name') ?? '');
+    $username = sanitize_text_field($params['username'] ?? $email);
+
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'invalid_email',
+            'message' => 'Please provide a valid email address.'
+        ], 400);
+    }
+
+    if (empty($password) || strlen($password) < 6) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'weak_password',
+            'message' => 'Password must be at least 6 characters long.'
+        ], 400);
+    }
+
+    if (empty($first_name)) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'missing_name',
+            'message' => 'First name is required.'
+        ], 400);
+    }
+
+    // Check duplicate email in WordPress
+    if (function_exists('email_exists')) {
+        if (email_exists($email) || (function_exists('username_exists') && username_exists($username))) {
+            return new WP_REST_Response([
+                'success' => false,
+                'code'    => 'registration_duplicate_email',
+                'message' => 'An account with this email address already exists. Please sign in or reset your password.'
+            ], 400);
+        }
+
+        if (function_exists('wc_create_new_customer')) {
+            $user_id = wc_create_new_customer($email, $username, $password, [
+                'first_name' => $first_name,
+                'last_name'  => $last_name
+            ]);
+            if (is_wp_error($user_id)) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'code'    => $user_id->get_error_code(),
+                    'message' => $user_id->get_error_message()
+                ], 400);
+            }
+        } else {
+            $user_id = wp_create_user($username, $password, $email);
+            if (is_wp_error($user_id)) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'code'    => $user_id->get_error_code(),
+                    'message' => $user_id->get_error_message()
+                ], 400);
+            }
+            if (function_exists('wp_update_user')) {
+                wp_update_user([
+                    'ID'         => $user_id,
+                    'first_name' => $first_name,
+                    'last_name'  => $last_name,
+                    'role'       => 'customer'
+                ]);
+            }
+        }
+
+        $token = 'cw_auth_' . bin2hex(random_bytes(24));
+        $expires_at = time() + (14 * 86400);
+        codix_wc_store_session($user_id, $token, $expires_at);
+
+        return new WP_REST_Response([
+            'success' => true,
+            'token'   => $token,
+            'user'    => [
+                'id'           => $user_id,
+                'email'        => $email,
+                'first_name'   => $first_name,
+                'last_name'    => $last_name,
+                'display_name' => trim($first_name . ' ' . $last_name),
+                'role'         => 'customer'
+            ]
+        ], 201);
+    }
+
+    // Standalone decoupled storage
+    $users = codix_wc_read_json('users.json', []);
+    foreach ($users as $u) {
+        if (strcasecmp($u['email'], $email) === 0) {
+            return new WP_REST_Response([
+                'success' => false,
+                'code'    => 'registration_duplicate_email',
+                'message' => 'An account with this email address already exists. Please sign in or reset your password.'
+            ], 400);
+        }
+    }
+
+    $user_id = 'cust_' . bin2hex(random_bytes(8));
+    $user_record = [
+        'id'            => $user_id,
+        'email'         => $email,
+        'username'      => $username,
+        'password_hash' => password_hash($password, PASSWORD_BCRYPT),
+        'first_name'    => $first_name,
+        'last_name'     => $last_name,
+        'display_name'  => trim($first_name . ' ' . $last_name),
+        'role'          => 'customer',
+        'billing'       => [
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'email'      => $email,
+            'phone'      => '',
+            'address_1'  => '',
+            'city'       => '',
+            'state'      => '',
+            'postcode'   => '',
+            'country'    => 'GB'
+        ],
+        'shipping'      => [
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'address_1'  => '',
+            'city'       => '',
+            'state'      => '',
+            'postcode'   => '',
+            'country'    => 'GB'
+        ],
+        'created_at'    => date('c')
+    ];
+
+    $users[$user_id] = $user_record;
+    codix_wc_write_json('users.json', $users);
+
+    $token = 'cw_auth_' . bin2hex(random_bytes(24));
+    $expires_at = time() + (14 * 86400);
+    codix_wc_store_session($user_id, $token, $expires_at);
+
+    return new WP_REST_Response([
+        'success' => true,
+        'token'   => $token,
+        'user'    => [
+            'id'           => $user_id,
+            'email'        => $email,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => $user_record['display_name'],
+            'role'         => 'customer'
+        ]
+    ], 201);
+}
+
+function codix_wc_auth_login(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $username_or_email = sanitize_text_field($params['email'] ?? $params['username'] ?? $request->get_param('email') ?? $request->get_param('username') ?? '');
+    $password = (string)($params['password'] ?? $request->get_param('password') ?? '');
+
+    if (empty($username_or_email) || empty($password)) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'missing_credentials',
+            'message' => 'Email/username and password are required.'
+        ], 400);
+    }
+
+    if (function_exists('wp_authenticate')) {
+        $user = wp_authenticate($username_or_email, $password);
+        if (is_wp_error($user)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'code'    => 'invalid_credentials',
+                'message' => 'Invalid email or password. Please try again.'
+            ], 401);
+        }
+
+        $token = 'cw_auth_' . bin2hex(random_bytes(24));
+        $expires_at = time() + (14 * 86400);
+        codix_wc_store_session($user->ID, $token, $expires_at);
+
+        return new WP_REST_Response([
+            'success' => true,
+            'token'   => $token,
+            'user'    => [
+                'id'           => $user->ID,
+                'email'        => $user->user_email,
+                'first_name'   => (function_exists('get_user_meta') ? get_user_meta($user->ID, 'first_name', true) : '') ?: $user->display_name,
+                'last_name'    => function_exists('get_user_meta') ? get_user_meta($user->ID, 'last_name', true) : '',
+                'display_name' => $user->display_name,
+                'role'         => !empty($user->roles) ? $user->roles[0] : 'customer'
+            ]
+        ], 200);
+    }
+
+    // Standalone decoupled auth
+    $users = codix_wc_read_json('users.json', []);
+    $matched_user = null;
+    foreach ($users as $u) {
+        if (strcasecmp($u['email'], $username_or_email) === 0 || (isset($u['username']) && strcasecmp($u['username'], $username_or_email) === 0)) {
+            $matched_user = $u;
+            break;
+        }
+    }
+
+    if (!$matched_user || empty($matched_user['password_hash']) || !password_verify($password, $matched_user['password_hash'])) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'invalid_credentials',
+            'message' => 'Invalid email or password. Please try again.'
+        ], 401);
+    }
+
+    $token = 'cw_auth_' . bin2hex(random_bytes(24));
+    $expires_at = time() + (14 * 86400);
+    codix_wc_store_session($matched_user['id'], $token, $expires_at);
+
+    return new WP_REST_Response([
+        'success' => true,
+        'token'   => $token,
+        'user'    => [
+            'id'           => $matched_user['id'],
+            'email'        => $matched_user['email'],
+            'first_name'   => $matched_user['first_name'] ?? '',
+            'last_name'    => $matched_user['last_name'] ?? '',
+            'display_name' => $matched_user['display_name'] ?? $matched_user['email'],
+            'role'         => 'customer'
+        ]
+    ], 200);
+}
+
+function codix_wc_auth_logout(WP_REST_Request $request) {
+    $token = codix_wc_get_bearer_token($request);
+    if (!empty($token)) {
+        codix_wc_revoke_session($token);
+    }
+    return new WP_REST_Response([
+        'success' => true,
+        'message' => 'Logged out successfully.'
+    ], 200);
+}
+
+function codix_wc_auth_lost_password(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $email = sanitize_email($params['email'] ?? $request->get_param('email') ?? '');
+
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'invalid_email',
+            'message' => 'Please provide a valid email address.'
+        ], 400);
+    }
+
+    if (function_exists('retrieve_password')) {
+        @retrieve_password($email);
+    } else {
+        $reset_token = bin2hex(random_bytes(16));
+        $tokens = codix_wc_read_json('reset_tokens.json', []);
+        $tokens[$reset_token] = [
+            'email'      => $email,
+            'expires_at' => time() + 3600
+        ];
+        codix_wc_write_json('reset_tokens.json', $tokens);
+    }
+
+    $response_data = [
+        'success' => true,
+        'message' => 'If an account exists for that email, password reset instructions have been sent.'
+    ];
+    if (isset($reset_token)) {
+        $response_data['reset_key'] = $reset_token;
+    }
+
+    return new WP_REST_Response($response_data, 200);
+}
+
+function codix_wc_auth_reset_password(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $key = sanitize_text_field($params['key'] ?? $params['token'] ?? '');
+    $email = sanitize_email($params['email'] ?? '');
+    $new_password = (string)($params['password'] ?? $params['new_password'] ?? '');
+
+    if (empty($key) || empty($new_password) || strlen($new_password) < 6) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'invalid_request',
+            'message' => 'Valid reset key and new password (min 6 chars) are required.'
+        ], 400);
+    }
+
+    if (function_exists('check_password_reset_key') && function_exists('reset_password')) {
+        $user = check_password_reset_key($key, $email);
+        if (is_wp_error($user)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'code'    => 'invalid_key',
+                'message' => 'Your password reset link is invalid or has expired.'
+            ], 400);
+        }
+        reset_password($user, $new_password);
+        return new WP_REST_Response([
+            'success' => true,
+            'message' => 'Your password has been reset successfully. Please sign in.'
+        ], 200);
+    }
+
+    $tokens = codix_wc_read_json('reset_tokens.json', []);
+    if (!isset($tokens[$key]) || $tokens[$key]['expires_at'] < time()) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'invalid_key',
+            'message' => 'Your password reset link is invalid or has expired.'
+        ], 400);
+    }
+
+    $target_email = $tokens[$key]['email'];
+    $users = codix_wc_read_json('users.json', []);
+    $found = false;
+    foreach ($users as $id => $u) {
+        if (strcasecmp($u['email'], $target_email) === 0) {
+            $users[$id]['password_hash'] = password_hash($new_password, PASSWORD_BCRYPT);
+            $found = true;
+            break;
+        }
+    }
+
+    if ($found) {
+        codix_wc_write_json('users.json', $users);
+    }
+    unset($tokens[$key]);
+    codix_wc_write_json('reset_tokens.json', $tokens);
+
+    return new WP_REST_Response([
+        'success' => true,
+        'message' => 'Your password has been reset successfully. Please sign in.'
+    ], 200);
+}
+
+// =========================================================================
+// 18. Customer Profile & Order History (Authorization Enforced Server-Side)
+// =========================================================================
+
+function codix_wc_customer_profile_handler(WP_REST_Request $request) {
+    $user = codix_wc_get_authenticated_user($request);
+    if (!$user) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'unauthorized',
+            'message' => 'Your session has expired or is invalid. Please sign in again.'
+        ], 401);
+    }
+
+    $method = strtoupper($request->get_method() ?: $_SERVER['REQUEST_METHOD'] ?? 'GET');
+
+    // Handle Profile Update (PUT / POST)
+    if ($method === 'PUT' || $method === 'POST') {
+        $params = $request->get_json_params();
+        $first_name = isset($params['first_name']) ? sanitize_text_field($params['first_name']) : null;
+        $last_name = isset($params['last_name']) ? sanitize_text_field($params['last_name']) : null;
+        $phone = isset($params['phone']) ? sanitize_text_field($params['phone']) : null;
+        $billing = isset($params['billing']) && is_array($params['billing']) ? $params['billing'] : [];
+        $shipping = isset($params['shipping']) && is_array($params['shipping']) ? $params['shipping'] : [];
+
+        if (is_object($user) && function_exists('update_user_meta')) {
+            $user_id = $user->ID;
+            if ($first_name !== null) update_user_meta($user_id, 'first_name', $first_name);
+            if ($last_name !== null) update_user_meta($user_id, 'last_name', $last_name);
+            if ($phone !== null) update_user_meta($user_id, 'billing_phone', $phone);
+
+            foreach ($billing as $k => $v) {
+                update_user_meta($user_id, 'billing_' . $k, sanitize_text_field($v));
+            }
+            foreach ($shipping as $k => $v) {
+                update_user_meta($user_id, 'shipping_' . $k, sanitize_text_field($v));
+            }
+        } elseif (is_array($user)) {
+            $users = codix_wc_read_json('users.json', []);
+            $user_id = $user['id'];
+            if (isset($users[$user_id])) {
+                if ($first_name !== null) $users[$user_id]['first_name'] = $first_name;
+                if ($last_name !== null) $users[$user_id]['last_name'] = $last_name;
+                $users[$user_id]['display_name'] = trim(($users[$user_id]['first_name'] ?? '') . ' ' . ($users[$user_id]['last_name'] ?? ''));
+                if ($phone !== null) $users[$user_id]['billing']['phone'] = $phone;
+                if (!empty($billing)) {
+                    $users[$user_id]['billing'] = array_merge($users[$user_id]['billing'] ?? [], array_map('sanitize_text_field', $billing));
+                }
+                if (!empty($shipping)) {
+                    $users[$user_id]['shipping'] = array_merge($users[$user_id]['shipping'] ?? [], array_map('sanitize_text_field', $shipping));
+                }
+                codix_wc_write_json('users.json', $users);
+                $user = $users[$user_id];
+            }
+        }
+    }
+
+    // Format output profile
+    if (is_object($user)) {
+        $user_id = $user->ID;
+        $first_name = (function_exists('get_user_meta') ? get_user_meta($user_id, 'first_name', true) : '') ?: $user->display_name;
+        $last_name = function_exists('get_user_meta') ? get_user_meta($user_id, 'last_name', true) : '';
+        $profile = [
+            'id'           => $user_id,
+            'email'        => $user->user_email,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => $user->display_name,
+            'role'         => !empty($user->roles) ? $user->roles[0] : 'customer',
+            'date_created' => $user->user_registered,
+            'billing'      => [
+                'first_name' => (function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_first_name', true) : '') ?: $first_name,
+                'last_name'  => (function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_last_name', true) : '') ?: $last_name,
+                'email'      => (function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_email', true) : '') ?: $user->user_email,
+                'phone'      => function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_phone', true) : '',
+                'address_1'  => function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_address_1', true) : '',
+                'city'       => function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_city', true) : '',
+                'state'      => function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_state', true) : '',
+                'postcode'   => function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_postcode', true) : '',
+                'country'    => (function_exists('get_user_meta') ? get_user_meta($user_id, 'billing_country', true) : '') ?: 'GB'
+            ],
+            'shipping'     => [
+                'first_name' => (function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_first_name', true) : '') ?: $first_name,
+                'last_name'  => (function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_last_name', true) : '') ?: $last_name,
+                'address_1'  => function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_address_1', true) : '',
+                'city'       => function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_city', true) : '',
+                'state'      => function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_state', true) : '',
+                'postcode'   => function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_postcode', true) : '',
+                'country'    => (function_exists('get_user_meta') ? get_user_meta($user_id, 'shipping_country', true) : '') ?: 'GB'
+            ]
+        ];
+        return new WP_REST_Response([
+            'success'  => true,
+            'user'     => $profile,
+            'customer' => $profile
+        ], 200);
+    }
+
+    $profile = [
+        'id'           => $user['id'],
+        'email'        => $user['email'],
+        'first_name'   => $user['first_name'] ?? '',
+        'last_name'    => $user['last_name'] ?? '',
+        'display_name' => $user['display_name'] ?? $user['email'],
+        'role'         => 'customer',
+        'date_created' => $user['created_at'] ?? date('c'),
+        'billing'      => $user['billing'] ?? [],
+        'shipping'     => $user['shipping'] ?? []
+    ];
+    return new WP_REST_Response([
+        'success'  => true,
+        'user'     => $profile,
+        'customer' => $profile
+    ], 200);
+}
+
+function codix_wc_get_customer_orders(WP_REST_Request $request) {
+    $user = codix_wc_get_authenticated_user($request);
+    if (!$user) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'unauthorized',
+            'message' => 'Valid authentication required to access order history.'
+        ], 401);
+    }
+
+    $customer_id = is_object($user) ? $user->ID : $user['id'];
+    $customer_email = is_object($user) ? $user->user_email : $user['email'];
+    $orders_list = [];
+
+    // 1. Query WooCommerce orders if core is installed
+    if (function_exists('wc_get_orders')) {
+        $wc_orders = wc_get_orders([
+            'customer' => $customer_id,
+            'limit'    => -1,
+            'orderby'  => 'date',
+            'order'    => 'DESC'
+        ]);
+
+        foreach ($wc_orders as $o) {
+            $items = [];
+            foreach ($o->get_items() as $item) {
+                $p = $item->get_product();
+                $items[] = [
+                    'id'    => $item->get_product_id(),
+                    'name'  => $item->get_name(),
+                    'qty'   => $item->get_quantity(),
+                    'total' => $item->get_total(),
+                    'image' => $p && function_exists('wp_get_attachment_url') ? (wp_get_attachment_url($p->get_image_id()) ?: '') : ''
+                ];
+            }
+            $orders_list[] = [
+                'id'             => $o->get_id(),
+                'order_id'       => $o->get_id(),
+                'order_number'   => $o->get_order_number(),
+                'status'         => $o->get_status(),
+                'status_label'   => function_exists('wc_get_order_status_name') ? wc_get_order_status_name($o->get_status()) : ucfirst($o->get_status()),
+                'date_created'   => $o->get_date_created() ? $o->get_date_created()->format('Y-m-d H:i:s') : '',
+                'total'          => $o->get_total(),
+                'currency'       => $o->get_currency(),
+                'payment_method' => $o->get_payment_method_title(),
+                'items'          => $items,
+                'billing'        => [
+                    'first_name' => $o->get_billing_first_name(),
+                    'last_name'  => $o->get_billing_last_name(),
+                    'email'      => $o->get_billing_email(),
+                    'phone'      => $o->get_billing_phone(),
+                    'address_1'  => $o->get_billing_address_1(),
+                    'city'       => $o->get_billing_city(),
+                    'state'      => $o->get_billing_state(),
+                    'postcode'   => $o->get_billing_postcode(),
+                    'country'    => $o->get_billing_country()
+                ]
+            ];
+        }
+    }
+
+    // 2. Also merge any orders from orders.json matching this customer strictly
+    $standalone_orders = codix_wc_read_json('orders.json', []);
+    foreach ($standalone_orders as $so) {
+        $match = false;
+        if (!empty($so['customer_id']) && (string)$so['customer_id'] === (string)$customer_id) {
+            $match = true;
+        } elseif (!empty($so['billing']['email']) && strcasecmp($so['billing']['email'], $customer_email) === 0) {
+            $match = true;
+        }
+        if ($match) {
+            $exists = false;
+            foreach ($orders_list as $existing) {
+                if ((string)$existing['id'] === (string)$so['id']) {
+                    $exists = true;
+                    break;
+                }
+            }
+            if (!$exists) {
+                $orders_list[] = $so;
+            }
+        }
+    }
+
+    return new WP_REST_Response([
+        'success' => true,
+        'orders'  => $orders_list,
+        'total'   => count($orders_list)
+    ], 200);
+}
+
+function codix_wc_get_single_customer_order(WP_REST_Request $request) {
+    $user = codix_wc_get_authenticated_user($request);
+    if (!$user) {
+        return new WP_REST_Response([
+            'success' => false,
+            'code'    => 'unauthorized',
+            'message' => 'Valid authentication required.'
+        ], 401);
+    }
+
+    $customer_id = is_object($user) ? $user->ID : $user['id'];
+    $customer_email = is_object($user) ? $user->user_email : $user['email'];
+    $order_id = $request->get_param('id');
+
+    if (empty($order_id)) {
+        return new WP_REST_Response(['success' => false, 'message' => 'Order ID is required'], 400);
+    }
+
+    // Check WooCommerce order
+    if (is_numeric($order_id) && function_exists('wc_get_order')) {
+        $order = wc_get_order(intval($order_id));
+        if ($order) {
+            // Verify authorization: customer_id or billing email must match
+            if ($order->get_customer_id() != $customer_id && strcasecmp($order->get_billing_email(), $customer_email) !== 0) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'code'    => 'forbidden',
+                    'message' => 'You are not authorized to view this order.'
+                ], 403);
+            }
+            $items = [];
+            foreach ($order->get_items() as $item) {
+                $p = $item->get_product();
+                $items[] = [
+                    'id'    => $item->get_product_id(),
+                    'name'  => $item->get_name(),
+                    'qty'   => $item->get_quantity(),
+                    'total' => $item->get_total(),
+                    'image' => $p && function_exists('wp_get_attachment_url') ? (wp_get_attachment_url($p->get_image_id()) ?: '') : ''
+                ];
+            }
+            return new WP_REST_Response([
+                'success' => true,
+                'order'   => [
+                    'id'             => $order->get_id(),
+                    'order_id'       => $order->get_id(),
+                    'order_number'   => $order->get_order_number(),
+                    'status'         => $order->get_status(),
+                    'status_label'   => function_exists('wc_get_order_status_name') ? wc_get_order_status_name($order->get_status()) : ucfirst($order->get_status()),
+                    'date_created'   => $order->get_date_created() ? $order->get_date_created()->format('Y-m-d H:i:s') : '',
+                    'total'          => $order->get_total(),
+                    'currency'       => $order->get_currency(),
+                    'payment_method' => $order->get_payment_method_title(),
+                    'billing'        => [
+                        'first_name' => $order->get_billing_first_name(),
+                        'last_name'  => $order->get_billing_last_name(),
+                        'email'      => $order->get_billing_email(),
+                        'phone'      => $order->get_billing_phone(),
+                        'address_1'  => $order->get_billing_address_1(),
+                        'city'       => $order->get_billing_city(),
+                        'state'      => $order->get_billing_state(),
+                        'postcode'   => $order->get_billing_postcode(),
+                        'country'    => $order->get_billing_country()
+                    ],
+                    'items'          => $items
+                ]
+            ], 200);
+        }
+    }
+
+    // Check standalone orders
+    $orders = codix_wc_read_json('orders.json', []);
+    if (isset($orders[$order_id])) {
+        $ord = $orders[$order_id];
+        if (!empty($ord['customer_id']) && (string)$ord['customer_id'] !== (string)$customer_id) {
+            if (empty($ord['billing']['email']) || strcasecmp($ord['billing']['email'], $customer_email) !== 0) {
+                return new WP_REST_Response([
+                    'success' => false,
+                    'code'    => 'forbidden',
+                    'message' => 'You are not authorized to view this order.'
+                ], 403);
+            }
+        }
+        return new WP_REST_Response([
+            'success' => true,
+            'order'   => $ord
+        ], 200);
+    }
+
+    return new WP_REST_Response([
+        'success' => false,
+        'code'    => 'not_found',
+        'message' => 'Order not found.'
+    ], 404);
+}
+
+// =========================================================================
+// 19. WooCommerce Store API Cart Operations
+// =========================================================================
+
+function codix_wc_get_cart_session_id($request = null) {
+    if ($request && method_exists($request, 'get_header')) {
+        $ct = $request->get_header('cart-token');
+        if (!empty($ct)) return sanitize_text_field($ct);
+        $nonce = $request->get_header('x-wc-store-api-nonce');
+        if (!empty($nonce)) return sanitize_text_field($nonce);
+    }
+    if (!empty($_COOKIE['codix_cart_session'])) {
+        return sanitize_text_field($_COOKIE['codix_cart_session']);
+    }
+    $user = codix_wc_get_authenticated_user($request);
+    if ($user) {
+        $id = is_object($user) ? $user->ID : $user['id'];
+        return 'user_cart_' . $id;
+    }
+    return 'anon_cart_' . md5($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1' . ($_SERVER['HTTP_USER_AGENT'] ?? ''));
+}
+
+function codix_wc_store_get_cart(WP_REST_Request $request) {
+    $session_id = codix_wc_get_cart_session_id($request);
+    $carts = codix_wc_read_json('carts.json', []);
+    $cart = $carts[$session_id] ?? ['items' => [], 'coupons' => []];
+
+    $items = array_values($cart['items'] ?? []);
+    $subtotal = 0;
+    $total_qty = 0;
+    foreach ($items as $item) {
+        $qty = intval($item['quantity'] ?? 1);
+        $total_qty += $qty;
+        $subtotal += floatval($item['price'] ?? 0) * $qty;
+    }
+
+    return new WP_REST_Response([
+        'items'       => $items,
+        'item_count'  => count($items),
+        'total_items' => $total_qty,
+        'totals'      => [
+            'total_items'     => strval($total_qty),
+            'total_items_tax' => '0.00',
+            'subtotal'        => number_format($subtotal, 2, '.', ''),
+            'total_price'     => number_format($subtotal, 2, '.', ''),
+            'currency_code'   => 'GBP',
+            'currency_symbol' => '£'
+        ],
+        'coupons'     => $cart['coupons'] ?? [],
+        'nonce'       => 'wc_store_' . substr(md5($session_id), 0, 12)
+    ], 200);
+}
+
+function codix_wc_store_add_cart_item(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $product_id = sanitize_text_field($params['id'] ?? $params['product_id'] ?? $request->get_param('id') ?? '');
+    $qty = max(1, intval($params['quantity'] ?? $request->get_param('quantity') ?? 1));
+
+    if (empty($product_id)) {
+        return new WP_REST_Response(['error' => 'Product ID is required'], 400);
+    }
+
+    $product_res = codix_wc_get_product_detail(new WP_REST_Request('GET', '/codix/v1/products/' . $product_id, ['id' => $product_id]));
+    $product_data = $product_res->get_data();
+    if (empty($product_data) || empty($product_data['success']) || empty($product_data['product'])) {
+        return new WP_REST_Response(['error' => 'Product not found'], 404);
+    }
+    $prod = $product_data['product'];
+
+    $session_id = codix_wc_get_cart_session_id($request);
+    $carts = codix_wc_read_json('carts.json', []);
+    if (!isset($carts[$session_id])) {
+        $carts[$session_id] = ['items' => [], 'coupons' => []];
+    }
+
+    $key = 'item_' . $product_id;
+    if (isset($carts[$session_id]['items'][$key])) {
+        $carts[$session_id]['items'][$key]['quantity'] += $qty;
+    } else {
+        $carts[$session_id]['items'][$key] = [
+            'key'        => $key,
+            'id'         => $prod['id'],
+            'name'       => $prod['name'],
+            'price'      => $prod['price'],
+            'quantity'   => $qty,
+            'image'      => $prod['img'] ?? $prod['image'] ?? '',
+            'size'       => $prod['size'] ?? '',
+            'line_total' => number_format($prod['price'] * $qty, 2, '.', '')
+        ];
+    }
+
+    codix_wc_write_json('carts.json', $carts);
+    return codix_wc_store_get_cart($request);
+}
+
+function codix_wc_store_update_cart_item(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $key = sanitize_text_field($params['key'] ?? $params['id'] ?? $request->get_param('key') ?? $request->get_param('id') ?? '');
+    $qty = intval($params['quantity'] ?? $request->get_param('quantity') ?? 0);
+
+    $session_id = codix_wc_get_cart_session_id($request);
+    $carts = codix_wc_read_json('carts.json', []);
+    if (!isset($carts[$session_id]['items'])) {
+        return codix_wc_store_get_cart($request);
+    }
+
+    if (!isset($carts[$session_id]['items'][$key]) && isset($carts[$session_id]['items']['item_' . $key])) {
+        $key = 'item_' . $key;
+    }
+
+    if (isset($carts[$session_id]['items'][$key])) {
+        if ($qty <= 0) {
+            unset($carts[$session_id]['items'][$key]);
+        } else {
+            $carts[$session_id]['items'][$key]['quantity'] = $qty;
+            $carts[$session_id]['items'][$key]['line_total'] = number_format($carts[$session_id]['items'][$key]['price'] * $qty, 2, '.', '');
+        }
+        codix_wc_write_json('carts.json', $carts);
+    }
+
+    return codix_wc_store_get_cart($request);
+}
+
+function codix_wc_store_remove_cart_item(WP_REST_Request $request) {
+    $params = $request->get_json_params();
+    $key = sanitize_text_field($params['key'] ?? $params['id'] ?? $request->get_param('key') ?? $request->get_param('id') ?? '');
+
+    $session_id = codix_wc_get_cart_session_id($request);
+    $carts = codix_wc_read_json('carts.json', []);
+    if (isset($carts[$session_id]['items'])) {
+        if (!isset($carts[$session_id]['items'][$key]) && isset($carts[$session_id]['items']['item_' . $key])) {
+            $key = 'item_' . $key;
+        }
+        if (isset($carts[$session_id]['items'][$key])) {
+            unset($carts[$session_id]['items'][$key]);
+            codix_wc_write_json('carts.json', $carts);
+        }
+    }
+
+    return codix_wc_store_get_cart($request);
+}
+
+function codix_wc_store_clear_cart(WP_REST_Request $request) {
+    $session_id = codix_wc_get_cart_session_id($request);
+    $carts = codix_wc_read_json('carts.json', []);
+    if (isset($carts[$session_id])) {
+        $carts[$session_id]['items'] = [];
+        $carts[$session_id]['coupons'] = [];
+        codix_wc_write_json('carts.json', $carts);
+    }
+    return codix_wc_store_get_cart($request);
+}
+
+function codix_wc_store_cart_endpoint(WP_REST_Request $request) {
+    $method = strtoupper($request->get_method() ?: $_SERVER['REQUEST_METHOD'] ?? 'GET');
+    if ($method === 'DELETE') {
+        return codix_wc_store_clear_cart($request);
+    }
+    return codix_wc_store_get_cart($request);
+}
+
+function codix_wc_cart_handler(WP_REST_Request $request) {
+    $method = strtoupper($request->get_method() ?: $_SERVER['REQUEST_METHOD'] ?? 'GET');
+    if ($method === 'DELETE') {
+        return codix_wc_store_clear_cart($request);
+    }
+    if ($method === 'POST') {
+        $action = $request->get_param('action') ?: 'add';
+        if ($action === 'remove') return codix_wc_store_remove_cart_item($request);
+        if ($action === 'update') return codix_wc_store_update_cart_item($request);
+        if ($action === 'clear') return codix_wc_store_clear_cart($request);
+        return codix_wc_store_add_cart_item($request);
+    }
+    return codix_wc_store_get_cart($request);
+}
+
 

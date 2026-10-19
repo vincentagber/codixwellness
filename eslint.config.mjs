@@ -13,6 +13,7 @@ export default [
         ...globals.browser,
         ...globals.node,
         CodixAPI: "readonly",
+        CodixConfig: "readonly",
         CodixCurrency: "readonly",
         Stripe: "readonly",
         tailwind: "readonly",

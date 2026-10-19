@@ -6,6 +6,7 @@ RewriteEngine On
 # FORCE HTTPS
 #########################################
 
+RewriteCond %{HTTP_HOST} ^(www\.)?codixwellness\.co\.uk$ [NC]
 RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://codixwellness.co.uk%{REQUEST_URI} [R=301,L]
 

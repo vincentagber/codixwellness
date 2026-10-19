@@ -10,7 +10,7 @@
 if (!headers_sent()) {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-WP-Nonce, X-Requested-With');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-WP-Nonce, X-WC-Store-API-Nonce, Cart-Token, X-Requested-With');
     header('Access-Control-Max-Age: 86400');
 }
 
@@ -80,9 +80,13 @@ if (!class_exists('WP_REST_Request')) {
         private $params = [];
 
         public function __construct($method = 'GET', $route = '', $params = []) {
-            $this->method = $method;
+            $this->method = strtoupper($method);
             $this->route = $route;
             $this->params = $params;
+        }
+
+        public function get_method() {
+            return $this->method;
         }
 
         public function get_param($key) {
@@ -96,6 +100,25 @@ if (!class_exists('WP_REST_Request')) {
         public function get_json_params() {
             $raw = file_get_contents('php://input');
             return json_decode($raw, true) ?: [];
+        }
+
+        public function get_header($key) {
+            $normalized = 'HTTP_' . strtoupper(str_replace('-', '_', $key));
+            if (isset($_SERVER[$normalized])) {
+                return $_SERVER[$normalized];
+            }
+            if (isset($_SERVER[strtoupper($key)])) {
+                return $_SERVER[strtoupper($key)];
+            }
+            if (function_exists('getallheaders')) {
+                $all = getallheaders();
+                foreach ($all as $k => $v) {
+                    if (strcasecmp($k, $key) === 0) {
+                        return $v;
+                    }
+                }
+            }
+            return null;
         }
     }
 }
@@ -133,7 +156,7 @@ if (!function_exists('codix_wc_format_product')) {
     require_once __DIR__ . '/wp-plugin/codix-woocommerce-bridge.php';
 }
 
-$request_uri = $_SERVER['REQUEST_URI'] ?? '';
+$request_uri = $_SERVER['REQUEST_URI'] ?? (!empty($_SERVER['PATH_INFO']) ? '/wp-json' . $_SERVER['PATH_INFO'] : '');
 $path = parse_url($request_uri, PHP_URL_PATH) ?: '';
 $query = parse_url($request_uri, PHP_URL_QUERY) ?: '';
 if (empty($_GET) && !empty($query)) {
@@ -156,7 +179,117 @@ $json_input = json_decode(file_get_contents('php://input'), true) ?: [];
 $merged_params = array_merge($_GET, $_POST, $json_input);
 $req = new WP_REST_Request($request_method, $route, $merged_params);
 
-if (preg_match('#^/codix/v1/products/(?P<id>[\w-]+)#', $route, $matches) || preg_match('#^/wc/v3/products/(?P<id>[\w-]+)#', $route, $matches)) {
+// Customer Authentication Endpoints
+if (strpos($route, '/codix/v1/auth/register') === 0 || strpos($route, '/wp/v2/users/register') === 0) {
+    $res = codix_wc_auth_register($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/auth/login') === 0 || strpos($route, '/jwt-auth/v1/token') === 0) {
+    $res = codix_wc_auth_login($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/auth/logout') === 0) {
+    $res = codix_wc_auth_logout($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/auth/lost-password') === 0 || strpos($route, '/wp/v2/users/lost-password') === 0) {
+    $res = codix_wc_auth_lost_password($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/auth/reset-password') === 0) {
+    $res = codix_wc_auth_reset_password($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+// Customer Profile & Customer Orders (Customer Authorization Enforced Server-Side)
+if (strpos($route, '/codix/v1/customer/profile') === 0 || strpos($route, '/codix/v1/auth/me') === 0) {
+    $res = codix_wc_customer_profile_handler($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (preg_match('#^/codix/v1/customer/orders/(?P<id>[\w-]+)#', $route, $matches)) {
+    $req = new WP_REST_Request('GET', $route, array_merge($merged_params, ['id' => $matches['id']]));
+    $res = codix_wc_get_single_customer_order($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/customer/orders') === 0) {
+    $res = codix_wc_get_customer_orders($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+// WooCommerce Store API & Cart Endpoints
+if (strpos($route, '/wc/store/v1/cart/add-item') === 0 || strpos($route, '/codix/v1/cart/add') === 0) {
+    $res = codix_wc_store_add_cart_item($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/wc/store/v1/cart/update-item') === 0 || strpos($route, '/codix/v1/cart/update') === 0) {
+    $res = codix_wc_store_update_cart_item($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/wc/store/v1/cart/remove-item') === 0 || strpos($route, '/codix/v1/cart/remove') === 0) {
+    $res = codix_wc_store_remove_cart_item($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/wc/store/v1/cart/clear') === 0 || strpos($route, '/codix/v1/cart/clear') === 0) {
+    $res = codix_wc_store_clear_cart($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/wc/store/v1/cart') === 0) {
+    $res = codix_wc_store_cart_endpoint($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/codix/v1/cart') === 0) {
+    $res = codix_wc_cart_handler($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if (strpos($route, '/wc/store/v1/checkout') === 0) {
+    $res = codix_wc_create_order($req);
+    http_response_code($res->status);
+    echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+// Product Detail & Listing Endpoints
+if (preg_match('#^/(?:codix/v1|wc/v3|wc/store/v1)/products/(?P<id>[\w-]+)#', $route, $matches)) {
     $req = new WP_REST_Request('GET', $route, array_merge($merged_params, ['id' => $matches['id']]));
     $res = codix_wc_get_product_detail($req);
     http_response_code($res->status);
@@ -164,14 +297,14 @@ if (preg_match('#^/codix/v1/products/(?P<id>[\w-]+)#', $route, $matches) || preg
     exit;
 }
 
-if (strpos($route, '/codix/v1/products') === 0 || strpos($route, '/wc/v3/products') === 0) {
+if (strpos($route, '/codix/v1/products') === 0 || strpos($route, '/wc/v3/products') === 0 || strpos($route, '/wc/store/v1/products') === 0) {
     $res = codix_wc_get_products($req);
     http_response_code($res->status);
     echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     exit;
 }
 
-if (strpos($route, '/codix/v1/categories') === 0 || strpos($route, '/wc/v3/products/categories') === 0) {
+if (strpos($route, '/codix/v1/categories') === 0 || strpos($route, '/wc/v3/products/categories') === 0 || strpos($route, '/wc/store/v1/products/categories') === 0) {
     $res = codix_wc_get_categories();
     http_response_code($res->status);
     echo json_encode($res->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
@@ -230,12 +363,26 @@ if (strpos($route, '/codix/v1/track-order') === 0) {
 // Fallback index
 echo json_encode([
     'name'        => 'Codix Wellness WooCommerce REST API Gateway',
-    'version'     => '1.1.0',
+    'version'     => '1.2.0',
     'status'      => 'online',
     'endpoints'   => [
         'GET  /wp-json/codix/v1/products',
         'GET  /wp-json/codix/v1/products/{id}',
         'GET  /wp-json/codix/v1/categories',
+        'POST /wp-json/codix/v1/auth/register',
+        'POST /wp-json/codix/v1/auth/login',
+        'POST /wp-json/codix/v1/auth/logout',
+        'POST /wp-json/codix/v1/auth/lost-password',
+        'POST /wp-json/codix/v1/auth/reset-password',
+        'GET  /wp-json/codix/v1/customer/profile',
+        'PUT  /wp-json/codix/v1/customer/profile',
+        'GET  /wp-json/codix/v1/customer/orders',
+        'GET  /wp-json/codix/v1/customer/orders/{id}',
+        'GET  /wp-json/wc/store/v1/cart',
+        'POST /wp-json/wc/store/v1/cart/add-item',
+        'POST /wp-json/wc/store/v1/cart/update-item',
+        'POST /wp-json/wc/store/v1/cart/remove-item',
+        'POST /wp-json/wc/store/v1/checkout',
         'POST /wp-json/codix/v1/verify-stock',
         'POST /wp-json/codix/v1/create-order',
         'POST /wp-json/codix/v1/verify-stripe',

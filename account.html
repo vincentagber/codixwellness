@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | Codix Wellness</title>
+  <meta name="description"
+    content="Manage your Codix Wellness account, view real-time order history, update your profile and shipping addresses.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            codix: {
+              green: '#57B952',
+              'green-dark': '#48A344',
+              'green-light': '#D7F4D8',
+              'green-pale': '#EDF8EE',
+              'green-mint': '#CAFFD2',
+              navy: '#211C68',
+              'navy-dark': '#17134A',
+              'navy-light': '#514AA4',
+              purple: '#3A2F99',
+              'purple-dark': '#4235AE',
+              violet: '#703FEF',
+              orange: '#F2971F',
+              'orange-dark': '#DE8413',
+              cream: '#F6F5FA',
+              peach: '#FDE7C6',
+              blue: '#C2E9F8',
+              lilac: '#EEE2F3',
+              mint: '#BDEED5',
+            }
+          },
+          fontFamily: {
+            sans: ['Lato', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 2px 12px rgba(40,40,40,.06)',
+            'card-hover': '0 16px 32px rgba(33,28,104,.10)',
+            'dropdown': '0 12px 36px rgba(0,0,0,.12)',
+            'drawer': '-8px 0 32px rgba(0,0,0,.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <!-- Google Fonts: Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
+      color: #222222;
+      background-color: #F8FAFC;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Lato', sans-serif !important; color: #211C68; }
+    .container-codix {
+      width: 100%;
+      max-width: 1322px;
+      padding-inline: 16px;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+    .top-bar-bg { background-color: #57B952; position: relative; overflow: visible !important; z-index: 100; }
+    .top-bar-bg::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.16; pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40" viewBox="0 0 100 40" fill="none" stroke="white" stroke-width="1.4"><path d="M12 28c6-12 18-6 16 6s-12 10-16-6zM65 18c8-10 20-3 18 9s-14 7-18-9zM42 32c4-6 10-3 9 3s-6 6-9-3z"/><circle cx="88" cy="28" r="2.5"/><circle cx="30" cy="10" r="2"/></svg>');
+      background-repeat: repeat;
+    }
+    .newsletter-bg { background: url('images/newsletter-bg.jpg') no-repeat center center; background-size: cover; }
+    .footer-green-bg { background-color: #57B952; }
+    .dropdown-menu { opacity: 0; visibility: hidden; transform: translateY(6px); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .dropdown-menu.open {
+      z-index: 99999 !important; opacity: 1; visibility: visible; transform: translateY(0); 
+    }
+    .modal-overlay {
+      position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px); z-index: 60; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .cart-drawer-panel { transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-overlay.open .cart-drawer-panel { transform: translateX(0); }
+
+    .mega-menu-btn {
+      background-color: #D7F4D8;
+      color: #211C68;
+      transition: all 0.2s ease;
+      border: none;
+      outline: none;
+      box-shadow: none !important;
+    }
+    .mega-menu-btn.active {
+      background-color: #382898 !important;
+      color: #ffffff !important;
+    }
+    .mega-menu-btn.active .mega-cat-icon {
+      filter: brightness(0) invert(1);
+    }
+    .mega-menu {
+      box-shadow: 0 25px 50px -12px rgba(25, 33, 61, 0.2);
+    }
+    .mega-menu:not(.hidden) {
+      display: block !important;
+      animation: fadeInMega 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeInMega {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .tab-link.active {
+      background-color: #57B952;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(87, 185, 82, 0.25);
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-slate-800 bg-[#F8FAFC] selection:bg-codix-green selection:text-white">
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP PROMOTIONAL ANNOUNCEMENT BAR                       -->
+  <!-- ======================================================== -->
+  <aside class="top-bar-bg text-white text-xs h-[40px] flex items-center relative z-[100] overflow-visible select-none"
+    aria-label="Announcement">
+    <div class="container-codix flex items-center justify-between relative z-10 w-full">
+      <div class="flex items-center gap-2 font-normal text-white/95 text-[12px]">
+        <span>Free shipping all orders on over £60.</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 font-medium text-[12px]">
+        <div class="flex items-center gap-1 py-1">
+          <span class="font-medium">£ GBP</span>
+        </div>
+        <div class="flex items-center gap-1.5 font-bold">
+          <i class="fa-regular fa-user text-[11px]" aria-hidden="true"></i>
+          <span id="top-bar-username">My account</span>
+        </div>
+        <button onclick="handleLogout()" class="hover:underline text-white/90 text-xs font-semibold cursor-pointer">
+          Sign out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN HEADER                                           -->
+  <!-- ======================================================== -->
+  <header class="bg-white sticky top-0 z-40 border-b border-slate-100 shadow-xs">
+    <div class="container-codix flex items-center justify-between h-[80px] gap-4">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="images/logo.png" alt="Codix Wellness Logo" class="h-10 w-auto object-contain"
+          onerror="this.style.display='none';document.getElementById('fallback-logo').style.display='flex'">
+        <div id="fallback-logo" class="hidden items-center text-xl font-black tracking-tight" style="display:none">
+          <span class="text-codix-green">Codix</span><span class="text-codix-purple">Wellness</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="hidden md:flex flex-1 mx-4 relative" style="width: 100%; max-width: 710px;">
+        <form action="shop.html" method="GET" class="w-full flex items-center bg-[#EDF8EE] p-1.5 pl-5 pr-1.5 border border-[#D2EDD5] focus-within:ring-2 focus-within:ring-codix-green/30 focus-within:border-codix-green transition" style="height: 50px; border-radius: 999px;">
+          <i class="fa-solid fa-magnifying-glass text-codix-green mr-3 text-sm"></i>
+          <input type="text" name="q" placeholder="Search everything at codix wellness..." class="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none pr-2">
+          <button type="submit" class="bg-codix-green hover:bg-codix-green-dark text-white text-xs font-bold px-7 py-2.5 rounded-full transition active:scale-95 shrink-0 shadow-sm h-[38px] cursor-pointer">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Action Icons -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <a href="shop.html" class="w-10 h-10 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center justify-center transition" aria-label="Wishlist">
+          <i class="fa-regular fa-heart text-sm"></i>
+        </a>
+        <a href="account.html" class="w-10 h-10 rounded-full bg-emerald-50 border border-codix-green text-codix-green flex items-center justify-center transition" aria-label="My Account" title="My Account">
+          <i class="fa-solid fa-user-check text-sm"></i>
+        </a>
+        <div onclick="openCartDrawer()" class="flex items-center gap-2 pl-1 cursor-pointer select-none">
+          <div class="w-10 h-10 rounded-full bg-[#D7F4D8] text-codix-green flex items-center justify-center hover:bg-[#C2EED7] transition relative">
+            <i class="fa-solid fa-cart-shopping text-sm"></i>
+            <span id="cart-badge-count" class="absolute -top-1 -right-1 w-[19px] h-[19px] bg-codix-green text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">0</span>
+          </div>
+          <div class="hidden md:flex flex-col leading-tight">
+            <span id="cart-header-total" class="text-[14px] font-extrabold text-slate-900">£0.00</span>
+            <span class="text-[10px] text-slate-400 font-medium">Cart Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="block bg-white relative border-t border-b border-[#E5E7EB]" style="width: 100%; min-height: 52px; padding: 6px 0;" aria-label="Main Navigation">
+      <div class="container-codix relative flex items-center justify-between gap-6" style="min-height: 44px;">
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
+          <div class="mega-menu-wrapper relative">
+            <button id="mega-menu-btn" onclick="toggleMegaMenu(event)" class="mega-menu-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-bold transition cursor-pointer" aria-haspopup="true" aria-expanded="false">
+              <img src="images/icon-categories.png" alt="" class="mega-cat-icon w-3.5 h-3 object-contain shrink-0" aria-hidden="true">
+              <span>Product Categories</span>
+            </button>
+          </div>
+
+          <ul class="flex items-center gap-7 text-[13px] sm:text-[14px] font-bold" style="color: #211C68;">
+            <li><a href="index.html" class="hover:text-codix-green transition py-2">Home</a></li>
+            <li><a href="about.html" class="hover:text-codix-green transition py-2">About Us</a></li>
+            <li><a href="shop.html" class="hover:text-codix-green transition py-2">Shop</a></li>
+            <li><a href="index.html#support" class="hover:text-codix-green transition py-2">Support</a></li>
+          </ul>
+        </div>
+
+        <div class="flex items-center gap-4 text-[15px]" style="color: #211C68;">
+          <a href="cart.html" class="hover:text-codix-green transition p-1" title="Shopping Cart" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+
+        <!-- Full-Width Mega Menu Dropdown -->
+        <div id="mega-menu-dropdown" class="mega-menu absolute top-full left-0 right-0 mt-3 w-full bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10 z-50 transition-all hidden" role="menu">
+          <h3 class="text-base font-bold pb-3 mb-6 border-b border-slate-100" style="color: #3A2F99;">Product Categories</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
+            <div>
+              <a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">Immunity</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">Vitamin C+D</a></li>
+                <li><a href="shop.html?cat=Immunity" class="hover:text-codix-green transition block">SelCEA</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">General Wellness</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=General%20Wellness" class="hover:text-codix-green transition block">Winwell Multivitamin</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">Beauty &amp; Skin Health</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Collagen Mag Plus</a></li>
+                <li><a href="shop.html?cat=Beauty" class="hover:text-codix-green transition block">Evening Primrose Oil</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Joints" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">Joint &amp; Muscle</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Flexicod</a></li>
+                <li><a href="shop.html?cat=Joints" class="hover:text-codix-green transition block">Codferol</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Weight" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">Weight Management</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Weight" class="hover:text-codix-green transition block">Fat Burner</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block"><h4 class="text-sm font-bold mb-3.5 text-[#211C68]">Sexual Health</h4></a>
+              <ul class="space-y-2.5 text-[13px] text-slate-600">
+                <li><a href="shop.html?cat=Sexual%20Health" class="hover:text-codix-green transition block">Maca Root</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- 3. CUSTOMER DASHBOARD HERO                                -->
+  <!-- ======================================================== -->
+  <main class="py-8 sm:py-12 px-4">
+    <div class="container-codix">
+      <!-- Welcome Banner Card -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 relative overflow-hidden">
+        <div class="flex items-center gap-5">
+          <!-- User Avatar -->
+          <div id="user-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#D7F4D8] text-codix-green flex items-center justify-center text-2xl font-black shrink-0 border-2 border-emerald-100 shadow-xs">
+            CW
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <h1 id="user-display-name" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome</h1>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-codix-green border border-emerald-200">
+                Verified Customer
+              </span>
+            </div>
+            <p id="user-email-display" class="text-xs sm:text-sm text-slate-500 font-medium">Loading account details...</p>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="shop.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-codix-green hover:bg-codix-green-dark text-white font-bold text-xs sm:text-sm transition shadow-sm active:scale-95">
+            <i class="fa-solid fa-basket-shopping text-xs"></i>
+            <span>Browse Shop</span>
+          </a>
+          <button onclick="handleLogout()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition cursor-pointer active:scale-95">
+            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Notification Banner -->
+      <div id="account-alert" class="hidden rounded-2xl p-4 text-xs sm:text-sm font-medium border mb-6 transition" role="alert"></div>
+
+      <!-- Dashboard Layout: Sidebar Tabs + Content Area -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-3">
+          <div class="bg-white rounded-2xl border border-slate-100 p-3 shadow-xs space-y-1">
+            <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left">
+              <i class="fa-solid fa-box-open text-base w-5 text-center"></i>
+              <span>Order History</span>
+            </button>
+            <button onclick="switchTab('profile')" id="tab-btn-profile" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left">
+              <i class="fa-regular fa-user text-base w-5 text-center"></i>
+              <span>Account Details</span>
+            </button>
+            <button onclick="switchTab('addresses')" id="tab-btn-addresses" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left">
+              <i class="fa-solid fa-location-dot text-base w-5 text-center"></i>
+              <span>Addresses</span>
+            </button>
+            <button onclick="switchTab('security')" id="tab-btn-security" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left">
+              <i class="fa-solid fa-shield-halved text-base w-5 text-center"></i>
+              <span>Security &amp; Password</span>
+            </button>
+            <div class="pt-2 border-t border-slate-100 mt-2">
+              <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-red-600 hover:bg-red-50 transition cursor-pointer text-left">
+                <i class="fa-solid fa-arrow-right-from-bracket text-base w-5 text-center"></i>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Tab Content Area -->
+        <section class="lg:col-span-9 space-y-6">
+
+          <!-- TAB 1: ORDERS -->
+          <div id="tab-orders" class="tab-pane bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-xs">
+            <div class="flex items-center justify-between pb-5 mb-5 border-b border-slate-100">
+              <div>
+                <h2 class="text-xl font-black text-slate-900 tracking-tight">Your Order History</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Review current orders, track deliveries, and view invoices.</p>
+              </div>
+              <button onclick="loadCustomerOrders()" class="p-2 text-slate-400 hover:text-codix-green transition cursor-pointer" title="Refresh orders">
+                <i class="fa-solid fa-rotate-right text-sm"></i>
+              </button>
+            </div>
+
+            <!-- Orders Table Container -->
+            <div id="orders-container">
+              <!-- Loading Skeleton -->
+              <div id="orders-loading" class="py-12 text-center text-slate-400 space-y-3">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl text-codix-green"></i>
+                <p class="text-xs sm:text-sm font-medium">Fetching your orders from WooCommerce...</p>
+              </div>
+
+              <!-- Orders List (populated dynamically) -->
+              <div id="orders-list" class="hidden divide-y divide-slate-100"></div>
+
+              <!-- Empty Orders State -->
+              <div id="orders-empty" class="hidden py-16 text-center text-slate-400">
+                <div class="w-16 h-16 rounded-full bg-emerald-50 text-codix-green flex items-center justify-center mx-auto mb-3">
+                  <i class="fa-solid fa-box-open text-2xl"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-800">No orders placed yet</h3>
+                <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-1 mb-5">When you purchase vitamins, minerals, or supplements, your order history will appear here.</p>
+                <a href="shop.html" class="inline-block bg-codix-green hover:bg-codix-green-dark text-white font-bold text-xs px-6 py-3 rounded-full transition shadow-sm active:scale-95">
+                  Explore Products
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: PROFILE -->
+          <div id="tab-profile" class="tab-pane hidden bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-xs">
+            <div class="pb-5 mb-6 border-b border-slate-100">
+              <h2 class="text-xl font-black text-slate-900 tracking-tight">Account Details</h2>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Update your basic contact information and profile name.</p>
+            </div>
+
+            <form id="profile-form" onsubmit="handleProfileSubmit(event)" class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="profile-first-name">First Name</label>
+                  <input type="text" id="profile-first-name" required class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="profile-last-name">Last Name</label>
+                  <input type="text" id="profile-last-name" required class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5" for="profile-display-name">Display Name</label>
+                <input type="text" id="profile-display-name" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                <span class="text-[11px] text-slate-400 mt-1 block">This will be shown in the header and on reviews.</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5" for="profile-email">Email Address</label>
+                <input type="email" id="profile-email" required class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-end">
+                <button type="submit" id="profile-btn" class="bg-codix-green hover:bg-codix-green-dark text-white font-bold px-7 py-3 rounded-2xl transition shadow-md text-xs sm:text-sm flex items-center gap-2 cursor-pointer active:scale-95">
+                  <span>Save Profile</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 3: ADDRESSES -->
+          <div id="tab-addresses" class="tab-pane hidden bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-xs">
+            <div class="pb-5 mb-6 border-b border-slate-100">
+              <h2 class="text-xl font-black text-slate-900 tracking-tight">Your Addresses</h2>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Manage your default billing and delivery addresses for quick checkout.</p>
+            </div>
+
+            <form id="address-form" onsubmit="handleAddressSubmit(event)" class="space-y-5">
+              <h3 class="text-sm font-bold text-slate-800 pb-2 border-b border-slate-100">Billing &amp; Delivery Address</h3>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5" for="addr-street">Street Address</label>
+                <input type="text" id="addr-street" placeholder="House number and street name" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="addr-city">City / Town</label>
+                  <input type="text" id="addr-city" placeholder="City" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="addr-postcode">Postcode / ZIP</label>
+                  <input type="text" id="addr-postcode" placeholder="e.g. SW1A 1AA" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="addr-country">Country</label>
+                  <input type="text" id="addr-country" value="United Kingdom" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5" for="addr-phone">Phone Number</label>
+                  <input type="tel" id="addr-phone" placeholder="+44 7123 456789" class="w-full px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-end">
+                <button type="submit" id="addr-btn" class="bg-codix-green hover:bg-codix-green-dark text-white font-bold px-7 py-3 rounded-2xl transition shadow-md text-xs sm:text-sm flex items-center gap-2 cursor-pointer active:scale-95">
+                  <span>Save Addresses</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 4: SECURITY -->
+          <div id="tab-security" class="tab-pane hidden bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-xs">
+            <div class="pb-5 mb-6 border-b border-slate-100">
+              <h2 class="text-xl font-black text-slate-900 tracking-tight">Security &amp; Credentials</h2>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">Keep your account secure with regular password updates.</p>
+            </div>
+
+            <div class="space-y-4">
+              <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Change Account Password</h4>
+                  <p class="text-xs text-slate-500 mt-0.5">We will send a secure reset link to your email address.</p>
+                </div>
+                <button onclick="triggerPasswordResetFromDashboard()" id="security-reset-btn" class="bg-white hover:bg-slate-100 text-slate-800 font-bold border border-slate-300 text-xs px-5 py-2.5 rounded-xl transition cursor-pointer active:scale-95 shrink-0">
+                  Send Reset Link
+                </button>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200/60">
+                <div class="flex items-start gap-3">
+                  <i class="fa-solid fa-lock text-codix-green mt-0.5 text-sm"></i>
+                  <div>
+                    <h5 class="text-xs font-bold text-emerald-900">Encrypted Customer Session</h5>
+                    <p class="text-[11px] text-emerald-800 mt-0.5">Your sessions are protected via bcrypt hashed credentials and strict token authorization. Tokens automatically expire after 14 days of inactivity.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 4. FOOTER                                                -->
+  <!-- ======================================================== -->
+  <footer class="footer-green-bg text-white pt-16 pb-8 px-4 sm:px-6 mt-16" aria-label="Footer Navigation">
+    <div class="container-codix space-y-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <h4 class="font-bold text-sm mb-4">About Codix</h4>
+          <ul class="space-y-2 text-xs text-white/90 font-medium">
+            <li><a href="about.html" class="hover:underline">Our Story</a></li>
+            <li><a href="shop.html" class="hover:underline">Catalog</a></li>
+            <li><a href="index.html#support" class="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Customer Care</h4>
+          <ul class="space-y-2 text-xs text-white/90 font-medium">
+            <li><a href="account.html" class="hover:underline">My Account</a></li>
+            <li><a href="cart.html" class="hover:underline">View Cart</a></li>
+            <li><a href="reset-password.html" class="hover:underline">Reset Password</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Categories</h4>
+          <ul class="space-y-2 text-xs text-white/90 font-medium">
+            <li><a href="shop.html?cat=Immunity" class="hover:underline">Immunity</a></li>
+            <li><a href="shop.html?cat=General%20Wellness" class="hover:underline">General Wellness</a></li>
+            <li><a href="shop.html?cat=Beauty" class="hover:underline">Beauty &amp; Skin</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4">Verified Security</h4>
+          <p class="text-xs text-white/80 leading-relaxed mb-4">Compliant with UK healthcare standards and SSL encryption.</p>
+          <div class="flex items-center gap-2">
+            <img src="images/pay-visa.png" alt="Visa" class="h-6 w-auto object-contain rounded-xs shadow-xs">
+            <img src="images/pay-paypal.png" alt="PayPal" class="h-6 w-auto object-contain rounded-xs shadow-xs">
+            <img src="images/pay-mastercard.png" alt="Mastercard" class="h-6 w-auto object-contain rounded-xs shadow-xs">
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/20 pt-6 text-center text-xs text-white/80">
+        <p>Copyright &copy; 2026 Codix Wellness. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/currency.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/framer.js"></script>
+  <script>
+    let currentCustomer = null;
+
+    // Authentication Guard
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof CodixAPI === 'undefined' || !CodixAPI.getToken()) {
+        window.location.href = 'login.html?expired=1';
+        return;
+      }
+
+      await loadCustomerProfile();
+      await loadCustomerOrders();
+      syncCartBadge();
+    });
+
+    function showAlert(type, message) {
+      const box = document.getElementById('account-alert');
+      if (!box) return;
+      box.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-green-50', 'text-green-800', 'border-green-200');
+      if (type === 'error') {
+        box.className = 'rounded-2xl p-4 text-xs sm:text-sm font-medium border bg-red-50 text-red-700 border-red-200 flex items-start gap-2 mb-6';
+        box.innerHTML = `<i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0"></i><span>${message}</span>`;
+      } else {
+        box.className = 'rounded-2xl p-4 text-xs sm:text-sm font-medium border bg-green-50 text-green-800 border-green-200 flex items-start gap-2 mb-6';
+        box.innerHTML = `<i class="fa-solid fa-circle-check mt-0.5 shrink-0"></i><span>${message}</span>`;
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+
+      const targetPane = document.getElementById(`tab-${tabName}`);
+      const targetBtn = document.getElementById(`tab-btn-${tabName}`);
+      if (targetPane) targetPane.classList.remove('hidden');
+      if (targetBtn) targetBtn.classList.add('active');
+    }
+
+    async function loadCustomerProfile() {
+      try {
+        const res = await CodixAPI.getProfile();
+        if (res && res.success && res.user) {
+          currentCustomer = res.user;
+          const u = res.user;
+
+          // Header & hero labels
+          const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.display_name || 'Customer';
+          document.getElementById('user-display-name').textContent = fullName;
+          document.getElementById('user-email-display').textContent = u.email || '';
+          document.getElementById('top-bar-username').textContent = fullName;
+
+          // Avatar initials
+          const initials = `${(u.first_name || 'C')[0]}${(u.last_name || 'W')[0]}`.toUpperCase();
+          document.getElementById('user-avatar').textContent = initials;
+
+          // Form fields
+          document.getElementById('profile-first-name').value = u.first_name || '';
+          document.getElementById('profile-last-name').value = u.last_name || '';
+          document.getElementById('profile-display-name').value = u.display_name || '';
+          document.getElementById('profile-email').value = u.email || '';
+
+          // Address fields
+          if (u.billing) {
+            document.getElementById('addr-street').value = u.billing.address_1 || '';
+            document.getElementById('addr-city').value = u.billing.city || '';
+            document.getElementById('addr-postcode').value = u.billing.postcode || '';
+            document.getElementById('addr-country').value = u.billing.country || 'United Kingdom';
+            document.getElementById('addr-phone').value = u.billing.phone || '';
+          }
+        } else if (res && res.code === 'unauthorized') {
+          CodixAPI.logout();
+          window.location.href = 'login.html?expired=1';
+        }
+      } catch (err) {
+        console.error('Profile fetch failed:', err);
+      }
+    }
+
+    async function loadCustomerOrders() {
+      const loading = document.getElementById('orders-loading');
+      const list = document.getElementById('orders-list');
+      const empty = document.getElementById('orders-empty');
+
+      loading.classList.remove('hidden');
+      list.classList.add('hidden');
+      empty.classList.add('hidden');
+
+      try {
+        const orders = await CodixAPI.getCustomerOrders();
+        loading.classList.add('hidden');
+
+        if (!orders || orders.length === 0) {
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        list.classList.remove('hidden');
+        list.innerHTML = orders.map(ord => {
+          const orderId = ord.order_id || ord.id || 'N/A';
+          const totalFormatted = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(ord.total) : `£${parseFloat(ord.total || 0).toFixed(2)}`;
+          const dateStr = ord.date_created ? (typeof ord.date_created === 'string' ? ord.date_created.substring(0, 10) : 'Recent') : 'Recent';
+          const itemsCount = ord.items ? ord.items.reduce((s, it) => s + (it.qty || 1), 0) : 1;
+          
+          let statusBadgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
+          const st = (ord.status || 'processing').toLowerCase();
+          if (st.includes('paid') || st.includes('completed')) {
+            statusBadgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+          } else if (st.includes('hold') || st.includes('pending')) {
+            statusBadgeClass = 'bg-amber-50 text-amber-800 border-amber-200';
+          } else if (st.includes('cancel') || st.includes('failed')) {
+            statusBadgeClass = 'bg-red-50 text-red-700 border-red-200';
+          }
+
+          return `
+            <div class="py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-extrabold text-slate-900 font-mono">#CW-${orderId.toString().replace(/^CW-?/i, '')}</span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${statusBadgeClass}">
+                    ${ord.status || 'Processing'}
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500">
+                  <span>Placed on ${dateStr}</span>
+                  <span class="mx-1.5">•</span>
+                  <span>${itemsCount} item${itemsCount > 1 ? 's' : ''}</span>
+                  <span class="mx-1.5">•</span>
+                  <span>${ord.payment_method || 'Stripe Card'}</span>
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-4">
+                <span class="text-sm sm:text-base font-black text-slate-900">${totalFormatted}</span>
+                <a href="order-received.html?order_id=${encodeURIComponent(orderId)}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-codix-green hover:text-white text-slate-700 text-xs font-bold transition cursor-pointer">
+                  <span>View Receipt</span>
+                  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Orders loading error:', err);
+        loading.classList.add('hidden');
+        empty.classList.remove('hidden');
+      }
+    }
+
+    async function handleProfileSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('profile-btn');
+      const firstName = document.getElementById('profile-first-name').value.trim();
+      const lastName = document.getElementById('profile-last-name').value.trim();
+      const displayName = document.getElementById('profile-display-name').value.trim();
+      const email = document.getElementById('profile-email').value.trim();
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-sm"></i><span>Saving...</span>';
+      }
+
+      try {
+        const res = await CodixAPI.updateProfile({
+          first_name: firstName,
+          last_name: lastName,
+          display_name: displayName,
+          email: email
+        });
+
+        if (res && res.success) {
+          showAlert('success', 'Profile updated successfully.');
+          await loadCustomerProfile();
+        } else {
+          showAlert('error', (res && res.message) ? res.message : 'Failed to update profile.');
+        }
+      } catch (err) {
+        showAlert('error', 'Error connecting to profile service.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Save Profile</span>';
+        }
+      }
+    }
+
+    async function handleAddressSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('addr-btn');
+      const street = document.getElementById('addr-street').value.trim();
+      const city = document.getElementById('addr-city').value.trim();
+      const postcode = document.getElementById('addr-postcode').value.trim();
+      const country = document.getElementById('addr-country').value.trim();
+      const phone = document.getElementById('addr-phone').value.trim();
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-sm"></i><span>Saving...</span>';
+      }
+
+      try {
+        const res = await CodixAPI.updateProfile({
+          billing: {
+            address_1: street,
+            city: city,
+            postcode: postcode,
+            country: country,
+            phone: phone
+          },
+          shipping: {
+            address_1: street,
+            city: city,
+            postcode: postcode,
+            country: country
+          }
+        });
+
+        if (res && res.success) {
+          showAlert('success', 'Addresses saved successfully.');
+          await loadCustomerProfile();
+        } else {
+          showAlert('error', (res && res.message) ? res.message : 'Failed to save address.');
+        }
+      } catch (err) {
+        showAlert('error', 'Error connecting to address service.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Save Addresses</span>';
+        }
+      }
+    }
+
+    async function triggerPasswordResetFromDashboard() {
+      if (!currentCustomer || !currentCustomer.email) return;
+      const btn = document.getElementById('security-reset-btn');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending link...';
+      }
+
+      try {
+        const res = await CodixAPI.lostPassword(currentCustomer.email);
+        showAlert('success', res.message || 'Password reset link sent to your registered email.');
+      } catch (e) {
+        showAlert('error', 'Unable to send password reset email.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Send Reset Link';
+        }
+      }
+    }
+
+    async function handleLogout() {
+      try {
+        await CodixAPI.logout();
+      } catch (e) {}
+      window.location.href = 'login.html';
+    }
+
+    function syncCartBadge() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('codix_cart') || '[]');
+        const count = cart.reduce((s, it) => s + (it.qty || 1), 0);
+        const subtotal = cart.reduce((s, it) => s + ((it.price || 9.17) * (it.qty || 1)), 0);
+        const badge = document.getElementById('cart-badge-count');
+        const total = document.getElementById('cart-header-total');
+        if (badge) badge.textContent = count;
+        if (total) total.textContent = (typeof CodixCurrency !== 'undefined') ? CodixCurrency.format(subtotal) : `£${subtotal.toFixed(2)}`;
+      } catch (e) {}
+    }
+
+    function toggleMegaMenu(e) {
+      if (e) { e.stopPropagation(); e.preventDefault(); }
+      const btn = document.getElementById('mega-menu-btn');
+      const menu = document.getElementById('mega-menu-dropdown');
+      if (!btn || !menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.classList.add('active');
+      } else {
+        menu.classList.add('hidden');
+        btn.classList.remove('active');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('mega-menu-dropdown');
+      const btn = document.getElementById('mega-menu-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+          menu.classList.add('hidden');
+          if (btn) btn.classList.remove('active');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

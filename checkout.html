@@ -1108,6 +1108,7 @@
   <!-- ======================================================== -->
   
   <script src="https://js.stripe.com/v3/"></script>
+  <script src="js/config.js"></script>
   <script src="js/currency.js"></script>
   <script src="js/api.js"></script>
   <script src="js/framer.js"></script>
@@ -1119,6 +1120,34 @@
       loadCartItems();
       renderOrderSummary();
       initDropdowns();
+
+      // Autofill logged-in customer details
+      try {
+        if (typeof CodixAPI !== 'undefined' && CodixAPI.getToken()) {
+          const u = CodixAPI.getUser();
+          if (u) {
+            const emailInput = document.getElementById('customer-email');
+            const fnInput = document.getElementById('first-name');
+            const lnInput = document.getElementById('last-name');
+            const addrInput = document.getElementById('shipping-address');
+            const cityInput = document.getElementById('shipping-city');
+            const postcodeInput = document.getElementById('shipping-postcode');
+            const phoneInput = document.getElementById('shipping-phone');
+
+            if (emailInput && !emailInput.value && u.email) emailInput.value = u.email;
+            if (fnInput && !fnInput.value && (u.first_name || u.display_name)) fnInput.value = u.first_name || u.display_name.split(' ')[0] || '';
+            if (lnInput && !lnInput.value && u.last_name) lnInput.value = u.last_name;
+            if (u.billing) {
+              if (addrInput && !addrInput.value && u.billing.address_1) addrInput.value = u.billing.address_1;
+              if (cityInput && !cityInput.value && u.billing.city) cityInput.value = u.billing.city;
+              if (postcodeInput && !postcodeInput.value && u.billing.postcode) postcodeInput.value = u.billing.postcode;
+              if (phoneInput && !phoneInput.value && u.billing.phone) phoneInput.value = u.billing.phone;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Autofill error:', e);
+      }
     });
 
     function openMobileMenu() {
