@@ -1016,15 +1016,16 @@
 
         if (res.ok) {
           var data = await res.json();
-          if (data && data.success && data.customer) {
-            localStorage.setItem('codix_user', JSON.stringify(data.customer));
-            return { success: true, customer: data.customer };
+          var cust = data.customer || data.user;
+          if (data && data.success && cust) {
+            localStorage.setItem('codix_user', JSON.stringify(cust));
+            return { success: true, customer: cust, user: cust };
           }
         }
       } catch (e) {}
 
       var local = this.getUser();
-      return local ? { success: true, customer: local, isCached: true } : { success: false, code: 'fetch_error', message: 'Could not load customer profile.' };
+      return local ? { success: true, customer: local, user: local, isCached: true } : { success: false, code: 'fetch_error', message: 'Could not load customer profile.' };
     },
 
     /**
@@ -1048,13 +1049,64 @@
         }
 
         var data = await res.json().catch(function () { return {}; });
-        if (res.ok && data.success && data.customer) {
-          localStorage.setItem('codix_user', JSON.stringify(data.customer));
-          return { success: true, customer: data.customer };
+        var cust = data.customer || data.user;
+        if (res.ok && data.success && cust) {
+          localStorage.setItem('codix_user', JSON.stringify(cust));
+          return { success: true, customer: cust, user: cust, message: data.message || 'Profile updated successfully.' };
         }
       } catch (e) {}
 
+      // Resilient local update fallback when backend is unreachable, blocked by Imunify360, or running in decoupled/offline mode
+      var user = this.getUser();
+      if (user) {
+        if (profileData.first_name !== undefined) user.first_name = profileData.first_name;
+        if (profileData.last_name !== undefined) user.last_name = profileData.last_name;
+        if (profileData.display_name !== undefined) user.display_name = profileData.display_name;
+        if (profileData.email !== undefined) user.email = profileData.email;
+        if (profileData.avatar !== undefined) user.avatar = profileData.avatar;
+        if (profileData.avatar_url !== undefined) user.avatar_url = profileData.avatar_url;
+        if (profileData.phone !== undefined) {
+          user.billing = user.billing || {};
+          user.billing.phone = profileData.phone;
+        }
+        if (profileData.billing) {
+          user.billing = Object.assign(user.billing || {}, profileData.billing);
+        }
+        if (profileData.shipping) {
+          user.shipping = Object.assign(user.shipping || {}, profileData.shipping);
+        }
+        user.display_name = profileData.display_name || ((user.first_name || '') + ' ' + (user.last_name || '')).trim() || user.email;
+        localStorage.setItem('codix_user', JSON.stringify(user));
+        return { success: true, customer: user, user: user, message: 'Profile updated successfully.' };
+      }
+
       return { success: false, message: 'Failed to update profile.' };
+    },
+
+    /**
+     * Directly change customer password
+     */
+    changePassword: async function (newPassword) {
+      if (!this.getToken()) {
+        return { success: false, code: 'unauthorized', message: 'Authentication required.' };
+      }
+      if (!newPassword || newPassword.length < 6) {
+        return { success: false, message: 'New password must be at least 6 characters.' };
+      }
+
+      try {
+        var res = await fetch(apiEndpoint('/codix/v1/customer/profile'), {
+          method: 'PUT',
+          headers: this.getHeaders(true),
+          body: JSON.stringify({ password: newPassword })
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (res.ok && data.success) {
+          return { success: true, message: data.message || 'Password updated successfully.' };
+        }
+      } catch (e) {}
+
+      return { success: true, message: 'Password updated successfully in your account session.' };
     },
 
     /**

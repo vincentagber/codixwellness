@@ -1806,18 +1806,43 @@ function codix_wc_customer_profile_handler(WP_REST_Request $request) {
 
     // Handle Profile Update (PUT / POST)
     if ($method === 'PUT' || $method === 'POST') {
-        $params = $request->get_json_params();
-        $first_name = isset($params['first_name']) ? sanitize_text_field($params['first_name']) : null;
-        $last_name = isset($params['last_name']) ? sanitize_text_field($params['last_name']) : null;
-        $phone = isset($params['phone']) ? sanitize_text_field($params['phone']) : null;
-        $billing = isset($params['billing']) && is_array($params['billing']) ? $params['billing'] : [];
-        $shipping = isset($params['shipping']) && is_array($params['shipping']) ? $params['shipping'] : [];
+        $params = $request->get_json_params() ?: [];
+        $first_name   = isset($params['first_name']) ? sanitize_text_field($params['first_name']) : null;
+        $last_name    = isset($params['last_name']) ? sanitize_text_field($params['last_name']) : null;
+        $display_name = isset($params['display_name']) ? sanitize_text_field($params['display_name']) : null;
+        $email        = isset($params['email']) ? sanitize_email($params['email']) : null;
+        $avatar       = isset($params['avatar']) ? $params['avatar'] : null;
+        $password     = !empty($params['password']) ? (string)$params['password'] : null;
+        $phone        = isset($params['phone']) ? sanitize_text_field($params['phone']) : null;
+        $billing      = isset($params['billing']) && is_array($params['billing']) ? $params['billing'] : [];
+        $shipping     = isset($params['shipping']) && is_array($params['shipping']) ? $params['shipping'] : [];
 
-        if (is_object($user) && function_exists('update_user_meta')) {
+        if (is_object($user)) {
             $user_id = $user->ID;
-            if ($first_name !== null) update_user_meta($user_id, 'first_name', $first_name);
-            if ($last_name !== null) update_user_meta($user_id, 'last_name', $last_name);
+            $update_args = ['ID' => $user_id];
+            if ($first_name !== null) {
+                update_user_meta($user_id, 'first_name', $first_name);
+                $update_args['first_name'] = $first_name;
+            }
+            if ($last_name !== null) {
+                update_user_meta($user_id, 'last_name', $last_name);
+                $update_args['last_name'] = $last_name;
+            }
+            if ($display_name !== null) {
+                $update_args['display_name'] = $display_name;
+            }
+            if ($email !== null && is_email($email)) {
+                $update_args['user_email'] = $email;
+            }
+            if ($password !== null && strlen($password) >= 6) {
+                $update_args['user_pass'] = $password;
+            }
+            if (function_exists('wp_update_user')) {
+                wp_update_user($update_args);
+            }
+
             if ($phone !== null) update_user_meta($user_id, 'billing_phone', $phone);
+            if ($avatar !== null) update_user_meta($user_id, '_codix_avatar', $avatar);
 
             foreach ($billing as $k => $v) {
                 update_user_meta($user_id, 'billing_' . $k, sanitize_text_field($v));
@@ -1825,14 +1850,29 @@ function codix_wc_customer_profile_handler(WP_REST_Request $request) {
             foreach ($shipping as $k => $v) {
                 update_user_meta($user_id, 'shipping_' . $k, sanitize_text_field($v));
             }
+            if (function_exists('get_user_by')) {
+                $user = get_user_by('id', $user_id);
+            }
         } elseif (is_array($user)) {
             $users = codix_wc_read_json('users.json', []);
             $user_id = $user['id'];
             if (isset($users[$user_id])) {
                 if ($first_name !== null) $users[$user_id]['first_name'] = $first_name;
                 if ($last_name !== null) $users[$user_id]['last_name'] = $last_name;
-                $users[$user_id]['display_name'] = trim(($users[$user_id]['first_name'] ?? '') . ' ' . ($users[$user_id]['last_name'] ?? ''));
-                if ($phone !== null) $users[$user_id]['billing']['phone'] = $phone;
+                if ($display_name !== null) {
+                    $users[$user_id]['display_name'] = $display_name;
+                } else {
+                    $users[$user_id]['display_name'] = trim(($users[$user_id]['first_name'] ?? '') . ' ' . ($users[$user_id]['last_name'] ?? ''));
+                }
+                if ($email !== null && is_email($email)) $users[$user_id]['email'] = $email;
+                if ($avatar !== null) $users[$user_id]['avatar'] = $avatar;
+                if ($password !== null && strlen($password) >= 6) {
+                    $users[$user_id]['password_hash'] = password_hash($password, PASSWORD_BCRYPT);
+                }
+                if ($phone !== null) {
+                    if (!isset($users[$user_id]['billing'])) $users[$user_id]['billing'] = [];
+                    $users[$user_id]['billing']['phone'] = $phone;
+                }
                 if (!empty($billing)) {
                     $users[$user_id]['billing'] = array_merge($users[$user_id]['billing'] ?? [], array_map('sanitize_text_field', $billing));
                 }
@@ -1850,12 +1890,15 @@ function codix_wc_customer_profile_handler(WP_REST_Request $request) {
         $user_id = $user->ID;
         $first_name = (function_exists('get_user_meta') ? get_user_meta($user_id, 'first_name', true) : '') ?: $user->display_name;
         $last_name = function_exists('get_user_meta') ? get_user_meta($user_id, 'last_name', true) : '';
+        $avatar = function_exists('get_user_meta') ? get_user_meta($user_id, '_codix_avatar', true) : '';
         $profile = [
             'id'           => $user_id,
             'email'        => $user->user_email,
             'first_name'   => $first_name,
             'last_name'    => $last_name,
             'display_name' => $user->display_name,
+            'avatar'       => $avatar ?: '',
+            'avatar_url'   => $avatar ?: '',
             'role'         => !empty($user->roles) ? $user->roles[0] : 'customer',
             'date_created' => $user->user_registered,
             'billing'      => [
@@ -1886,12 +1929,15 @@ function codix_wc_customer_profile_handler(WP_REST_Request $request) {
         ], 200);
     }
 
+    $avatar = $user['avatar'] ?? '';
     $profile = [
         'id'           => $user['id'],
         'email'        => $user['email'],
         'first_name'   => $user['first_name'] ?? '',
         'last_name'    => $user['last_name'] ?? '',
         'display_name' => $user['display_name'] ?? $user['email'],
+        'avatar'       => $avatar ?: '',
+        'avatar_url'   => $avatar ?: '',
         'role'         => 'customer',
         'date_created' => $user['created_at'] ?? date('c'),
         'billing'      => $user['billing'] ?? [],

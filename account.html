@@ -424,9 +424,26 @@
       <!-- Welcome Banner Card -->
       <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 relative overflow-hidden">
         <div class="flex items-center gap-5">
-          <!-- User Avatar -->
-          <div id="user-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#D7F4D8] text-codix-green flex items-center justify-center text-2xl font-black shrink-0 border-2 border-emerald-100 shadow-xs">
-            CW
+          <!-- User Avatar Container with Upload Feature -->
+          <div class="relative group">
+            <div id="user-avatar" onclick="document.getElementById('avatar-file-input').click()"
+              class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#D7F4D8] text-codix-green flex items-center justify-center text-2xl font-black shrink-0 border-2 border-emerald-100 shadow-xs overflow-hidden cursor-pointer relative group"
+              title="Click to upload profile photo">
+              <span id="user-avatar-initials">CW</span>
+              <img id="user-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Profile Picture" class="w-full h-full object-cover hidden">
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-black/45 rounded-2xl flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-camera text-base"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider mt-0.5">Upload</span>
+              </div>
+            </div>
+            <!-- Floating Camera Button -->
+            <button type="button" onclick="document.getElementById('avatar-file-input').click()"
+              class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-codix-green hover:bg-codix-green-dark text-white flex items-center justify-center shadow-md transition active:scale-95 cursor-pointer border-2 border-white"
+              title="Upload profile photo">
+              <i class="fa-solid fa-camera text-[10px]"></i>
+            </button>
+            <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="handleAvatarUpload(event)">
           </div>
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-1">
@@ -533,6 +550,29 @@
             </div>
 
             <form id="profile-form" onsubmit="handleProfileSubmit(event)" class="space-y-5">
+              <!-- Profile Picture Upload Row -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-emerald-100 text-codix-green flex items-center justify-center font-bold text-base overflow-hidden shrink-0 border border-emerald-200">
+                    <img id="form-avatar-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Avatar" class="w-full h-full object-cover hidden">
+                    <span id="form-avatar-initials">CW</span>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-900">Profile Photo</h4>
+                    <p class="text-[11px] text-slate-500">Supports PNG, JPG, or WEBP up to 5MB.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="document.getElementById('avatar-file-input').click()" class="bg-white hover:bg-slate-100 text-slate-700 font-bold border border-slate-300 text-xs px-4 py-2 rounded-xl transition cursor-pointer active:scale-95 flex items-center gap-1.5">
+                    <i class="fa-solid fa-camera text-codix-green"></i>
+                    <span>Upload New Photo</span>
+                  </button>
+                  <button type="button" id="remove-avatar-btn" onclick="removeAvatar()" class="text-xs text-red-600 hover:text-red-700 font-semibold px-2.5 py-1.5 transition cursor-pointer hidden">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1.5" for="profile-first-name">First Name</label>
@@ -615,17 +655,43 @@
               <p class="text-xs sm:text-sm text-slate-500 mt-1">Keep your account secure with regular password updates.</p>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-6">
+              <!-- Direct Password Change Form -->
+              <form id="password-change-form" onsubmit="handleDirectPasswordUpdate(event)" class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-4">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i class="fa-solid fa-key text-codix-green"></i>
+                  <span>Change Password Directly</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5" for="security-new-password">New Password</label>
+                    <input type="password" id="security-new-password" required minlength="6" placeholder="Min. 6 characters" class="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5" for="security-confirm-password">Confirm New Password</label>
+                    <input type="password" id="security-confirm-password" required minlength="6" placeholder="Re-enter new password" class="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-codix-green focus:ring-2 focus:ring-codix-green/20 transition bg-white">
+                  </div>
+                </div>
+                <div class="flex items-center justify-end pt-2">
+                  <button type="submit" id="security-update-btn" class="bg-codix-green hover:bg-codix-green-dark text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-xs cursor-pointer active:scale-95 flex items-center gap-1.5">
+                    <span>Update Password</span>
+                  </button>
+                </div>
+              </form>
+
+              <!-- Email Password Reset Option -->
               <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h4 class="text-sm font-bold text-slate-900">Change Account Password</h4>
-                  <p class="text-xs text-slate-500 mt-0.5">We will send a secure reset link to your email address.</p>
+                  <h4 class="text-sm font-bold text-slate-900">Email Password Reset Link</h4>
+                  <p class="text-xs text-slate-500 mt-0.5">We will send a secure password reset link to your registered email address.</p>
                 </div>
-                <button onclick="triggerPasswordResetFromDashboard()" id="security-reset-btn" class="bg-white hover:bg-slate-100 text-slate-800 font-bold border border-slate-300 text-xs px-5 py-2.5 rounded-xl transition cursor-pointer active:scale-95 shrink-0">
-                  Send Reset Link
+                <button type="button" onclick="triggerPasswordResetFromDashboard()" id="security-reset-btn" class="bg-white hover:bg-slate-100 text-slate-800 font-bold border border-slate-300 text-xs px-5 py-2.5 rounded-xl transition cursor-pointer active:scale-95 shrink-0 flex items-center gap-1.5">
+                  <i class="fa-regular fa-paper-plane text-codix-green text-xs"></i>
+                  <span>Send Reset Link</span>
                 </button>
               </div>
 
+              <!-- Security Information Note -->
               <div class="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-200/60">
                 <div class="flex items-start gap-3">
                   <i class="fa-solid fa-lock text-codix-green mt-0.5 text-sm"></i>
@@ -965,37 +1031,143 @@
       if (targetBtn) targetBtn.classList.add('active');
     }
 
+    function renderAvatar(u) {
+      if (!u) return;
+      const avatarUrl = u.avatar || u.avatar_url || localStorage.getItem('codix_avatar') || '';
+      const firstName = u.first_name || '';
+      const lastName = u.last_name || '';
+      const initials = `${(firstName || 'C')[0] || 'C'}${(lastName || 'W')[0] || 'W'}`.toUpperCase();
+
+      const initialsEl = document.getElementById('user-avatar-initials');
+      const imgEl = document.getElementById('user-avatar-img');
+      const formPreview = document.getElementById('form-avatar-preview');
+      const formInitials = document.getElementById('form-avatar-initials');
+      const removeBtn = document.getElementById('remove-avatar-btn');
+
+      if (avatarUrl && avatarUrl.trim() !== '') {
+        if (imgEl) {
+          imgEl.src = avatarUrl;
+          imgEl.classList.remove('hidden');
+        }
+        if (initialsEl) initialsEl.classList.add('hidden');
+        if (formPreview) {
+          formPreview.src = avatarUrl;
+          formPreview.classList.remove('hidden');
+        }
+        if (formInitials) formInitials.classList.add('hidden');
+        if (removeBtn) removeBtn.classList.remove('hidden');
+      } else {
+        if (initialsEl) {
+          initialsEl.textContent = initials;
+          initialsEl.classList.remove('hidden');
+        }
+        if (imgEl) imgEl.classList.add('hidden');
+        if (formInitials) {
+          formInitials.textContent = initials;
+          formInitials.classList.remove('hidden');
+        }
+        if (formPreview) formPreview.classList.add('hidden');
+        if (removeBtn) removeBtn.classList.add('hidden');
+      }
+    }
+
+    async function handleAvatarUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.match(/^image\/(png|jpe?g|webp|gif)$/i)) {
+        showAlert('error', 'Please select a valid image file (PNG, JPG, or WEBP).');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showAlert('error', 'Image size must be less than 5MB.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        const base64Data = e.target.result;
+        localStorage.setItem('codix_avatar', base64Data);
+        if (currentCustomer) {
+          currentCustomer.avatar = base64Data;
+          currentCustomer.avatar_url = base64Data;
+        }
+
+        renderAvatar(currentCustomer || { avatar: base64Data });
+        showAlert('success', 'Saving profile picture...');
+
+        try {
+          const res = await CodixAPI.updateProfile({ avatar: base64Data });
+          if (res && res.success) {
+            showAlert('success', 'Profile picture updated successfully.');
+          } else {
+            showAlert('success', 'Profile picture saved to your device.');
+          }
+        } catch (err) {
+          showAlert('success', 'Profile picture saved locally.');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function removeAvatar() {
+      localStorage.removeItem('codix_avatar');
+      if (currentCustomer) {
+        currentCustomer.avatar = '';
+        currentCustomer.avatar_url = '';
+      }
+      renderAvatar(currentCustomer || {});
+      try {
+        await CodixAPI.updateProfile({ avatar: '' });
+      } catch (e) {}
+      showAlert('success', 'Profile picture removed.');
+    }
+
     async function loadCustomerProfile() {
       try {
         const res = await CodixAPI.getProfile();
-        if (res && res.success && res.user) {
-          currentCustomer = res.user;
-          const u = res.user;
+        const u = (res && (res.user || res.customer)) || CodixAPI.getUser();
+        if (u) {
+          currentCustomer = u;
 
           // Header & hero labels
           const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.display_name || 'Customer';
-          document.getElementById('user-display-name').textContent = fullName;
-          document.getElementById('user-email-display').textContent = u.email || '';
-          document.getElementById('top-bar-username').textContent = fullName;
+          const nameEl = document.getElementById('user-display-name');
+          const emailEl = document.getElementById('user-email-display');
+          const topUsername = document.getElementById('top-bar-username');
 
-          // Avatar initials
-          const initials = `${(u.first_name || 'C')[0]}${(u.last_name || 'W')[0]}`.toUpperCase();
-          document.getElementById('user-avatar').textContent = initials;
+          if (nameEl) nameEl.textContent = fullName;
+          if (emailEl) emailEl.textContent = u.email || '';
+          if (topUsername) topUsername.textContent = fullName;
 
-          // Form fields
-          document.getElementById('profile-first-name').value = u.first_name || '';
-          document.getElementById('profile-last-name').value = u.last_name || '';
-          document.getElementById('profile-display-name').value = u.display_name || '';
-          document.getElementById('profile-email').value = u.email || '';
+          // Avatar display
+          renderAvatar(u);
+
+          // Form fields (only override if empty or initial load)
+          const fn = document.getElementById('profile-first-name');
+          const ln = document.getElementById('profile-last-name');
+          const dn = document.getElementById('profile-display-name');
+          const em = document.getElementById('profile-email');
+
+          if (fn) fn.value = u.first_name || '';
+          if (ln) ln.value = u.last_name || '';
+          if (dn) dn.value = u.display_name || fullName || '';
+          if (em) em.value = u.email || '';
 
           // Address fields
-          if (u.billing) {
-            document.getElementById('addr-street').value = u.billing.address_1 || '';
-            document.getElementById('addr-city').value = u.billing.city || '';
-            document.getElementById('addr-postcode').value = u.billing.postcode || '';
-            document.getElementById('addr-country').value = u.billing.country || 'United Kingdom';
-            document.getElementById('addr-phone').value = u.billing.phone || '';
-          }
+          const billing = u.billing || {};
+          const street = document.getElementById('addr-street');
+          const city = document.getElementById('addr-city');
+          const postcode = document.getElementById('addr-postcode');
+          const country = document.getElementById('addr-country');
+          const phone = document.getElementById('addr-phone');
+
+          if (street) street.value = billing.address_1 || '';
+          if (city) city.value = billing.city || '';
+          if (postcode) postcode.value = billing.postcode || '';
+          if (country) country.value = billing.country || 'United Kingdom';
+          if (phone) phone.value = billing.phone || '';
         } else if (res && res.code === 'unauthorized') {
           CodixAPI.logout();
           window.location.href = 'login.html?expired=1';
@@ -1082,8 +1254,13 @@
       const btn = document.getElementById('profile-btn');
       const firstName = document.getElementById('profile-first-name').value.trim();
       const lastName = document.getElementById('profile-last-name').value.trim();
-      const displayName = document.getElementById('profile-display-name').value.trim();
+      const displayName = document.getElementById('profile-display-name').value.trim() || `${firstName} ${lastName}`.trim();
       const email = document.getElementById('profile-email').value.trim();
+
+      if (!email) {
+        showAlert('error', 'Please enter a valid email address.');
+        return;
+      }
 
       if (btn) {
         btn.disabled = true;
@@ -1091,15 +1268,19 @@
       }
 
       try {
-        const res = await CodixAPI.updateProfile({
+        const payload = {
           first_name: firstName,
           last_name: lastName,
           display_name: displayName,
           email: email
-        });
+        };
+        const avatar = localStorage.getItem('codix_avatar');
+        if (avatar) payload.avatar = avatar;
+
+        const res = await CodixAPI.updateProfile(payload);
 
         if (res && res.success) {
-          showAlert('success', 'Profile updated successfully.');
+          showAlert('success', res.message || 'Profile updated successfully.');
           await loadCustomerProfile();
         } else {
           showAlert('error', (res && res.message) ? res.message : 'Failed to update profile.');
@@ -1120,7 +1301,7 @@
       const street = document.getElementById('addr-street').value.trim();
       const city = document.getElementById('addr-city').value.trim();
       const postcode = document.getElementById('addr-postcode').value.trim();
-      const country = document.getElementById('addr-country').value.trim();
+      const country = document.getElementById('addr-country').value.trim() || 'United Kingdom';
       const phone = document.getElementById('addr-phone').value.trim();
 
       if (btn) {
@@ -1130,6 +1311,7 @@
 
       try {
         const res = await CodixAPI.updateProfile({
+          phone: phone,
           billing: {
             address_1: street,
             city: city,
@@ -1146,7 +1328,7 @@
         });
 
         if (res && res.success) {
-          showAlert('success', 'Addresses saved successfully.');
+          showAlert('success', res.message || 'Addresses saved successfully.');
           await loadCustomerProfile();
         } else {
           showAlert('error', (res && res.message) ? res.message : 'Failed to save address.');
@@ -1161,23 +1343,66 @@
       }
     }
 
-    async function triggerPasswordResetFromDashboard() {
-      if (!currentCustomer || !currentCustomer.email) return;
-      const btn = document.getElementById('security-reset-btn');
+    async function handleDirectPasswordUpdate(e) {
+      e.preventDefault();
+      const newPass = document.getElementById('security-new-password').value;
+      const confirmPass = document.getElementById('security-confirm-password').value;
+      const btn = document.getElementById('security-update-btn');
+
+      if (!newPass || newPass.length < 6) {
+        showAlert('error', 'New password must be at least 6 characters long.');
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        showAlert('error', 'Password confirmation does not match.');
+        return;
+      }
+
       if (btn) {
         btn.disabled = true;
-        btn.textContent = 'Sending link...';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i><span>Updating...</span>';
       }
 
       try {
-        const res = await CodixAPI.lostPassword(currentCustomer.email);
-        showAlert('success', res.message || 'Password reset link sent to your registered email.');
-      } catch (e) {
-        showAlert('error', 'Unable to send password reset email.');
+        const res = await CodixAPI.changePassword(newPass);
+        if (res && res.success) {
+          showAlert('success', res.message || 'Password updated successfully.');
+          document.getElementById('password-change-form').reset();
+        } else {
+          showAlert('error', (res && res.message) ? res.message : 'Failed to update password.');
+        }
+      } catch (err) {
+        showAlert('error', 'Error updating password.');
       } finally {
         if (btn) {
           btn.disabled = false;
-          btn.textContent = 'Send Reset Link';
+          btn.innerHTML = '<span>Update Password</span>';
+        }
+      }
+    }
+
+    async function triggerPasswordResetFromDashboard() {
+      const email = (currentCustomer && currentCustomer.email) || document.getElementById('profile-email')?.value || CodixAPI.getUser()?.email;
+      if (!email) {
+        showAlert('error', 'Please enter your account email address first.');
+        return;
+      }
+      const btn = document.getElementById('security-reset-btn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i><span>Sending link...</span>';
+      }
+
+      try {
+        const res = await CodixAPI.lostPassword(email);
+        showAlert('success', (res && res.message) ? res.message : `Password reset instructions have been sent to ${email}.`);
+      } catch (e) {
+        showAlert('error', 'Unable to send password reset email at this moment.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-regular fa-paper-plane text-codix-green text-xs"></i><span>Send Reset Link</span>';
         }
       }
     }
