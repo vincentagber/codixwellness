@@ -1428,12 +1428,22 @@ function codix_wc_revoke_session($token) {
 // =========================================================================
 
 function codix_wc_auth_register(WP_REST_Request $request) {
-    $params = $request->get_json_params();
-    $email = sanitize_email($params['email'] ?? $request->get_param('email') ?? '');
-    $password = (string)($params['password'] ?? $request->get_param('password') ?? '');
-    $first_name = sanitize_text_field($params['first_name'] ?? $params['firstName'] ?? $request->get_param('first_name') ?? '');
-    $last_name = sanitize_text_field($params['last_name'] ?? $params['lastName'] ?? $request->get_param('last_name') ?? '');
-    $username = sanitize_text_field($params['username'] ?? $email);
+    $params = $request->get_json_params() ?: [];
+    if (empty($params)) {
+        $raw = file_get_contents('php://input');
+        if (!empty($raw)) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                $params = $decoded;
+            }
+        }
+    }
+    $raw_email = $params['email'] ?? $params['user_email'] ?? $request->get_param('email') ?? $_POST['email'] ?? $_GET['email'] ?? '';
+    $email = is_string($raw_email) ? trim(sanitize_email($raw_email)) : '';
+    $password = (string)($params['password'] ?? $params['user_pass'] ?? $request->get_param('password') ?? $_POST['password'] ?? '');
+    $first_name = sanitize_text_field($params['first_name'] ?? $params['firstName'] ?? $request->get_param('first_name') ?? $_POST['first_name'] ?? '');
+    $last_name = sanitize_text_field($params['last_name'] ?? $params['lastName'] ?? $request->get_param('last_name') ?? $_POST['last_name'] ?? '');
+    $username = sanitize_text_field($params['username'] ?? $params['user_login'] ?? $email);
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return new WP_REST_Response([
@@ -1585,9 +1595,18 @@ function codix_wc_auth_register(WP_REST_Request $request) {
 }
 
 function codix_wc_auth_login(WP_REST_Request $request) {
-    $params = $request->get_json_params();
-    $username_or_email = sanitize_text_field($params['email'] ?? $params['username'] ?? $request->get_param('email') ?? $request->get_param('username') ?? '');
-    $password = (string)($params['password'] ?? $request->get_param('password') ?? '');
+    $params = $request->get_json_params() ?: [];
+    if (empty($params)) {
+        $raw = file_get_contents('php://input');
+        if (!empty($raw)) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                $params = $decoded;
+            }
+        }
+    }
+    $username_or_email = sanitize_text_field($params['email'] ?? $params['username'] ?? $params['user_email'] ?? $params['user_login'] ?? $request->get_param('email') ?? $request->get_param('username') ?? $_POST['email'] ?? $_POST['username'] ?? '');
+    $password = (string)($params['password'] ?? $params['user_pass'] ?? $request->get_param('password') ?? $_POST['password'] ?? '');
 
     if (empty($username_or_email) || empty($password)) {
         return new WP_REST_Response([
