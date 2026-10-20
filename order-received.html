@@ -499,12 +499,12 @@
             </div>
             <h1 id="hero-customer-greeting"
               class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight font-serif-title leading-tight">
-              Thank you for your order, Vincent
+              Thank you for your order
             </h1>
             <p class="text-sm sm:text-[15px] text-slate-600 leading-relaxed pt-0.5">
               We've safely received your order and our UK dispensary team is preparing it for dispatch. A detailed
               confirmation receipt and VAT invoice have been dispatched to <span id="hero-customer-email"
-                class="font-semibold text-slate-900 underline decoration-slate-300 underline-offset-2">vincentagber74@gmail.com</span>.
+                class="font-semibold text-slate-900 underline decoration-slate-300 underline-offset-2">your email</span>.
             </p>
           </div>
         </div>
@@ -884,12 +884,12 @@
           </div>
           <div class="pt-4 space-y-2 text-xs sm:text-sm text-slate-600">
             <div class="flex items-center justify-between">
-              <p id="shipping-customer-name" class="font-bold text-slate-900 text-sm">Vincent Agber</p>
+              <p id="shipping-customer-name" class="font-bold text-slate-900 text-sm">Valued Customer</p>
               <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">Home Delivery</span>
             </div>
             <p id="shipping-address-text" class="leading-relaxed">
-              Plot 4, Ikeja, Lagos<br />
-              Ikeja, United Kingdom
+              10 Downing Street<br />
+              London, United Kingdom
             </p>
             <div class="pt-2 border-t border-slate-100 space-y-1.5 text-xs text-slate-500">
               <div class="flex items-center gap-2">
@@ -1241,11 +1241,11 @@
           status: method === 'bacs' ? 'On Hold (Awaiting Transfer)' : 'Payment Confirmed',
           payment_method: method === 'bacs' ? 'Direct Bank Transfer' : 'Stripe (Card)',
           billing: {
-            first_name: 'Vincent',
-            last_name: 'Agber',
-            email: 'vincentagber74@gmail.com',
-            address_1: 'Plot 4, Ikeja, Lagos',
-            city: 'Ikeja',
+            first_name: 'Valued',
+            last_name: 'Customer',
+            email: 'customer@codixwellness.co.uk',
+            address_1: '10 Downing Street',
+            city: 'London',
             country: 'United Kingdom',
             phone: '+44 20 7946 0912'
           },
@@ -1267,13 +1267,13 @@
       }
 
       // Customer Name
-      const firstName = order.billing?.first_name || 'Vincent';
-      const lastName = order.billing?.last_name || 'Agber';
+      const firstName = order.billing?.first_name || 'Customer';
+      const lastName = order.billing?.last_name || '';
       const fullName = (order.billing?.name || `${firstName} ${lastName}`).trim();
 
       document.getElementById('hero-customer-greeting').textContent = `Thank you for your order, ${firstName}`;
       
-      const email = order.billing?.email || 'vincentagber74@gmail.com';
+      const email = order.billing?.email || 'customer@codixwellness.co.uk';
       document.getElementById('hero-customer-email').textContent = email;
 
       // Order Reference
@@ -1338,8 +1338,8 @@
 
       // Shipping Address
       document.getElementById('shipping-customer-name').textContent = fullName;
-      const addrStreet = order.billing?.address_1 || order.billing?.address || 'Plot 4, Ikeja, Lagos';
-      const addrCity = order.billing?.city || 'Ikeja';
+      const addrStreet = order.billing?.address_1 || order.billing?.address || '10 Downing Street';
+      const addrCity = order.billing?.city || 'London';
       const addrCountry = order.billing?.country || 'United Kingdom';
       document.getElementById('shipping-address-text').innerHTML = `${addrStreet}<br/>${addrCity}, ${addrCountry}`;
       if (order.billing?.phone) {

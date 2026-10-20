@@ -765,10 +765,14 @@
             }
             return { success: true, token: data.token, user: data.user };
           } else if (res.status >= 400) {
+            var rawMsg = data.message ? data.message.replace(/<[^>]*>?/gm, '') : '';
+            if (/imunify|bot-protection|whitelist/i.test(rawMsg)) {
+              rawMsg = 'Security verification in progress. Please refresh the page or try again in a moment.';
+            }
             return {
               success: false,
               code: data.code || 'registration_error',
-              message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Registration failed. Please check your details.'
+              message: rawMsg || 'Registration failed. Please check your details.'
             };
           }
         } catch (err) {
@@ -827,10 +831,14 @@
             localStorage.setItem('codix_user', JSON.stringify(userObj));
             return { success: true, user: userObj, token: token };
           } else if (res.status >= 400 && res.status < 500) {
+            var rawLoginMsg = data.message ? data.message.replace(/<[^>]*>?/gm, '') : '';
+            if (/imunify|bot-protection|whitelist/i.test(rawLoginMsg)) {
+              rawLoginMsg = 'Security verification in progress. Please refresh the page or try again in a moment.';
+            }
             return {
               success: false,
               code: data.code || 'invalid_credentials',
-              message: data.message ? data.message.replace(/<[^>]*>?/gm, '') : 'Invalid username or password.'
+              message: rawLoginMsg || 'Invalid username or password.'
             };
           }
         } catch (err) {

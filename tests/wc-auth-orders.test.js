@@ -333,5 +333,19 @@ test('Frontend Pages: Validation of removed demo credentials and real API integr
   assert.ok(accountHtml.includes('src="js/config.js"'), 'account.html must include config.js');
   assert.ok(accountHtml.includes('CodixAPI.getProfile('), 'account.html must call CodixAPI.getProfile');
   assert.ok(accountHtml.includes('CodixAPI.getCustomerOrders('), 'account.html must call CodixAPI.getCustomerOrders');
+  assert.ok(accountHtml.includes('Array.isArray(orderRes.orders)'), 'account.html must safely unpack orders array from getCustomerOrders response');
   assert.ok(accountHtml.includes('CodixAPI.logout('), 'account.html must call CodixAPI.logout');
+
+  const orderReceivedHtml = fs.readFileSync(path.join(ROOT_DIR, 'order-received.html'), 'utf8');
+  assert.ok(!orderReceivedHtml.includes('vincentagber74@gmail.com'), 'order-received.html must not contain hardcoded personal email');
+  assert.ok(!orderReceivedHtml.includes('Plot 4, Ikeja, Lagos'), 'order-received.html must not contain hardcoded personal address');
+
+  const checkoutHtml = fs.readFileSync(path.join(ROOT_DIR, 'checkout.html'), 'utf8');
+  assert.ok(checkoutHtml.includes('stripe-card-number'), 'checkout.html must include Stripe card inputs');
+  assert.ok(checkoutHtml.includes('cardNumber.length < 13'), 'checkout.html must validate card number');
+  assert.ok(checkoutHtml.includes('cardExp'), 'checkout.html must validate card expiration');
+
+  const cartHtml = fs.readFileSync(path.join(ROOT_DIR, 'cart.html'), 'utf8');
+  assert.ok(cartHtml.includes('product.html?id='), 'cart.html item link must contain product id query parameter');
 });
+

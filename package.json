@@ -15,7 +15,8 @@
     "lint:html": "html-validate \"*.html\"",
     "test": "node --test tests/*.test.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "pack:cpanel": "npm run build && zip -r codix-cpanel-deploy.zip *.html css js images wp-plugin wp-json.php wp-api.php .htaccess -x \"*.DS_Store*\""
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

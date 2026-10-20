@@ -642,8 +642,10 @@
       empty.classList.add('hidden');
 
       try {
-        const orders = await CodixAPI.getCustomerOrders();
+        const orderRes = await CodixAPI.getCustomerOrders();
         loading.classList.add('hidden');
+
+        const orders = (orderRes && Array.isArray(orderRes.orders)) ? orderRes.orders : (Array.isArray(orderRes) ? orderRes : []);
 
         if (!orders || orders.length === 0) {
           empty.classList.remove('hidden');

@@ -1475,16 +1475,54 @@
       window._isSubmittingOrder = true;
 
       // Collect customer information
-      const email = document.getElementById('customer-email')?.value || '';
-      const firstName = document.getElementById('first-name')?.value || '';
-      const lastName = document.getElementById('last-name')?.value || '';
-      const address = document.getElementById('shipping-address')?.value || document.getElementById('address')?.value || '';
-      const apt = document.getElementById('shipping-apartment')?.value || '';
-      const city = document.getElementById('shipping-city')?.value || document.getElementById('city')?.value || '';
-      const state = document.getElementById('shipping-postcode')?.value || document.getElementById('state')?.value || '';
+      const email = document.getElementById('customer-email')?.value.trim() || '';
+      const firstName = document.getElementById('first-name')?.value.trim() || '';
+      const lastName = document.getElementById('last-name')?.value.trim() || '';
+      const address = document.getElementById('shipping-address')?.value.trim() || document.getElementById('address')?.value.trim() || '';
+      const apt = document.getElementById('shipping-apartment')?.value.trim() || '';
+      const city = document.getElementById('shipping-city')?.value.trim() || document.getElementById('city')?.value.trim() || '';
+      const state = document.getElementById('shipping-postcode')?.value.trim() || document.getElementById('state')?.value.trim() || '';
       const country = document.getElementById('shipping-country')?.value || 'GB';
-      const phone = document.getElementById('shipping-phone')?.value || document.getElementById('customer-phone')?.value || '';
+      const phone = document.getElementById('shipping-phone')?.value.trim() || document.getElementById('customer-phone')?.value.trim() || '';
       const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'stripe';
+
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address.');
+        window._isSubmittingOrder = false;
+        return;
+      }
+      if (!firstName || !lastName) {
+        alert('Please enter your first and last name.');
+        window._isSubmittingOrder = false;
+        return;
+      }
+      if (!address || !city) {
+        alert('Please enter your delivery street address and city.');
+        window._isSubmittingOrder = false;
+        return;
+      }
+
+      if (paymentMethod === 'stripe') {
+        const cardNumber = document.getElementById('stripe-card-number')?.value.replace(/\s+/g, '') || '';
+        const cardExp = document.getElementById('stripe-card-exp')?.value.trim() || '';
+        const cardCvc = document.getElementById('stripe-card-cvc')?.value.trim() || '';
+
+        if (!cardNumber || cardNumber.length < 13) {
+          alert('Please enter a valid card number.');
+          window._isSubmittingOrder = false;
+          return;
+        }
+        if (!cardExp || !/^\d{2}\s*\/\s*\d{2}$/.test(cardExp)) {
+          alert('Please enter a valid expiration date in MM / YY format.');
+          window._isSubmittingOrder = false;
+          return;
+        }
+        if (!cardCvc || cardCvc.length < 3) {
+          alert('Please enter a valid 3 or 4-digit CVC code.');
+          window._isSubmittingOrder = false;
+          return;
+        }
+      }
 
       const fullAddress = apt ? `${address}, ${apt}` : address;
       const grandTotalRaw = checkoutItems.reduce((sum, item) => sum + ((item.price || 9.17) * (item.qty || 1)), 0) * (1 - discountApplied) * 1.075;

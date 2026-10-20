@@ -78,11 +78,13 @@ if (!class_exists('WP_REST_Request')) {
         private $method;
         private $route;
         private $params = [];
+        private $json_params = [];
 
-        public function __construct($method = 'GET', $route = '', $params = []) {
+        public function __construct($method = 'GET', $route = '', $params = [], $json_params = []) {
             $this->method = strtoupper($method);
             $this->route = $route;
             $this->params = $params;
+            $this->json_params = !empty($json_params) ? $json_params : (!empty($params) ? $params : []);
         }
 
         public function get_method() {
@@ -90,16 +92,24 @@ if (!class_exists('WP_REST_Request')) {
         }
 
         public function get_param($key) {
-            return $this->params[$key] ?? $_GET[$key] ?? $_POST[$key] ?? null;
+            return $this->params[$key] ?? $this->json_params[$key] ?? $_GET[$key] ?? $_POST[$key] ?? null;
         }
 
         public function get_params() {
-            return array_merge($_GET, $_POST, $this->params);
+            return array_merge($_GET, $_POST, $this->params, $this->json_params);
         }
 
         public function get_json_params() {
+            if (!empty($this->json_params)) {
+                return $this->json_params;
+            }
             $raw = file_get_contents('php://input');
-            return json_decode($raw, true) ?: [];
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                $this->json_params = $decoded;
+                return $decoded;
+            }
+            return !empty($this->params) ? $this->params : [];
         }
 
         public function get_header($key) {
@@ -177,7 +187,7 @@ $route = '/' . ltrim($route, '/');
 // Route dispatching
 $json_input = json_decode(file_get_contents('php://input'), true) ?: [];
 $merged_params = array_merge($_GET, $_POST, $json_input);
-$req = new WP_REST_Request($request_method, $route, $merged_params);
+$req = new WP_REST_Request($request_method, $route, $merged_params, $json_input);
 
 // Customer Authentication Endpoints
 if (strpos($route, '/codix/v1/auth/register') === 0 || strpos($route, '/wp/v2/users/register') === 0) {

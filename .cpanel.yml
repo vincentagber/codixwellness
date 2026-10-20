@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html/
+    - /bin/cp -R *.html $DEPLOYPATH
+    - /bin/cp -R css $DEPLOYPATH
+    - /bin/cp -R js $DEPLOYPATH
+    - /bin/cp -R images $DEPLOYPATH
+    - /bin/cp -R wp-plugin $DEPLOYPATH
+    - /bin/cp wp-json.php $DEPLOYPATH
+    - /bin/cp wp-api.php $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
